@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>FootballStats.ApplicationModule</RootNamespace>
+    <AssemblyName>FootballStats.ApplicationModule</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FootballStats.Domain\FootballStats.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
