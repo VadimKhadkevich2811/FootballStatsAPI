@@ -21,4 +21,8 @@ public class User
 
     [Required]
     public Role UserRole { get; set; }
+
+    public string? Token { get; set; }
+
+    public DateTime? TokenEnd { get; set; }
 }

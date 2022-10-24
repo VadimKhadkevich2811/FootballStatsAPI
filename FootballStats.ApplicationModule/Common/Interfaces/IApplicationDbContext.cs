@@ -4,4 +4,6 @@ using Microsoft.EntityFrameworkCore;
 public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
+
+    Task SaveChangesAsync();
 }

@@ -1,27 +1,30 @@
 using FootballStats.ApplicationModule.Login.Commands;
+using FootballStats.ApplicationModule.SignUp.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballStats.Application.Controllers;
 
 [ApiController]
-[Route("api/login")]
-public class LoginController : ControllerBase
+[Route("api/signup")]
+public class SignUpController : ControllerBase
 {
     private IMediator _mediator;
-    public LoginController(IMediator mediator)
+    public SignUpController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpPost]
-    public async Task<ActionResult> LoginAsync(LoginCommand command)
+    public async Task<ActionResult> SignUpAsync(SignUpCommand command)
     {
         var result = await _mediator.Send(command);
+
         if(result == null)
         {
-            return NotFound("Incorrect username or password");            
+            return BadRequest("Error during new user creation.");
         }
-        return Ok(result);
+
+        return Created("", result);
     }
 }

@@ -4,6 +4,7 @@ using FootballStats.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballStats.Infrastructure.Migrations
 {
     [DbContext(typeof(FootballStatsDbContext))]
-    partial class FootballStatsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221024141749_UpdatedMigration2410")]
+    partial class UpdatedMigration2410
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

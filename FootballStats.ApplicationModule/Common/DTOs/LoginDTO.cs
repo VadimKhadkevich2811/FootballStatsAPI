@@ -9,5 +9,5 @@ public class LoginDTO
     public string? UserName { get; set; }
 
     [Required]
-    public string? PasswordHash { get; set; }
+    public string? Token { get; set; }
 }

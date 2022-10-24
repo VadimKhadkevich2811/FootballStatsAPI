@@ -7,9 +7,9 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
     public LoginCommandValidator()
     {
         RuleFor(field => field.LoginId)
-            .NotEmpty();
+            .NotEmpty().WithMessage("Username/Email is required");
 
         RuleFor(field => field.Password)
-            .NotEmpty();
+            .NotEmpty().WithMessage("Password is required");
     }
 }
