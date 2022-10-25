@@ -5,5 +5,7 @@ public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
 
-    Task SaveChangesAsync();
+    DbSet<Player> Players { get; }
+
+    Task<bool> SaveChangesAsync();
 }

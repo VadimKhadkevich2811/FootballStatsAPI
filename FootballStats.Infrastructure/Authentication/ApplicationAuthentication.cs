@@ -30,6 +30,6 @@ public class ApplicationAuthentication : IAuthentication
         var jsonStringResponse = await response.Content.ReadAsStringAsync();
         var authenticationModel = JsonConvert.DeserializeObject<AuthenticationModel>(jsonStringResponse);
 
-        return authenticationModel.AccessToken;
+        return authenticationModel.AccessToken ?? null;
     }
 }

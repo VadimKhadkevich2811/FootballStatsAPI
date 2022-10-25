@@ -1,10 +1,7 @@
-using FluentValidation;
 using FootballStats.ApplicationModule;
-using FootballStats.ApplicationModule.Common.Behaviours;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Persistence;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
@@ -12,14 +9,14 @@ using Newtonsoft.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>(); 
-builder.Services.AddScoped<IAuthentication, ApplicationAuthentication>(); 
+builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>();
+builder.Services.AddScoped<IAuthentication, ApplicationAuthentication>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["Auth0:Domain"] 
+        options.Authority = builder.Configuration["Auth0:Domain"]
             + $"{builder.Configuration["FootballStatsAuthentication:Domain"]}/";
         options.Audience = builder.Configuration["Auth0:Audience"]
             + $"{builder.Configuration["FootballStatsAuthentication:Audience"]}/";

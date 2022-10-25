@@ -1,10 +1,8 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs;
-using FootballStats.ApplicationModule.Login.Commands;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using FootballStats.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using BC = BCrypt.Net.BCrypt;
 
 namespace FootballStats.ApplicationModule.Common.SignUp.Handlers;

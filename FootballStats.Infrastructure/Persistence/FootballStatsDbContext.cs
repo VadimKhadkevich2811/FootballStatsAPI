@@ -12,8 +12,10 @@ public class FootballStatsDbContext : DbContext, IApplicationDbContext
 
     public DbSet<User> Users { get; set; }
 
-    public async Task SaveChangesAsync()
+    public DbSet<Player> Players { get; set; }
+
+    public async Task<bool> SaveChangesAsync()
     {
-        await base.SaveChangesAsync();
+        return (await base.SaveChangesAsync() > 0);
     }
 }

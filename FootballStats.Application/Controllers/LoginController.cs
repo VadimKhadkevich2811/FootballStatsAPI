@@ -18,9 +18,9 @@ public class LoginController : ControllerBase
     public async Task<ActionResult> LoginAsync(LoginCommand command)
     {
         var result = await _mediator.Send(command);
-        if(result == null)
+        if (result == null)
         {
-            return NotFound("Incorrect username or password");            
+            return NotFound("Incorrect username or password");
         }
         return Ok(result);
     }

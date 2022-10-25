@@ -1,4 +1,3 @@
-using FootballStats.ApplicationModule.Login.Commands;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +19,7 @@ public class SignUpController : ControllerBase
     {
         var result = await _mediator.Send(command);
 
-        if(result == null)
+        if (result == null)
         {
             return BadRequest("Error during new user creation.");
         }
