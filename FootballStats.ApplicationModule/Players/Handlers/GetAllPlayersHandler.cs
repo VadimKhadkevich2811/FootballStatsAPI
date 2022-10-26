@@ -8,8 +8,8 @@ namespace FootballStats.ApplicationModule.Players.Handlers;
 
 public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, List<PlayerReadDTO>>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public GetAllPlayersHandler(IApplicationDbContext context, IMapper mapper)
     {

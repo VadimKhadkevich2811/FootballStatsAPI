@@ -8,8 +8,8 @@ namespace FootballStats.ApplicationModule.Common.Players.Handlers;
 
 public class CreatePlayerHandler : IRequestHandler<CreatePlayerCommand, PlayerReadDTO>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
     public CreatePlayerHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;

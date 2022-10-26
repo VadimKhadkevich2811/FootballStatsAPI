@@ -8,7 +8,7 @@ namespace FootballStats.Application.Controllers;
 [Route("api/login")]
 public class LoginController : ControllerBase
 {
-    private IMediator _mediator;
+    private readonly IMediator _mediator;
     public LoginController(IMediator mediator)
     {
         _mediator = mediator;

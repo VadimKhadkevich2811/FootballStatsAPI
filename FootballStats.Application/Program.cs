@@ -1,12 +1,19 @@
 using FootballStats.ApplicationModule;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.Infrastructure.Authentication;
+using FootballStats.Infrastructure.Logging;
 using FootballStats.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+
+LoggerManagerExtensions.LoadConfiguration();
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
 
 // Add services to the container.
 builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>();
@@ -28,6 +35,8 @@ builder.Services.AddDbContext<FootballStatsDbContext>(opt => opt.UseSqlServer(
         $"{builder.Configuration["FootballStatsDBConnection:Password"]};",
             options => options.EnableRetryOnFailure()
 ));
+
+builder.Services.ConfigureLoggerService();
 
 builder.Services.AddControllers().AddNewtonsoftJson(services =>
         services.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
@@ -54,3 +63,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+NLog.LogManager.Shutdown();

@@ -8,7 +8,7 @@ namespace FootballStats.Application.Controllers;
 [Route("api/signup")]
 public class SignUpController : ControllerBase
 {
-    private IMediator _mediator;
+    private readonly IMediator _mediator;
     public SignUpController(IMediator mediator)
     {
         _mediator = mediator;

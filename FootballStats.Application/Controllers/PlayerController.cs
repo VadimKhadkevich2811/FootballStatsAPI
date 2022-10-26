@@ -13,7 +13,7 @@ namespace FootballStats.Application.Controllers;
 [Route("api/players")]
 public class PlayerController : ControllerBase
 {
-    private IMediator _mediator;
+    private readonly IMediator _mediator;
 
     public PlayerController(IMediator mediator)
     {
@@ -52,7 +52,7 @@ public class PlayerController : ControllerBase
 
     //DELETE api/players/{playerId}
     [HttpDelete("{playerId}")]
-    public async Task<ActionResult> CreatePlayerAsync(int playerId)
+    public async Task<ActionResult> DeletePlayerAsync(int playerId)
     {
         var result = await _mediator.Send(new DeletePlayerCommand(playerId));
 

@@ -1,5 +1,6 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using FootballStats.Domain.Entities;
 using MediatR;
@@ -9,12 +10,14 @@ namespace FootballStats.ApplicationModule.Common.SignUp.Handlers;
 
 public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
-    public SignUpHandler(IApplicationDbContext context, IMapper mapper)
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
+    private readonly ILoggerManager _logger;
+    public SignUpHandler(IApplicationDbContext context, IMapper mapper, ILoggerManager logger)
     {
         _context = context;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<SignUpDTO> Handle(SignUpCommand request, CancellationToken cancellationToken)
@@ -27,6 +30,7 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
 
         if (userExists)
         {
+            _logger.LogWarn("User exists.");
             return null;
         }
 

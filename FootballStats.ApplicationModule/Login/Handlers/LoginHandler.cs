@@ -10,9 +10,9 @@ namespace FootballStats.ApplicationModule.Common.Login.Handlers;
 
 public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
 {
-    private IApplicationDbContext _context;
-    private IAuthentication _auth;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IAuthentication _auth;
+    private readonly IMapper _mapper;
     public LoginHandler(IApplicationDbContext context, IMapper mapper, IAuthentication auth)
     {
         _context = context;

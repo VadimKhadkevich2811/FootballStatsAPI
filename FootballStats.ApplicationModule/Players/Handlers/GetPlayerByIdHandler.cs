@@ -8,8 +8,8 @@ namespace FootballStats.ApplicationModule.Players.Handlers;
 
 public class GetPlayerByIdHandler : IRequestHandler<GetPlayerByIdQuery, PlayerReadDTO>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
     public GetPlayerByIdHandler(IApplicationDbContext context, IMapper mapper)
     {

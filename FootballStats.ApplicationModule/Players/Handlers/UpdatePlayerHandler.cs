@@ -7,8 +7,8 @@ namespace FootballStats.ApplicationModule.Common.Players.Handlers;
 
 public class UpdatePlayerHandler : IRequestHandler<UpdatePlayerCommand, bool>
 {
-    private IApplicationDbContext _context;
-    private IMapper _mapper;
+    private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
     public UpdatePlayerHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
