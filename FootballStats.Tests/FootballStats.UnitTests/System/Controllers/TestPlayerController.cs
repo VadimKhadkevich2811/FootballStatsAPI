@@ -29,7 +29,7 @@ public class TestPlayerController
         List<PlayerReadDTO> returnValue = new List<PlayerReadDTO>();
         var inputData = new GetAllPlayersQuery();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.GetAllPlayersAsync();
@@ -46,7 +46,7 @@ public class TestPlayerController
         int queryParam = 1;
         PlayerReadDTO returnValue = new PlayerReadDTO();
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetPlayerByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.GetPlayerByIdAsync(queryParam);
@@ -64,7 +64,7 @@ public class TestPlayerController
         PlayerReadDTO returnValue = null;
         var inputData = new GetPlayerByIdQuery(queryParam);
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.GetPlayerByIdAsync(queryParam);
@@ -81,7 +81,7 @@ public class TestPlayerController
         var inputData = CreatePlayerCommandMockData.GetEmptyCreatePlayerCommandData();
         PlayerReadDTO returnValue = new PlayerReadDTO();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.CreatePlayerAsync(inputData);
@@ -98,7 +98,7 @@ public class TestPlayerController
         var inputData = CreatePlayerCommandMockData.GetNoCreatePlayerCommandData();
         PlayerReadDTO returnValue = null;
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.CreatePlayerAsync(inputData);
@@ -115,7 +115,7 @@ public class TestPlayerController
         int queryParam = 1;
         bool returnValue = true;
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.DeletePlayerAsync(queryParam);
@@ -132,7 +132,7 @@ public class TestPlayerController
         int queryParam = 1;
         bool returnValue = false;        
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.DeletePlayerAsync(queryParam);
@@ -150,7 +150,7 @@ public class TestPlayerController
         bool returnValue = true;
         var inputData = UpdatePlayerCommandMockData.GetEmptyUpdatePlayerCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.UpdatePlayerAsync(queryParam, inputData);
@@ -168,7 +168,7 @@ public class TestPlayerController
         bool returnValue = false;
         var inputData = UpdatePlayerCommandMockData.GetEmptyUpdatePlayerCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.UpdatePlayerAsync(queryParam, inputData);
@@ -186,7 +186,7 @@ public class TestPlayerController
         bool returnValue = true;
         var inputData = UpdatePlayerDetailCommandMockData.GetEmptyUpdatePlayerDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.UpdatePlayerDetailAsync(queryParam, inputData);
@@ -204,7 +204,7 @@ public class TestPlayerController
         bool returnValue = false;
         var inputData = UpdatePlayerDetailCommandMockData.GetEmptyUpdatePlayerDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayerController(_mediatorMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object);
 
         ///Act
         var result = await sut.UpdatePlayerDetailAsync(queryParam, inputData);

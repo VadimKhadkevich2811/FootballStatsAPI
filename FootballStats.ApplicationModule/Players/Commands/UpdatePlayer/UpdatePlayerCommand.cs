@@ -4,7 +4,7 @@ namespace FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
 
 public class UpdatePlayerCommand : IRequest<bool>
 {
-    public int Id { get; set; }
+    public int PlayerId { get; set; }
     public string? Name { get; set; }
     public string? Lastname { get; set; }
     public int Age { get; set; }

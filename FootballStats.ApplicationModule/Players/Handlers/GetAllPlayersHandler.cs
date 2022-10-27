@@ -1,5 +1,6 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,18 +9,18 @@ namespace FootballStats.ApplicationModule.Players.Handlers;
 
 public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, List<PlayerReadDTO>>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
 
-    public GetAllPlayersHandler(IApplicationDbContext context, IMapper mapper)
+    public GetAllPlayersHandler(IPlayersRepository repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<List<PlayerReadDTO>> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
     {
-        var players = await _context.Players.ToListAsync();
+        var players = await _repository.GetAllPlayers();
         var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
 
         return playerDTOs;

@@ -10,21 +10,19 @@ namespace FootballStats.ApplicationModule.Common.Login.Handlers;
 
 public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly ILoginRepository _repository;
     private readonly IAuthentication _auth;
     private readonly IMapper _mapper;
-    public LoginHandler(IApplicationDbContext context, IMapper mapper, IAuthentication auth)
+    public LoginHandler(ILoginRepository repository, IMapper mapper, IAuthentication auth)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
         _auth = auth;
     }
 
     public async Task<LoginDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users
-            .Where(user => user.UserName == request.LoginId ||
-                user.Email == request.LoginId).FirstOrDefaultAsync();
+        var user = await _repository.GetUserByEmailOrUsername(request.LoginId);
 
         if (user != null && !BC.Verify(request.Password, user.PasswordHash))
         {
@@ -36,12 +34,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
             if (user.Token == null)
             {
                 var token = await _auth.GetAuthenticationToken();
-                if (token != null)
-                {
-                    user.Token = token;
-                    user.TokenEnd = DateTime.Now.AddSeconds(86400);
-                    await _context.SaveChangesAsync();
-                }
+                await _repository.UpdateUserToken(user, token);
             }
         }
 

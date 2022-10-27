@@ -3,6 +3,7 @@ using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Logging;
 using FootballStats.Infrastructure.Persistence;
+using FootballStats.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
@@ -18,6 +19,7 @@ builder.Host.UseNLog();
 // Add services to the container.
 builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>();
 builder.Services.AddScoped<IAuthentication, ApplicationAuthentication>();
+builder.Services.AddScoped<ISignUpRepository, SignUpRepository>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

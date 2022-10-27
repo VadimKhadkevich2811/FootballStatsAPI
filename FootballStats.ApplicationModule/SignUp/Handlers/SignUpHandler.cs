@@ -10,12 +10,12 @@ namespace FootballStats.ApplicationModule.Common.SignUp.Handlers;
 
 public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly ISignUpRepository _repository;
     private readonly IMapper _mapper;
     private readonly ILoggerManager _logger;
-    public SignUpHandler(IApplicationDbContext context, IMapper mapper, ILoggerManager logger)
+    public SignUpHandler(ISignUpRepository repository, IMapper mapper, ILoggerManager logger)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
         _logger = logger;
     }
@@ -24,11 +24,9 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
     {
         var passwordHash = BC.HashPassword(request.Password);
 
-        var userExists = _context.Users
-            .Any(user => user.Email == request.Email
-            || user.UserName == request.Username);
+        var userExist = _repository.UserExist(request.Email, request.Username);
 
-        if (userExists)
+        if (userExist)
         {
             _logger.LogWarn("User exists.");
             return null;
@@ -41,8 +39,8 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
             PasswordHash = passwordHash
         };
 
-        await _context.Users.AddAsync(user);
-        await _context.SaveChangesAsync();
+        await _repository.AddUser(user);
+        await _repository.SaveChangesAsync();
 
         var newUser = _mapper.Map<SignUpDTO>(user);
         return newUser;

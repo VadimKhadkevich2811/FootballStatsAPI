@@ -11,11 +11,11 @@ namespace FootballStats.Application.Controllers;
 
 [ApiController]
 [Route("api/players")]
-public class PlayerController : ControllerBase
+public class PlayersController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public PlayerController(IMediator mediator)
+    public PlayersController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -63,7 +63,7 @@ public class PlayerController : ControllerBase
     [HttpPut("{playerId}")]
     public async Task<ActionResult> UpdatePlayerAsync(int playerId, UpdatePlayerCommand command)
     {
-        command.Id = playerId;
+        command.PlayerId = playerId;
 
         var result = await _mediator.Send(command);
 
@@ -74,7 +74,7 @@ public class PlayerController : ControllerBase
     [HttpPatch("{playerId}")]
     public async Task<ActionResult> UpdatePlayerDetailAsync(int playerId, UpdatePlayerDetailCommand command)
     {
-        command.Id = playerId;
+        command.PlayerId = playerId;
 
         var result = await _mediator.Send(command);
 

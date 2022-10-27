@@ -1,4 +1,5 @@
 using AutoMapper;
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 using FootballStats.Domain.Entities;
 using MediatR;
@@ -8,28 +9,25 @@ namespace FootballStats.ApplicationModule.Players.Handlers;
 
 public class DeletePlayerHandler : IRequestHandler<DeletePlayerCommand, bool>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
 
-    public DeletePlayerHandler(IApplicationDbContext context, IMapper mapper)
+    public DeletePlayerHandler(IPlayersRepository repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<bool> Handle(DeletePlayerCommand request, CancellationToken cancellationToken)
     {
-        Player player;
-        try
-        {
-            player = await _context.Players.Where(player => player.Id == request.PlayerId).FirstAsync();
-        }
-        catch
+        var player = await _repository.GetPlayerById(request.PlayerId);
+        
+        if(player == null)
         {
             return false;
         }
 
-        _context.Players.Remove(player);
-        return await _context.SaveChangesAsync();
+        _repository.RemovePlayer(player);
+        return await _repository.SaveChangesAsync();
     }
 }

@@ -1,26 +1,27 @@
 using AutoMapper;
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayerDetail;
+using FootballStats.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.ApplicationModule.Common.Players.Handlers;
 
 public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailCommand, bool>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
-    public UpdatePlayerDetailHandler(IApplicationDbContext context, IMapper mapper)
+    public UpdatePlayerDetailHandler(IPlayersRepository repository, IMapper mapper)
     {
-        _context = context;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<bool> Handle(UpdatePlayerDetailCommand request, CancellationToken cancellationToken)
     {
-        var player = await _context.Players.Where(player => player.Id == request.Id).FirstOrDefaultAsync();
-
-        if (player == null)
+        var player = await _repository.GetPlayerById(request.PlayerId);
+        
+        if(player == null)
         {
             return false;
         }
@@ -30,7 +31,7 @@ public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailComma
 
         _mapper.Map(playerToPatch, player);
 
-        _context.Players.Update(player);
-        return await _context.SaveChangesAsync();
+        _repository.UpdatePlayer(player);
+        return await _repository.SaveChangesAsync();
     }
 }
