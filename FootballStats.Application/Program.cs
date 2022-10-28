@@ -20,14 +20,16 @@ builder.Host.UseNLog();
 builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>();
 builder.Services.AddScoped<IAuthentication, ApplicationAuthentication>();
 builder.Services.AddScoped<ISignUpRepository, SignUpRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["Auth0:Domain"]
+        options.Authority = builder.Configuration["Authentication:Domain"]
             + $"{builder.Configuration["FootballStatsAuthentication:Domain"]}/";
-        options.Audience = builder.Configuration["Auth0:Audience"]
+        options.Audience = builder.Configuration["Authentication:Audience"]
             + $"{builder.Configuration["FootballStatsAuthentication:Audience"]}/";
     });
 string str = builder.Configuration.GetConnectionString("FootballStatsDBConnection") +
@@ -61,6 +63,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -5,11 +5,13 @@ using FootballStats.ApplicationModule.Players.Commands.UpdatePlayerDetail;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballStats.Application.Controllers;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = "Bearer")]
 [Route("api/players")]
 public class PlayersController : ControllerBase
 {

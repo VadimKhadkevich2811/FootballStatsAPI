@@ -31,7 +31,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
 
         if (user != null)
         {
-            if (user.Token == null)
+            if (user.Token == null || DateTime.Now > user.TokenEnd)
             {
                 var token = await _auth.GetAuthenticationToken();
                 await _repository.UpdateUserToken(user, token);
