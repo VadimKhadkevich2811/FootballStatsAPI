@@ -4,6 +4,7 @@ using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Logging;
 using FootballStats.Infrastructure.Persistence;
 using FootballStats.Infrastructure.Persistence.Repositories;
+using FootballStats.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
@@ -16,12 +17,21 @@ builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 builder.Host.UseNLog();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IUriService>(o =>
+{
+    var accessor = o.GetRequiredService<IHttpContextAccessor>();
+    var request = accessor.HttpContext.Request;
+    var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+    return new UriService(uri);
+});
 // Add services to the container.
 builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>();
 builder.Services.AddScoped<IAuthentication, ApplicationAuthentication>();
 builder.Services.AddScoped<ISignUpRepository, SignUpRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
+
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

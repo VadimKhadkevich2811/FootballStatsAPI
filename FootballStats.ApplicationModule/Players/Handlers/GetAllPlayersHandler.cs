@@ -20,7 +20,8 @@ public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, List<Pla
 
     public async Task<List<PlayerReadDTO>> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
     {
-        var players = await _repository.GetAllPlayers();
+        var filter = request.PlayersFilter;
+        var players = await _repository.GetAllPlayers(filter.PageNumber, filter.PageSize);
         var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
 
         return playerDTOs;
