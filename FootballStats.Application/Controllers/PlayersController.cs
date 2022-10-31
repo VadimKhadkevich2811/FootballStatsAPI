@@ -37,7 +37,7 @@ public class PlayersController : ControllerBase
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var query = new GetAllPlayersQuery(validFilter);
         var players = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players, validFilter, 21, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players.PlayersList, validFilter, players.PlayersTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }
 

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 
-public class GetAllPlayersQuery : IRequest<List<PlayerReadDTO>>
+public class GetAllPlayersQuery : IRequest<PlayersListWithCountDTO>
 {
     public PaginationFilter PlayersFilter { get; set; }
     public GetAllPlayersQuery(PaginationFilter filter)

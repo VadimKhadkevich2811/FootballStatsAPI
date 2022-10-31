@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 
-public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, List<PlayerReadDTO>>
+public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, PlayersListWithCountDTO>
 {
     private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
@@ -18,12 +18,13 @@ public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, List<Pla
         _mapper = mapper;
     }
 
-    public async Task<List<PlayerReadDTO>> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
+    public async Task<PlayersListWithCountDTO> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
     {
         var filter = request.PlayersFilter;
         var players = await _repository.GetAllPlayers(filter.PageNumber, filter.PageSize);
+        var playersCount = await _repository.GetAllPlayersCount();
         var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
 
-        return playerDTOs;
+        return new PlayersListWithCountDTO(playerDTOs, playersCount);
     }
 }
