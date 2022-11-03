@@ -1,15 +1,18 @@
 using FootballStats.ApplicationModule.Common.DTOs.Players;
 using FootballStats.ApplicationModule.Common.Filters;
-using FootballStats.Domain.Entities;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 
 public class GetAllPlayersQuery : IRequest<PlayersListWithCountDTO>
 {
-    public PaginationFilter PlayersFilter { get; set; }
-    public GetAllPlayersQuery(PaginationFilter filter)
+    public PaginationFilter PaginationFilter { get; set; }
+    public PlayersFilter PlayersFilter { get; set; }
+    public string LastName { get; set; }
+    public GetAllPlayersQuery(PaginationFilter paginationFilter, PlayersFilter playersFilter)
     {
-        PlayersFilter = filter;
+        PaginationFilter = paginationFilter;
+        PlayersFilter = (string.IsNullOrEmpty(playersFilter.Name) && string.IsNullOrEmpty(playersFilter.LastName))
+            ? null : playersFilter;
     }
 }

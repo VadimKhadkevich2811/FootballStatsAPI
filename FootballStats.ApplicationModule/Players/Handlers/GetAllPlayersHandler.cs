@@ -3,7 +3,6 @@ using FootballStats.ApplicationModule.Common.DTOs.Players;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 
@@ -20,8 +19,11 @@ public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, PlayersL
 
     public async Task<PlayersListWithCountDTO> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
     {
-        var filter = request.PlayersFilter;
-        var players = await _repository.GetAllPlayers(filter.PageNumber, filter.PageSize);
+        var paginationFilter = request.PaginationFilter;
+        var playersFilter = request.PlayersFilter;
+        var players = playersFilter == null
+            ? await _repository.GetAllPlayers(paginationFilter.PageNumber, paginationFilter.PageSize)
+            : await _repository.GetAllPlayers(paginationFilter.PageNumber, paginationFilter.PageSize, playersFilter);
         var playersCount = await _repository.GetAllPlayersCount();
         var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
 

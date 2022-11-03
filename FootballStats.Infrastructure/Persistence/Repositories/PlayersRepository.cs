@@ -1,3 +1,4 @@
+using FootballStats.ApplicationModule.Common.Filters;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,14 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.ToListAsync();
     }
 
-    public async Task<List<Player>> GetAllPlayers(int pageNumber, int pageSize)
+    public async Task<List<Player>> GetAllPlayers(int pageNumber, int pageSize, PlayersFilter playersFilter = null)
     {
-        return await _context.Players.Skip((pageNumber-1)*pageSize).Take(pageSize).ToListAsync();
+        return playersFilter == null
+            ? await _context.Players.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync()
+            : await _context.Players.Where(player => 
+                (player.Lastname.ToLower() == playersFilter.LastName.ToLower() || string.IsNullOrEmpty(playersFilter.LastName)) &&
+                (player.Name.ToLower() == playersFilter.Name.ToLower() || string.IsNullOrEmpty(playersFilter.Name)))
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
     public async Task<int> GetAllPlayersCount()
