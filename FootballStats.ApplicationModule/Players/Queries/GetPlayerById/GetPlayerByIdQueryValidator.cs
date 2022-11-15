@@ -7,6 +7,6 @@ public class GetPlayerByIdQueryValidator : AbstractValidator<GetPlayerByIdQuery>
     public GetPlayerByIdQueryValidator()
     {
         RuleFor(field => field.PlayerId)
-            .GreaterThan(0).WithMessage("UserId should be greater than 0");
+            .GreaterThan(0).WithMessage("Player Id should be greater than 0");
     }
 }

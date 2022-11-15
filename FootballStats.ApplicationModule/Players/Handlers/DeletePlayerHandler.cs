@@ -21,8 +21,8 @@ public class DeletePlayerHandler : IRequestHandler<DeletePlayerCommand, bool>
     public async Task<bool> Handle(DeletePlayerCommand request, CancellationToken cancellationToken)
     {
         var player = await _repository.GetPlayerById(request.PlayerId);
-        
-        if(player == null)
+
+        if (player == null)
         {
             return false;
         }

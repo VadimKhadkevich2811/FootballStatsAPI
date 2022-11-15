@@ -1,5 +1,4 @@
 using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.Domain.Entities;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Queries.GetPlayerById;

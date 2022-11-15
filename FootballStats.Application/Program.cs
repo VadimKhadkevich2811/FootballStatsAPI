@@ -25,12 +25,15 @@ builder.Services.AddSingleton<IUriService>(o =>
     var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
     return new UriService(uri);
 });
+
 // Add services to the container.
 builder.Services.AddScoped<IApplicationDbContext, FootballStatsDbContext>();
 builder.Services.AddScoped<IAuthentication, ApplicationAuthentication>();
 builder.Services.AddScoped<ISignUpRepository, SignUpRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
+builder.Services.AddScoped<ITrainingsRepository, TrainingsRepository>();
+builder.Services.AddScoped<ICoachesRepository, CoachesRepository>();
 
 
 builder.Services

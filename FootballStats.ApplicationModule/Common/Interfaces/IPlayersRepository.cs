@@ -9,7 +9,7 @@ public interface IPlayersRepository
     void RemovePlayer(Player player);
     Task<Player> GetPlayerById(int playerId);
     Task<List<Player>> GetAllPlayers();
-    Task<List<Player>> GetAllPlayers(int pageNumber, int pageSize, PlayersFilter playersFilter = null);
+    Task<List<Player>> GetAllPlayers(int pageNumber, int pageSize, PlayersFilter? playersFilter = null);
     Task<int> GetAllPlayersCount();
     void UpdatePlayer(Player player);
     Task<bool> SaveChangesAsync();

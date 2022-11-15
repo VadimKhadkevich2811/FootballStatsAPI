@@ -3,7 +3,6 @@ using FootballStats.ApplicationModule.Common.DTOs.Players;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 

@@ -14,6 +14,7 @@ public class SignUpController : ControllerBase
         _mediator = mediator;
     }
 
+    //POST api/signup/
     [HttpPost]
     public async Task<ActionResult> SignUpAsync(SignUpCommand command)
     {

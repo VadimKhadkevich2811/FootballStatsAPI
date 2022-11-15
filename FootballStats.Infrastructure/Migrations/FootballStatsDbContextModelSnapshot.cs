@@ -22,7 +22,7 @@ namespace FootballStats.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FootballStats.Domain.Entities.Player", b =>
+            modelBuilder.Entity("FootballStats.Domain.Entities.Coach", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,10 +32,6 @@ namespace FootballStats.Infrastructure.Migrations
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
-
-                    b.Property<string>("Club")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
@@ -47,9 +43,83 @@ namespace FootballStats.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("TrainingForeignKey")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingForeignKey")
+                        .IsUnique();
+
+                    b.ToTable("Coaches");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.Player", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("position")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.Training", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("position")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trainings");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.TrainingPlayer", b =>
+                {
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlayerId", "TrainingId");
+
+                    b.HasIndex("TrainingId");
+
+                    b.ToTable("TrainingPlayers");
                 });
 
             modelBuilder.Entity("FootballStats.Domain.Entities.User", b =>
@@ -86,6 +156,49 @@ namespace FootballStats.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.Coach", b =>
+                {
+                    b.HasOne("FootballStats.Domain.Entities.Training", "Training")
+                        .WithOne("Coach")
+                        .HasForeignKey("FootballStats.Domain.Entities.Coach", "TrainingForeignKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Training");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.TrainingPlayer", b =>
+                {
+                    b.HasOne("FootballStats.Domain.Entities.Player", "Player")
+                        .WithMany("TrainingPlayers")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootballStats.Domain.Entities.Training", "Training")
+                        .WithMany("TrainingPlayers")
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Training");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.Player", b =>
+                {
+                    b.Navigation("TrainingPlayers");
+                });
+
+            modelBuilder.Entity("FootballStats.Domain.Entities.Training", b =>
+                {
+                    b.Navigation("Coach")
+                        .IsRequired();
+
+                    b.Navigation("TrainingPlayers");
                 });
 #pragma warning restore 612, 618
         }

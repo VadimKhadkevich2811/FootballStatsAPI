@@ -14,6 +14,7 @@ public class LoginController : ControllerBase
         _mediator = mediator;
     }
 
+    //POST api/login/
     [HttpPost]
     public async Task<ActionResult> LoginAsync(LoginCommand command)
     {
