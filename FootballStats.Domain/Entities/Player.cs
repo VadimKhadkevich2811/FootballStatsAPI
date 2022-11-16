@@ -20,7 +20,7 @@ public class Player
     public int Age { get; set; }
 
     [Required]
-    public PositionGroup position { get; set; }
+    public PositionGroup Position { get; set; }
 
     public virtual ICollection<TrainingPlayer> TrainingPlayers { get; set; }
 }

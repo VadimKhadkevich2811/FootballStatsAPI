@@ -67,7 +67,7 @@ public class PlayersController : ControllerBase
     {
         var result = await _mediator.Send(new DeletePlayerCommand(playerId));
 
-        return result ? NoContent() : BadRequest("Errors during removing a user.");
+        return result ? NoContent() : BadRequest("Errors during removing a player.");
     }
 
     //PUT api/players/{playerId}
@@ -78,7 +78,7 @@ public class PlayersController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a user.");
+        return result ? NoContent() : BadRequest("Errors during updating a player.");
     }
 
     //PATCH api/players/{playerId}
@@ -89,6 +89,6 @@ public class PlayersController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a user.");
+        return result ? NoContent() : BadRequest("Errors during updating a player.");
     }
 }

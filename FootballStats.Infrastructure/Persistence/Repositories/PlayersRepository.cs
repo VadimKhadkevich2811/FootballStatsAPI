@@ -1,6 +1,7 @@
 using FootballStats.ApplicationModule.Common.Filters;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.Domain.Entities;
+using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 public class PlayersRepository : IPlayersRepository
@@ -15,6 +16,11 @@ public class PlayersRepository : IPlayersRepository
     public async Task AddPlayer(Player player)
     {
         await _context.Players.AddAsync(player);
+    }
+
+    public async Task<bool> ArePlayersOfValidPosition(PositionGroup coachPosition)
+    {
+        return await _context.Players.AllAsync(player => player.Position == coachPosition);
     }
 
     public async Task<List<Player>> GetAllPlayers()

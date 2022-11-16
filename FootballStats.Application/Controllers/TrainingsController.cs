@@ -3,6 +3,9 @@ using FootballStats.ApplicationModule.Common.Filters;
 using FootballStats.ApplicationModule.Common.Helpers;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Wrappers;
+using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
+using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
+using FootballStats.ApplicationModule.Trainings.Commands.UpdateTraining;
 using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery;
 using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
 using MediatR;
@@ -45,5 +48,35 @@ public class TrainingsController : ControllerBase
         var training = await _mediator.Send(query);
 
         return training != null ? Ok(new Response<TrainingReadDTO>(training, true)) : NotFound();
+    }
+
+    //POST api/trainings
+    [HttpPost]
+    public async Task<ActionResult> CreateTrainingAsync(CreateTrainingCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        return result == null ? BadRequest("Errors during new training creation.")
+            : CreatedAtRoute(nameof(GetTrainingByIdAsync), new { TrainingId = result.Id }, result);
+    }
+
+    //DELETE api/trainings/{trainingId}
+    [HttpDelete("{trainingId}")]
+    public async Task<ActionResult> DeleteTrainingAsync(int trainingId)
+    {
+        var result = await _mediator.Send(new DeleteTrainingCommand(trainingId));
+
+        return result ? NoContent() : BadRequest("Errors during removing a training.");
+    }
+
+    //PUT api/trainings/{trainingId}
+    [HttpPut("{trainingId}")]
+    public async Task<ActionResult> UpdatePlayerAsync(int trainingId, UpdateTrainingCommand command)
+    {
+        command.TrainingId = trainingId;
+
+        var result = await _mediator.Send(command);
+
+        return result ? NoContent() : BadRequest("Errors during updating a training.");
     }
 }

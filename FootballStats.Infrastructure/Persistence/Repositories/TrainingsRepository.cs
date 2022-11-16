@@ -39,6 +39,11 @@ public class TrainingsRepository : ITrainingsRepository
 
     public void RemoveTraining(Training training)
     {
+        var neeededtrainingPlayers = _context.TrainingPlayers.Where(tp => tp.TrainingId == training.Id);
+        foreach(var tp in neeededtrainingPlayers)
+        {
+            _context.TrainingPlayers.Remove(tp);
+        }
         _context.Trainings.Remove(training);
     }
 

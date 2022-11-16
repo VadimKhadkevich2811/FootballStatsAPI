@@ -27,10 +27,10 @@ public class FootballStatsDbContext : DbContext, IApplicationDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Training>()
-            .HasOne(t => t.Coach)
-            .WithOne(c => c.Training)
-            .HasForeignKey<Coach>(t => t.TrainingForeignKey);
+        modelBuilder.Entity<Coach>()
+            .HasOne(t => t.Training)
+            .WithOne(c => c.Coach)
+            .HasForeignKey<Training>(t => t.CoachId);
 
         modelBuilder.Entity<TrainingPlayer>().HasKey(tp => new { tp.PlayerId, tp.TrainingId });
 
