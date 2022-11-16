@@ -44,7 +44,8 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
             return null;
         }
 
-        await _trainingsRepository.AddTraining(training);
+        await _trainingsRepository.AddTraining(training, request.PlayerIDs);
+
         await _trainingsRepository.SaveChangesAsync();
 
         var newTraining = _mapper.Map<TrainingReadDTO>(training);

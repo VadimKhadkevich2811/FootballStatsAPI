@@ -12,9 +12,14 @@ public class TrainingsRepository : ITrainingsRepository
         _context = context;
     }
 
-    public async Task AddTraining(Training training)
+    public async Task AddTraining(Training training, ICollection<int> playerIDs)
     {
         await _context.Trainings.AddAsync(training);
+
+        foreach (var pId in playerIDs)
+        {
+            _context.TrainingPlayers.Add(new() { PlayerId = pId, TrainingId = training.Id });
+        }
     }
 
     public async Task<List<Training>> GetAllTrainings()
@@ -40,10 +45,12 @@ public class TrainingsRepository : ITrainingsRepository
     public void RemoveTraining(Training training)
     {
         var neeededtrainingPlayers = _context.TrainingPlayers.Where(tp => tp.TrainingId == training.Id);
-        foreach(var tp in neeededtrainingPlayers)
+        
+        foreach (var tp in neeededtrainingPlayers)
         {
             _context.TrainingPlayers.Remove(tp);
         }
+
         _context.Trainings.Remove(training);
     }
 
@@ -52,8 +59,21 @@ public class TrainingsRepository : ITrainingsRepository
         return await _context.SaveChangesAsync();
     }
 
-    public void UpdateTraining(Training training)
+    public async Task UpdateTraining(Training training, ICollection<int> playerIDs)
     {
         _context.Trainings.Update(training);
+
+        var oldTrainingPlayers = _context.TrainingPlayers.Where(player => !playerIDs.Contains(player.PlayerId));
+        var newTrainingPlayersIDs = playerIDs.Except(playerIDs.Where(pid => _context.TrainingPlayers.Any(tp => tp.PlayerId == pid)));
+
+        foreach(var oldTP in oldTrainingPlayers)
+        {
+            _context.TrainingPlayers.Remove(oldTP);
+        }
+
+        foreach(var newTPId in newTrainingPlayersIDs)
+        {
+            await _context.TrainingPlayers.AddAsync(new(){PlayerId = newTPId, TrainingId = training.Id});
+        }
     }
 }

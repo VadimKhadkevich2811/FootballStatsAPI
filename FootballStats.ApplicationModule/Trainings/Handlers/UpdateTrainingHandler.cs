@@ -48,7 +48,7 @@ public class UpdateTrainingHandler : IRequestHandler<UpdateTrainingCommand, bool
 
         _mapper.Map(request, training);
 
-        _trainingsRepository.UpdateTraining(training);
+        _trainingsRepository.UpdateTraining(training, request.PlayerIds);
         return await _trainingsRepository.SaveChangesAsync();
     }
 }
