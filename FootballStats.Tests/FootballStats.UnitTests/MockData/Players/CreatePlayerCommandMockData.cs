@@ -1,6 +1,6 @@
 using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
 
-namespace FootballStats.UnitTests.MockData;
+namespace FootballStats.UnitTests.MockData.Players;
 
 public class CreatePlayerCommandMockData
 {

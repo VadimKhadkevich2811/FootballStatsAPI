@@ -1,8 +1,7 @@
 using FluentAssertions;
 using FootballStats.Application.Controllers;
 using FootballStats.ApplicationModule.Common.DTOs;
-using FootballStats.ApplicationModule.SignUp.Commands;
-using FootballStats.UnitTests.MockData;
+using FootballStats.UnitTests.MockData.SignUp;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -42,7 +41,7 @@ public class TestSignUpController
         var inputData = SignUpCommandMockData.GetNoSignUpCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new SignUpController(_mediatorMoq.Object);
-        
+
         ///Act
         var result = await sut.SignUpAsync(inputData);
 

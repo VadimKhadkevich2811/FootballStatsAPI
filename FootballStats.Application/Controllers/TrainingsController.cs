@@ -72,7 +72,7 @@ public class TrainingsController : ControllerBase
 
     //PUT api/trainings/{trainingId}
     [HttpPut("{trainingId}")]
-    public async Task<ActionResult> UpdatePlayerAsync(int trainingId, UpdateTrainingCommand command)
+    public async Task<ActionResult> UpdateTrainingAsync(int trainingId, UpdateTrainingCommand command)
     {
         command.TrainingId = trainingId;
 
@@ -83,7 +83,7 @@ public class TrainingsController : ControllerBase
 
     //PATCH api/trainings/{trainingId}
     [HttpPatch("{trainingId}")]
-    public async Task<ActionResult> UpdatePlayerDetailAsync(int trainingId, UpdateTrainingDetailCommand command)
+    public async Task<ActionResult> UpdateTrainingDetailAsync(int trainingId, UpdateTrainingDetailCommand command)
     {
         command.TrainingId = trainingId;
 

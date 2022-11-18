@@ -1,25 +1,24 @@
 using FluentAssertions;
 using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.DTOs;
 using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Filters;
 using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
-using FootballStats.ApplicationModule.SignUp.Commands;
-using FootballStats.UnitTests.MockData;
+using FootballStats.UnitTests.MockData.Players;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace FootballStats.UnitTests.System.Controllers;
 
-public class TestPlayerController
+public class TestPlayersController
 {
     private readonly Mock<IMediator> _mediatorMoq;
     private readonly Mock<IUriService> _uriServiceMoq;
-    public TestPlayerController()
+    public TestPlayersController()
     {
         _mediatorMoq = new Mock<IMediator>();
         _uriServiceMoq = new Mock<IUriService>();
@@ -29,17 +28,28 @@ public class TestPlayerController
     public async Task GetAllPlayersAsync_ShouldReturn200Status()
     {
         ///Arrange
-        List<PlayerReadDTO> returnValue = new List<PlayerReadDTO>();
-        //var inputData = new GetAllPlayersQuery();
-        //_mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        PlayersListWithCountDTO returnValue = new PlayersListWithCountDTO(new List<PlayerReadDTO>(), 0);
+        var paginationFilter = new PaginationFilter();
+        var inputData = new GetAllPlayersQuery(paginationFilter, null);
+        _mediatorMoq.Setup(x => x.Send(It.IsAny<GetAllPlayersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
-        //var result = await sut.GetAllPlayersAsync();
+        var result = await sut.GetAllPlayersAsync(paginationFilter, null);
 
         ///Assert
-        //result.GetType().Should().Be(typeof(OkObjectResult));
-        //(result as OkObjectResult).StatusCode.Should().Be(200);
+        result.GetType().Should().Be(typeof(OkObjectResult));
+        (result as OkObjectResult).StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -133,7 +143,7 @@ public class TestPlayerController
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = false;        
+        bool returnValue = false;
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 

@@ -12,7 +12,7 @@ public class GetAllPlayersQuery : IRequest<PlayersListWithCountDTO>
     public GetAllPlayersQuery(PaginationFilter paginationFilter, PlayersFilter playersFilter)
     {
         PaginationFilter = paginationFilter;
-        PlayersFilter = (string.IsNullOrEmpty(playersFilter.Name) && string.IsNullOrEmpty(playersFilter.LastName))
+        PlayersFilter = playersFilter != null && (string.IsNullOrEmpty(playersFilter.Name) && string.IsNullOrEmpty(playersFilter.LastName))
             ? null : playersFilter;
     }
 }
