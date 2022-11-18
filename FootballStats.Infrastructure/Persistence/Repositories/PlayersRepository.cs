@@ -1,5 +1,5 @@
 using FootballStats.ApplicationModule.Common.Filters;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +46,11 @@ public class PlayersRepository : IPlayersRepository
     public async Task<Player> GetPlayerById(int playerId)
     {
         return await _context.Players.Where(player => player.Id == playerId).FirstOrDefaultAsync();
+    }
+
+    public async Task<List<Player>> GetPlayersByPosition(PositionGroup position)
+    {
+        return await _context.Players.Where(player => player.Position == position).ToListAsync();
     }
 
     public void RemovePlayer(Player player)

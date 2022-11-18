@@ -1,6 +1,7 @@
 using FootballStats.Domain.Entities;
+using FootballStats.Domain.Enums;
 
-namespace FootballStats.ApplicationModule.Common.Interfaces;
+namespace FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 
 public interface ITrainingsRepository
 {
@@ -11,5 +12,7 @@ public interface ITrainingsRepository
     Task<List<Training>> GetAllTrainings(int pageNumber, int pageSize);
     Task<int> GetAllTrainingsCount();
     Task UpdateTraining(Training player, ICollection<int> playerIDs);
+    Task<List<Training>> GetTrainingsByPosition(PositionGroup position); 
+    Task<List<Training>> GetTrainingsByCoach(int coachId); 
     Task<bool> SaveChangesAsync();
 }

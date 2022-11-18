@@ -1,6 +1,6 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Trainings.Queries.GetCoachById;
 using MediatR;
 

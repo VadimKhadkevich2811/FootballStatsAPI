@@ -6,6 +6,7 @@ using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.UpdateTraining;
+using FootballStats.ApplicationModule.Trainings.Commands.UpdateTrainingDetail;
 using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery;
 using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
 using MediatR;
@@ -35,7 +36,7 @@ public class TrainingsController : ControllerBase
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var query = new GetAllTrainingsQuery(validFilter);
         var trainings = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList, 
+        var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList,
             validFilter, trainings.TrainingsTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }
@@ -72,6 +73,17 @@ public class TrainingsController : ControllerBase
     //PUT api/trainings/{trainingId}
     [HttpPut("{trainingId}")]
     public async Task<ActionResult> UpdatePlayerAsync(int trainingId, UpdateTrainingCommand command)
+    {
+        command.TrainingId = trainingId;
+
+        var result = await _mediator.Send(command);
+
+        return result ? NoContent() : BadRequest("Errors during updating a training.");
+    }
+
+    //PATCH api/trainings/{trainingId}
+    [HttpPatch("{trainingId}")]
+    public async Task<ActionResult> UpdatePlayerDetailAsync(int trainingId, UpdateTrainingDetailCommand command)
     {
         command.TrainingId = trainingId;
 

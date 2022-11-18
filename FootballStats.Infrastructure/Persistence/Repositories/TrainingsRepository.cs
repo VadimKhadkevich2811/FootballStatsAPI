@@ -1,6 +1,6 @@
-using FootballStats.ApplicationModule.Common.Filters;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
+using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 public class TrainingsRepository : ITrainingsRepository
@@ -40,6 +40,20 @@ public class TrainingsRepository : ITrainingsRepository
     public async Task<Training> GetTrainingById(int trainingId)
     {
         return await _context.Trainings.Where(training => training.Id == trainingId).FirstOrDefaultAsync();
+    }
+
+    public async Task<List<Training>> GetTrainingsByCoach(int coachId)
+    {
+        return await _context.Trainings.Where(training => training.CoachId == coachId).ToListAsync();
+    }
+
+    public async Task<List<Training>> GetTrainingsByPosition(PositionGroup position)
+    {
+        return await (from training in _context.Trainings
+                        join coach in _context.Coaches on training.CoachId equals coach.Id
+                        where coach.Position == position
+                        select training).ToListAsync();
+
     }
 
     public void RemoveTraining(Training training)

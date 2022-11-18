@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 
 namespace FootballStats.Infrastructure.Persistence.Repositories;

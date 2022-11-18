@@ -1,6 +1,7 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs;
 using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using FootballStats.Domain.Entities;
 using MediatR;

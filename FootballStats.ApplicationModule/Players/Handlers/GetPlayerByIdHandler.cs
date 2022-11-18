@@ -1,6 +1,6 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using MediatR;
 

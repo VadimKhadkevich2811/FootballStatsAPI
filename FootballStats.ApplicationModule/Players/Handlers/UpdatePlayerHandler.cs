@@ -1,9 +1,7 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
-using FootballStats.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.ApplicationModule.Common.Players.Handlers;
 

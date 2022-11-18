@@ -1,6 +1,6 @@
 using FootballStats.Domain.Entities;
 
-namespace FootballStats.ApplicationModule.Common.Interfaces;
+namespace FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 
 public interface ICoachesRepository
 {

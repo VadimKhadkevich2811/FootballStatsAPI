@@ -1,5 +1,5 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Trainings.Commands.UpdateTraining;
 using MediatR;
 
@@ -48,7 +48,7 @@ public class UpdateTrainingHandler : IRequestHandler<UpdateTrainingCommand, bool
 
         _mapper.Map(request, training);
 
-        _trainingsRepository.UpdateTraining(training, request.PlayerIds);
+        await _trainingsRepository.UpdateTraining(training, request.PlayerIds);
         return await _trainingsRepository.SaveChangesAsync();
     }
 }

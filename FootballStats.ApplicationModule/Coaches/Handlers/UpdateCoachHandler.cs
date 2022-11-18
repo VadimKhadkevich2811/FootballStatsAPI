@@ -1,7 +1,6 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Coaches.Commands.UpdateCoach;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Common.Coaches.Handlers;

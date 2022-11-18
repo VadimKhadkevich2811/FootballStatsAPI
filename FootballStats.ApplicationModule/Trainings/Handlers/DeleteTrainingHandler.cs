@@ -1,5 +1,5 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
 using MediatR;
 

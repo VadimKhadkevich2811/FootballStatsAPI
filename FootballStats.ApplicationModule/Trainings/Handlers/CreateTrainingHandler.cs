@@ -1,8 +1,6 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
 using FootballStats.ApplicationModule.Common.DTOs.Trainings;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 using FootballStats.Domain.Entities;
 using MediatR;

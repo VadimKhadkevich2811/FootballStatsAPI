@@ -1,5 +1,6 @@
 using FootballStats.ApplicationModule;
 using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Logging;
 using FootballStats.Infrastructure.Persistence;

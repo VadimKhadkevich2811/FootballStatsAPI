@@ -1,7 +1,7 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Coaches.Commands.CreateCoach;
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using MediatR;
 
