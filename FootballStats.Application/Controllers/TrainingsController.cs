@@ -10,6 +10,7 @@ using FootballStats.ApplicationModule.Trainings.Commands.UpdateTrainingDetail;
 using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery;
 using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballStats.Application.Controllers;

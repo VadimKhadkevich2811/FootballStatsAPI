@@ -50,16 +50,16 @@ public class TrainingsRepository : ITrainingsRepository
     public async Task<List<Training>> GetTrainingsByPosition(PositionGroup position)
     {
         return await (from training in _context.Trainings
-                        join coach in _context.Coaches on training.CoachId equals coach.Id
-                        where coach.Position == position
-                        select training).ToListAsync();
+                      join coach in _context.Coaches on training.CoachId equals coach.Id
+                      where coach.Position == position
+                      select training).ToListAsync();
 
     }
 
     public void RemoveTraining(Training training)
     {
         var neeededtrainingPlayers = _context.TrainingPlayers.Where(tp => tp.TrainingId == training.Id);
-        
+
         foreach (var tp in neeededtrainingPlayers)
         {
             _context.TrainingPlayers.Remove(tp);
@@ -80,14 +80,14 @@ public class TrainingsRepository : ITrainingsRepository
         var oldTrainingPlayers = _context.TrainingPlayers.Where(player => !playerIDs.Contains(player.PlayerId));
         var newTrainingPlayersIDs = playerIDs.Except(playerIDs.Where(pid => _context.TrainingPlayers.Any(tp => tp.PlayerId == pid)));
 
-        foreach(var oldTP in oldTrainingPlayers)
+        foreach (var oldTP in oldTrainingPlayers)
         {
             _context.TrainingPlayers.Remove(oldTP);
         }
 
-        foreach(var newTPId in newTrainingPlayersIDs)
+        foreach (var newTPId in newTrainingPlayersIDs)
         {
-            await _context.TrainingPlayers.AddAsync(new(){PlayerId = newTPId, TrainingId = training.Id});
+            await _context.TrainingPlayers.AddAsync(new() { PlayerId = newTPId, TrainingId = training.Id });
         }
     }
 }

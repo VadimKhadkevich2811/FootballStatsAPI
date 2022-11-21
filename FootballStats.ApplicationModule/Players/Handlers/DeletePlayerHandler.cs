@@ -1,9 +1,7 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
-using FootballStats.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 

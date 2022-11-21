@@ -1,5 +1,3 @@
-using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-
 namespace FootballStats.ApplicationModule.Common.DTOs.Coaches;
 
 public class CoachesListWithCountDTO

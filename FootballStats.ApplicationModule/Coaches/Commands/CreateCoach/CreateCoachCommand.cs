@@ -1,5 +1,4 @@
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.Domain.Enums;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Coaches.Commands.CreateCoach;

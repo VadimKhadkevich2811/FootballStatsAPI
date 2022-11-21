@@ -12,7 +12,7 @@ public interface ITrainingsRepository
     Task<List<Training>> GetAllTrainings(int pageNumber, int pageSize);
     Task<int> GetAllTrainingsCount();
     Task UpdateTraining(Training player, ICollection<int> playerIDs);
-    Task<List<Training>> GetTrainingsByPosition(PositionGroup position); 
-    Task<List<Training>> GetTrainingsByCoach(int coachId); 
+    Task<List<Training>> GetTrainingsByPosition(PositionGroup position);
+    Task<List<Training>> GetTrainingsByCoach(int coachId);
     Task<bool> SaveChangesAsync();
 }

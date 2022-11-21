@@ -10,6 +10,7 @@ using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Trainings.Queries.GetAllCoachesQuery;
 using FootballStats.ApplicationModule.Trainings.Queries.GetCoachById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballStats.Application.Controllers;
@@ -36,7 +37,7 @@ public class CoachesController : ControllerBase
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var query = new GetAllCoachesQuery(validFilter);
         var coaches = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(coaches.CoachesList, 
+        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(coaches.CoachesList,
             validFilter, coaches.CoachesTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }

@@ -14,7 +14,7 @@ public class UpdateTrainingCommandValidator : AbstractValidator<UpdateTrainingCo
 
         RuleFor(field => field.TrainingId)
             .GreaterThan(0).WithMessage("Age should be greater than 0");
-        
+
         RuleFor(field => field.PlayerIds)
             .Must(x => x.Any()).WithMessage("PlayerIDs should be set");
     }

@@ -32,7 +32,7 @@ public class PlayersRepository : IPlayersRepository
     {
         return playersFilter == null
             ? await _context.Players.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync()
-            : await _context.Players.Where(player => 
+            : await _context.Players.Where(player =>
                 (player.Lastname.ToLower() == playersFilter.LastName.ToLower() || string.IsNullOrEmpty(playersFilter.LastName)) &&
                 (player.Name.ToLower() == playersFilter.Name.ToLower() || string.IsNullOrEmpty(playersFilter.Name)))
                 .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();

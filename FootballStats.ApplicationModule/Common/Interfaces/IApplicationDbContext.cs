@@ -10,7 +10,7 @@ public interface IApplicationDbContext
     DbSet<Coach> Coaches { get; }
 
     DbSet<Training> Trainings { get; }
-    
+
     DbSet<TrainingPlayer> TrainingPlayers { get; }
 
     Task<bool> SaveChangesAsync();

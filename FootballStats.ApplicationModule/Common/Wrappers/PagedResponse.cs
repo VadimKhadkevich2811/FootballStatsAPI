@@ -8,7 +8,7 @@ public class PagedResponse<T> : Response<T>
     public Uri? LastPage { get; set; }
     public int TotalPages { get; set; }
     public int TotalRecords { get; set; }
-    public Uri? NextPage { get; set; } 
+    public Uri? NextPage { get; set; }
     public Uri? PreviousPage { get; set; }
 
     public PagedResponse(T data) : base(data)

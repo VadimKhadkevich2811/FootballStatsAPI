@@ -1,4 +1,3 @@
-using FootballStats.Domain.Enums;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Coaches.Commands.UpdateCoach;

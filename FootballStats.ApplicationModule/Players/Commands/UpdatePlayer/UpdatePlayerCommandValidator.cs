@@ -14,7 +14,7 @@ public class UpdatePlayerCommandValidator : AbstractValidator<UpdatePlayerComman
 
         RuleFor(field => field.Age)
             .GreaterThan(0).WithMessage("Age should be greater than 0");
-        
+
         RuleFor(field => field.Position)
             .NotEmpty().WithMessage("Position is required");
     }

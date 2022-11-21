@@ -30,14 +30,14 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
 
         var coach = await _coachesRepository.GetCoachById(training.CoachId);
 
-        if(coach == null)
+        if (coach == null)
         {
             return null;
         }
 
         bool arePlayersValid = await _playersRepository.ArePlayersOfValidPosition(coach.Position);
 
-        if(!arePlayersValid)
+        if (!arePlayersValid)
         {
             return null;
         }
