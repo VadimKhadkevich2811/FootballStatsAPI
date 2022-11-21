@@ -18,7 +18,7 @@ public class UpdateCoachDetailHandler : IRequestHandler<UpdateCoachDetailCommand
 
     public async Task<bool> Handle(UpdateCoachDetailCommand request, CancellationToken cancellationToken)
     {
-        var coach = await _repository.GetCoachById(request.CoachId);
+        var coach = await _repository.GetCoachByIdAsync(request.CoachId);
 
         if (coach == null)
         {

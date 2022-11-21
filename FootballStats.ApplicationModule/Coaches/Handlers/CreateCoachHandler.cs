@@ -20,7 +20,7 @@ public class CreateCoachHandler : IRequestHandler<CreateCoachCommand, CoachReadD
     public async Task<CoachReadDTO> Handle(CreateCoachCommand request, CancellationToken cancellationToken)
     {
         var coach = _mapper.Map<Coach>(request);
-        await _repository.AddCoach(coach);
+        await _repository.AddCoachAsync(coach);
         await _repository.SaveChangesAsync();
 
         var newCoach = _mapper.Map<CoachReadDTO>(coach);

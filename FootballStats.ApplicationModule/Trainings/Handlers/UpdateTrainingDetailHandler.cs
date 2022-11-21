@@ -18,7 +18,7 @@ public class UpdateTrainingDetailHandler : IRequestHandler<UpdateTrainingDetailC
 
     public async Task<bool> Handle(UpdateTrainingDetailCommand request, CancellationToken cancellationToken)
     {
-        var training = await _repository.GetTrainingById(request.TrainingId);
+        var training = await _repository.GetTrainingByIdAsync(request.TrainingId);
 
         if (training == null)
         {
@@ -29,7 +29,7 @@ public class UpdateTrainingDetailHandler : IRequestHandler<UpdateTrainingDetailC
 
         _mapper.Map(trainingToPatch, training);
 
-        await _repository.UpdateTraining(training, trainingToPatch.PlayerIds);
+        await _repository.UpdateTrainingAsync(training, trainingToPatch.PlayerIds);
         return await _repository.SaveChangesAsync();
     }
 }

@@ -22,7 +22,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
 
     public async Task<LoginDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _repository.GetUserByEmailOrUsername(request.LoginId);
+        var user = await _repository.GetUserByEmailOrUsernameAsync(request.LoginId);
 
         if (user != null && !BC.Verify(request.Password, user.PasswordHash))
         {
@@ -33,8 +33,8 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
         {
             if (user.Token == null || DateTime.Now > user.TokenEnd)
             {
-                var token = await _auth.GetAuthenticationToken();
-                await _repository.UpdateUserToken(user, token);
+                var token = await _auth.GetAuthenticationTokenAsync();
+                await _repository.UpdateUserTokenAsync(user, token);
             }
         }
 

@@ -12,7 +12,7 @@ public class TrainingsRepository : ITrainingsRepository
         _context = context;
     }
 
-    public async Task AddTraining(Training training, ICollection<int> playerIDs)
+    public async Task AddTrainingAsync(Training training, ICollection<int> playerIDs)
     {
         await _context.Trainings.AddAsync(training);
 
@@ -22,32 +22,32 @@ public class TrainingsRepository : ITrainingsRepository
         }
     }
 
-    public async Task<List<Training>> GetAllTrainings()
+    public async Task<List<Training>> GetAllTrainingsAsync()
     {
         return await _context.Trainings.ToListAsync();
     }
 
-    public async Task<List<Training>> GetAllTrainings(int pageNumber, int pageSize)
+    public async Task<List<Training>> GetAllTrainingsAsync(int pageNumber, int pageSize)
     {
         return await _context.Trainings.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
-    public async Task<int> GetAllTrainingsCount()
+    public async Task<int> GetAllTrainingsCountAsync()
     {
         return await _context.Trainings.CountAsync();
     }
 
-    public async Task<Training> GetTrainingById(int trainingId)
+    public async Task<Training> GetTrainingByIdAsync(int trainingId)
     {
         return await _context.Trainings.Where(training => training.Id == trainingId).FirstOrDefaultAsync();
     }
 
-    public async Task<List<Training>> GetTrainingsByCoach(int coachId)
+    public async Task<List<Training>> GetTrainingsByCoachAsync(int coachId)
     {
         return await _context.Trainings.Where(training => training.CoachId == coachId).ToListAsync();
     }
 
-    public async Task<List<Training>> GetTrainingsByPosition(PositionGroup position)
+    public async Task<List<Training>> GetTrainingsByPositionAsync(PositionGroup position)
     {
         return await (from training in _context.Trainings
                       join coach in _context.Coaches on training.CoachId equals coach.Id
@@ -73,7 +73,7 @@ public class TrainingsRepository : ITrainingsRepository
         return await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateTraining(Training training, ICollection<int> playerIDs)
+    public async Task UpdateTrainingAsync(Training training, ICollection<int> playerIDs)
     {
         _context.Trainings.Update(training);
 

@@ -28,21 +28,21 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
     {
         var training = _mapper.Map<Training>(request);
 
-        var coach = await _coachesRepository.GetCoachById(training.CoachId);
+        var coach = await _coachesRepository.GetCoachByIdAsync(training.CoachId);
 
         if (coach == null)
         {
             return null;
         }
 
-        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPosition(coach.Position);
+        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position);
 
         if (!arePlayersValid)
         {
             return null;
         }
 
-        await _trainingsRepository.AddTraining(training, request.PlayerIDs);
+        await _trainingsRepository.AddTrainingAsync(training, request.PlayerIDs);
 
         await _trainingsRepository.SaveChangesAsync();
 

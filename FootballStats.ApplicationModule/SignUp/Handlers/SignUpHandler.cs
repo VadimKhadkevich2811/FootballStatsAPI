@@ -40,7 +40,7 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
             PasswordHash = passwordHash
         };
 
-        await _repository.AddUser(user);
+        await _repository.AddUserAsync(user);
         await _repository.SaveChangesAsync();
 
         var newUser = _mapper.Map<SignUpDTO>(user);

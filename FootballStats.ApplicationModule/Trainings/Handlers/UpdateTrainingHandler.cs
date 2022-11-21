@@ -25,21 +25,21 @@ public class UpdateTrainingHandler : IRequestHandler<UpdateTrainingCommand, bool
 
     public async Task<bool> Handle(UpdateTrainingCommand request, CancellationToken cancellationToken)
     {
-        var coach = await _coachesRepository.GetCoachById(request.CoachId);
+        var coach = await _coachesRepository.GetCoachByIdAsync(request.CoachId);
 
         if (coach == null)
         {
             return false;
         }
 
-        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPosition(coach.Position);
+        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position);
 
         if (!arePlayersValid)
         {
             return false;
         }
 
-        var training = await _trainingsRepository.GetTrainingById(request.TrainingId);
+        var training = await _trainingsRepository.GetTrainingByIdAsync(request.TrainingId);
 
         if (training == null)
         {
@@ -48,7 +48,7 @@ public class UpdateTrainingHandler : IRequestHandler<UpdateTrainingCommand, bool
 
         _mapper.Map(request, training);
 
-        await _trainingsRepository.UpdateTraining(training, request.PlayerIds);
+        await _trainingsRepository.UpdateTrainingAsync(training, request.PlayerIds);
         return await _trainingsRepository.SaveChangesAsync();
     }
 }

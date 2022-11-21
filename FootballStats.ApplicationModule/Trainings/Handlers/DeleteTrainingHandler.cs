@@ -18,7 +18,7 @@ public class DeleteTrainingHandler : IRequestHandler<DeleteTrainingCommand, bool
 
     public async Task<bool> Handle(DeleteTrainingCommand request, CancellationToken cancellationToken)
     {
-        var training = await _repository.GetTrainingById(request.TrainingId);
+        var training = await _repository.GetTrainingByIdAsync(request.TrainingId);
 
         if (training == null)
         {

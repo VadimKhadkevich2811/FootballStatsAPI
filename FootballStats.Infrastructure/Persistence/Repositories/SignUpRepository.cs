@@ -12,7 +12,7 @@ public class SignUpRepository : ISignUpRepository
         _context = context;
     }
 
-    public async Task AddUser(User user)
+    public async Task AddUserAsync(User user)
     {
         await _context.Users.AddAsync(user);
     }

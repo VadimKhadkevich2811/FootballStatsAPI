@@ -21,18 +21,18 @@ public class IPlayersRepositoryMock
                 Position = PositionGroup.Forward
             }
         };
-        mock.Setup(m => m.GetAllPlayers()).ReturnsAsync(() => players);
+        mock.Setup(m => m.GetAllPlayersAsync()).ReturnsAsync(() => players);
         mock.Setup(m => m.SaveChangesAsync()).ReturnsAsync(true);
-        mock.Setup(m => m.GetPlayersByPosition(It.IsAny<PositionGroup>()))
+        mock.Setup(m => m.GetPlayersByPositionAsync(It.IsAny<PositionGroup>()))
             .ReturnsAsync((PositionGroup pg) => players.Where(pl => pl.Position == pg).ToList());
-        mock.Setup(m => m.GetPlayerById(It.IsAny<int>()))
+        mock.Setup(m => m.GetPlayerByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((int id) => players.FirstOrDefault(p => p.Id == id));
-        mock.Setup(m => m.AddPlayer(It.IsAny<Player>()))
+        mock.Setup(m => m.AddPlayerAsync(It.IsAny<Player>()))
             .Callback(() => { return; });
         mock.Setup(m => m.UpdatePlayer(It.IsAny<Player>()))
            .Callback(() => { return; });
-        mock.Setup(m => m.GetAllPlayersCount()).ReturnsAsync(() => players.Count);
-        mock.Setup(m => m.ArePlayersOfValidPosition(It.IsAny<PositionGroup>()))
+        mock.Setup(m => m.GetAllPlayersCountAsync()).ReturnsAsync(() => players.Count);
+        mock.Setup(m => m.ArePlayersOfValidPositionAsync(It.IsAny<PositionGroup>()))
             .ReturnsAsync((PositionGroup pg) => players.All(pl => pl.Position == pg));
         mock.Setup(m => m.RemovePlayer(It.IsAny<Player>()))
            .Callback(() => { return; });

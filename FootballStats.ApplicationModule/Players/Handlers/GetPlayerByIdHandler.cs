@@ -19,7 +19,7 @@ public class GetPlayerByIdHandler : IRequestHandler<GetPlayerByIdQuery, PlayerRe
 
     public async Task<PlayerReadDTO> Handle(GetPlayerByIdQuery request, CancellationToken cancellationToken)
     {
-        var player = await _repository.GetPlayerById(request.PlayerId);
+        var player = await _repository.GetPlayerByIdAsync(request.PlayerId);
         var playerDTO = _mapper.Map<PlayerReadDTO>(player);
 
         return playerDTO;

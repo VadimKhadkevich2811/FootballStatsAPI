@@ -18,7 +18,7 @@ public class DeleteCoachHandler : IRequestHandler<DeleteCoachCommand, bool>
 
     public async Task<bool> Handle(DeleteCoachCommand request, CancellationToken cancellationToken)
     {
-        var coach = await _repository.GetCoachById(request.CoachId);
+        var coach = await _repository.GetCoachByIdAsync(request.CoachId);
 
         if (coach == null)
         {

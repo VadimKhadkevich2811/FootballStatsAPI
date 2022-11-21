@@ -33,7 +33,7 @@ public class TestPlayersRepository : IDisposable
 
         /// Act
 
-        var result = await sut.GetAllPlayers();
+        var result = await sut.GetAllPlayersAsync();
 
         /// Assert
 
@@ -52,7 +52,7 @@ public class TestPlayersRepository : IDisposable
 
         /// Act
 
-        var result = await sut.GetPlayerById(1);
+        var result = await sut.GetPlayerByIdAsync(1);
 
         /// Assert
 
@@ -72,9 +72,9 @@ public class TestPlayersRepository : IDisposable
 
         /// Act
 
-        await sut.AddPlayer(newPlayer);
+        await sut.AddPlayerAsync(newPlayer);
         await sut.SaveChangesAsync();
-        var result = await sut.GetAllPlayersCount();
+        var result = await sut.GetAllPlayersCountAsync();
 
         /// Assert
 
@@ -96,7 +96,7 @@ public class TestPlayersRepository : IDisposable
 
         sut.RemovePlayer(removedPlayer);
         await sut.SaveChangesAsync();
-        var result = await sut.GetAllPlayersCount();
+        var result = await sut.GetAllPlayersCountAsync();
 
         /// Assert
 
@@ -119,7 +119,7 @@ public class TestPlayersRepository : IDisposable
         updatedPlayer.Age = 50;
         sut.UpdatePlayer(updatedPlayer);
         await sut.SaveChangesAsync();
-        var playerToCheck = await sut.GetPlayerById(1);
+        var playerToCheck = await sut.GetPlayerByIdAsync(1);
 
         /// Assert
 

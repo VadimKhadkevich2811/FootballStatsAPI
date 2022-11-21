@@ -19,7 +19,7 @@ public class GetCoachByIdHandler : IRequestHandler<GetCoachByIdQuery, CoachReadD
 
     public async Task<CoachReadDTO> Handle(GetCoachByIdQuery request, CancellationToken cancellationToken)
     {
-        var coach = await _repository.GetCoachById(request.CoachId);
+        var coach = await _repository.GetCoachByIdAsync(request.CoachId);
         var coachDTO = _mapper.Map<CoachReadDTO>(coach);
 
         return coachDTO;

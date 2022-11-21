@@ -12,27 +12,27 @@ public class CoachesRepository : ICoachesRepository
         _context = context;
     }
 
-    public async Task AddCoach(Coach coach)
+    public async Task AddCoachAsync(Coach coach)
     {
         await _context.Coaches.AddAsync(coach);
     }
 
-    public async Task<List<Coach>> GetAllCoaches()
+    public async Task<List<Coach>> GetAllCoachesAsync()
     {
         return await _context.Coaches.ToListAsync();
     }
 
-    public async Task<List<Coach>> GetAllCoaches(int pageNumber, int pageSize)
+    public async Task<List<Coach>> GetAllCoachesAsync(int pageNumber, int pageSize)
     {
         return await _context.Coaches.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
-    public async Task<int> GetAllCoachesCount()
+    public async Task<int> GetAllCoachesCountAsync()
     {
         return await _context.Coaches.CountAsync();
     }
 
-    public async Task<Coach> GetCoachById(int coachId)
+    public async Task<Coach> GetCoachByIdAsync(int coachId)
     {
         return await _context.Coaches.Where(coach => coach.Id == coachId).FirstOrDefaultAsync();
     }

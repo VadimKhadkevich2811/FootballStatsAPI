@@ -20,7 +20,7 @@ public class CreatePlayerHandler : IRequestHandler<CreatePlayerCommand, PlayerRe
     public async Task<PlayerReadDTO> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
     {
         var player = _mapper.Map<Player>(request);
-        await _repository.AddPlayer(player);
+        await _repository.AddPlayerAsync(player);
         await _repository.SaveChangesAsync();
 
         var newPlayer = _mapper.Map<PlayerReadDTO>(player);

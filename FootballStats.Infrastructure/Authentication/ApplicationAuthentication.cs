@@ -7,7 +7,7 @@ namespace FootballStats.Infrastructure.Authentication;
 
 public class ApplicationAuthentication : IAuthentication
 {
-    public async Task<string> GetAuthenticationToken()
+    public async Task<string> GetAuthenticationTokenAsync()
     {
         var config = new ConfigurationBuilder().AddUserSecrets<ApplicationAuthentication>().Build();
         var httpClient = new HttpClient()

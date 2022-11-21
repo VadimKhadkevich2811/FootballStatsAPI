@@ -6,14 +6,14 @@ namespace FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 
 public interface IPlayersRepository
 {
-    Task AddPlayer(Player player);
+    Task AddPlayerAsync(Player player);
     void RemovePlayer(Player player);
-    Task<Player> GetPlayerById(int playerId);
-    Task<List<Player>> GetAllPlayers();
-    Task<List<Player>> GetAllPlayers(int pageNumber, int pageSize, PlayersFilter? playersFilter = null);
-    Task<int> GetAllPlayersCount();
+    Task<Player> GetPlayerByIdAsync(int playerId);
+    Task<List<Player>> GetAllPlayersAsync();
+    Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter? playersFilter = null);
+    Task<int> GetAllPlayersCountAsync();
     void UpdatePlayer(Player player);
-    Task<bool> ArePlayersOfValidPosition(PositionGroup coachPosition);
-    Task<List<Player>> GetPlayersByPosition(PositionGroup position);
+    Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition);
+    Task<List<Player>> GetPlayersByPositionAsync(PositionGroup position);
     Task<bool> SaveChangesAsync();
 }

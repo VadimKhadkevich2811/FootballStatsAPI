@@ -19,7 +19,7 @@ public class GetTrainingByIdHandler : IRequestHandler<GetTrainingByIdQuery, Trai
 
     public async Task<TrainingReadDTO> Handle(GetTrainingByIdQuery request, CancellationToken cancellationToken)
     {
-        var training = await _repository.GetTrainingById(request.TrainingId);
+        var training = await _repository.GetTrainingByIdAsync(request.TrainingId);
         var trainingDTO = _mapper.Map<TrainingReadDTO>(training);
 
         return trainingDTO;

@@ -18,7 +18,7 @@ public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailComma
 
     public async Task<bool> Handle(UpdatePlayerDetailCommand request, CancellationToken cancellationToken)
     {
-        var player = await _repository.GetPlayerById(request.PlayerId);
+        var player = await _repository.GetPlayerByIdAsync(request.PlayerId);
 
         if (player == null)
         {

@@ -22,9 +22,9 @@ public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, PlayersL
         var paginationFilter = request.PaginationFilter;
         var playersFilter = request.PlayersFilter;
         var players = playersFilter == null
-            ? await _repository.GetAllPlayers(paginationFilter.PageNumber, paginationFilter.PageSize)
-            : await _repository.GetAllPlayers(paginationFilter.PageNumber, paginationFilter.PageSize, playersFilter);
-        var playersCount = await _repository.GetAllPlayersCount();
+            ? await _repository.GetAllPlayersAsync(paginationFilter.PageNumber, paginationFilter.PageSize)
+            : await _repository.GetAllPlayersAsync(paginationFilter.PageNumber, paginationFilter.PageSize, playersFilter);
+        var playersCount = await _repository.GetAllPlayersCountAsync();
         var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
 
         return new PlayersListWithCountDTO(playerDTOs, playersCount);

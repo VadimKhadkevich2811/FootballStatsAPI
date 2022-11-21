@@ -13,22 +13,22 @@ public class PlayersRepository : IPlayersRepository
         _context = context;
     }
 
-    public async Task AddPlayer(Player player)
+    public async Task AddPlayerAsync(Player player)
     {
         await _context.Players.AddAsync(player);
     }
 
-    public async Task<bool> ArePlayersOfValidPosition(PositionGroup coachPosition)
+    public async Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition)
     {
         return await _context.Players.AllAsync(player => player.Position == coachPosition);
     }
 
-    public async Task<List<Player>> GetAllPlayers()
+    public async Task<List<Player>> GetAllPlayersAsync()
     {
         return await _context.Players.ToListAsync();
     }
 
-    public async Task<List<Player>> GetAllPlayers(int pageNumber, int pageSize, PlayersFilter playersFilter = null)
+    public async Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter playersFilter = null)
     {
         return playersFilter == null
             ? await _context.Players.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync()
@@ -38,17 +38,17 @@ public class PlayersRepository : IPlayersRepository
                 .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 
-    public async Task<int> GetAllPlayersCount()
+    public async Task<int> GetAllPlayersCountAsync()
     {
         return await _context.Players.CountAsync();
     }
 
-    public async Task<Player> GetPlayerById(int playerId)
+    public async Task<Player> GetPlayerByIdAsync(int playerId)
     {
         return await _context.Players.Where(player => player.Id == playerId).FirstOrDefaultAsync();
     }
 
-    public async Task<List<Player>> GetPlayersByPosition(PositionGroup position)
+    public async Task<List<Player>> GetPlayersByPositionAsync(PositionGroup position)
     {
         return await _context.Players.Where(player => player.Position == position).ToListAsync();
     }
