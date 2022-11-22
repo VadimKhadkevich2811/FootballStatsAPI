@@ -9,6 +9,7 @@ using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.UpdateTraining;
 using FootballStats.ApplicationModule.Coaches.Commands.CreateCoach;
 using FootballStats.ApplicationModule.Coaches.Commands.UpdateCoach;
+using FootballStats.ApplicationModule.Common.DTOs.Coaches;
 
 namespace FootballStats.ApplicationModule.Common.Mappings;
 
@@ -22,14 +23,14 @@ public class MappingProfile : Profile
         CreateMap<CreatePlayerCommand, Player>();
         CreateMap<UpdatePlayerCommand, Player>();
         CreateMap<Player, UpdatePlayerCommand>();
-        CreateMap<Training, TrainingReadDTO>()
-            .ForMember(dest => dest.CoachId,
-                opt => opt.MapFrom(sou => sou.Coach.Id));
+
+        CreateMap<Training, TrainingReadDTO>();
 
         CreateMap<CreateTrainingCommand, Training>();
         CreateMap<UpdateTrainingCommand, Training>();
         CreateMap<Training, UpdateTrainingCommand>();
 
+        CreateMap<Coach, CoachReadDTO>();
         CreateMap<CreateCoachCommand, Coach>();
         CreateMap<UpdateCoachCommand, Coach>();
         CreateMap<Coach, UpdateCoachCommand>();

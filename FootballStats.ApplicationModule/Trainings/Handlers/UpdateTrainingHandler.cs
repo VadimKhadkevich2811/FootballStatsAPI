@@ -32,7 +32,7 @@ public class UpdateTrainingHandler : IRequestHandler<UpdateTrainingCommand, bool
             return false;
         }
 
-        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position);
+        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position, request.PlayerIds);
 
         if (!arePlayersValid)
         {

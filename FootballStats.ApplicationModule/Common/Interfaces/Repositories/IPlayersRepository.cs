@@ -13,7 +13,7 @@ public interface IPlayersRepository
     Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter? playersFilter = null);
     Task<int> GetAllPlayersCountAsync();
     void UpdatePlayer(Player player);
-    Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition);
+    Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition, ICollection<int> playerIDs);
     Task<List<Player>> GetPlayersByPositionAsync(PositionGroup position);
     Task<bool> SaveChangesAsync();
 }

@@ -18,9 +18,9 @@ public class PlayersRepository : IPlayersRepository
         await _context.Players.AddAsync(player);
     }
 
-    public async Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition)
+    public async Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition, ICollection<int> playerIDs)
     {
-        return await _context.Players.AllAsync(player => player.Position == coachPosition);
+        return await _context.Players.Where(player => playerIDs.Contains(player.Id)).AllAsync(player => player.Position == coachPosition);
     }
 
     public async Task<List<Player>> GetAllPlayersAsync()

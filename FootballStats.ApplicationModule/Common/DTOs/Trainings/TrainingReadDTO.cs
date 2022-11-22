@@ -14,7 +14,4 @@ public class TrainingReadDTO
 
     [Required]
     public int CoachId { get; set; }
-
-    [Required]
-    public ICollection<int> PlayerIDs { get; set; }
 }

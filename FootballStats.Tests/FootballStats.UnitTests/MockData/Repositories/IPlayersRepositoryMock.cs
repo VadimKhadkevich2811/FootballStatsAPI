@@ -32,8 +32,8 @@ public class IPlayersRepositoryMock
         mock.Setup(m => m.UpdatePlayer(It.IsAny<Player>()))
            .Callback(() => { return; });
         mock.Setup(m => m.GetAllPlayersCountAsync()).ReturnsAsync(() => players.Count);
-        mock.Setup(m => m.ArePlayersOfValidPositionAsync(It.IsAny<PositionGroup>()))
-            .ReturnsAsync((PositionGroup pg) => players.All(pl => pl.Position == pg));
+        mock.Setup(m => m.ArePlayersOfValidPositionAsync(It.IsAny<PositionGroup>(), It.IsAny<ICollection<int>>()))
+            .ReturnsAsync((PositionGroup pg, ICollection<int> pids) => players.All(pl => pl.Position == pg && pids.Contains(pl.Id)));
         mock.Setup(m => m.RemovePlayer(It.IsAny<Player>()))
            .Callback(() => { return; });
 

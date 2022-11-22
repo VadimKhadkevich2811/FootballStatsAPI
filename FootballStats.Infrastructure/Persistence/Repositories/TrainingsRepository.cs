@@ -15,7 +15,7 @@ public class TrainingsRepository : ITrainingsRepository
     public async Task AddTrainingAsync(Training training, ICollection<int> playerIDs)
     {
         await _context.Trainings.AddAsync(training);
-
+        await SaveChangesAsync();
         foreach (var pId in playerIDs)
         {
             _context.TrainingPlayers.Add(new() { PlayerId = pId, TrainingId = training.Id });
@@ -77,17 +77,20 @@ public class TrainingsRepository : ITrainingsRepository
     {
         _context.Trainings.Update(training);
 
-        var oldTrainingPlayers = _context.TrainingPlayers.Where(player => !playerIDs.Contains(player.PlayerId));
-        var newTrainingPlayersIDs = playerIDs.Except(playerIDs.Where(pid => _context.TrainingPlayers.Any(tp => tp.PlayerId == pid)));
-
-        foreach (var oldTP in oldTrainingPlayers)
+        if (playerIDs != null)
         {
-            _context.TrainingPlayers.Remove(oldTP);
-        }
+            var oldTrainingPlayers = _context.TrainingPlayers.Where(player => !playerIDs.Contains(player.PlayerId));
+            var newTrainingPlayersIDs = playerIDs.Except(playerIDs.Where(pid => _context.TrainingPlayers.Any(tp => tp.PlayerId == pid)));
 
-        foreach (var newTPId in newTrainingPlayersIDs)
-        {
-            await _context.TrainingPlayers.AddAsync(new() { PlayerId = newTPId, TrainingId = training.Id });
+            foreach (var oldTP in oldTrainingPlayers)
+            {
+                _context.TrainingPlayers.Remove(oldTP);
+            }
+
+            foreach (var newTPId in newTrainingPlayersIDs)
+            {
+                await _context.TrainingPlayers.AddAsync(new() { PlayerId = newTPId, TrainingId = training.Id });
+            }
         }
     }
 }

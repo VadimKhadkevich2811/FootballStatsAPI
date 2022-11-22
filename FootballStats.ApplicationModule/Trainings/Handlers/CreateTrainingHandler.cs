@@ -35,7 +35,7 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
             return null;
         }
 
-        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position);
+        bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position, request.PlayerIDs);
 
         if (!arePlayersValid)
         {
