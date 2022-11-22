@@ -14,5 +14,8 @@ public class UpdateCoachCommandValidator : AbstractValidator<UpdateCoachCommand>
 
         RuleFor(field => field.Age)
             .GreaterThan(0).WithMessage("Age should be greater than 0");
+        
+        RuleFor(field => field.Position)
+            .NotNull().WithMessage("Position should be set");
     }
 }

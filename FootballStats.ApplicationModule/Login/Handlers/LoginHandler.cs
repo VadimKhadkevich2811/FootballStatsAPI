@@ -13,6 +13,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
     private readonly ILoginRepository _repository;
     private readonly IAuthentication _auth;
     private readonly IMapper _mapper;
+    
     public LoginHandler(ILoginRepository repository, IMapper mapper, IAuthentication auth)
     {
         _repository = repository;

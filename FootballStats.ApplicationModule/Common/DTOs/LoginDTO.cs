@@ -6,7 +6,7 @@ public class LoginDTO
 {
     [Required]
     [MaxLength(50)]
-    public string UserName { get; set; }
+    public string Username { get; set; }
 
     [Required]
     public string Token { get; set; }

@@ -29,7 +29,7 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
 
         if (userExist)
         {
-            _logger.LogWarn("User exists.");
+            _logger.LogWarn("User already exists.");
             return null;
         }
 

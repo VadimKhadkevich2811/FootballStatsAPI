@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FootballStats.Application.Controllers;
 
 [ApiController]
-//[Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(AuthenticationSchemes = "Bearer")]
 [Route("api/players")]
 public class PlayersController : ControllerBase
 {
