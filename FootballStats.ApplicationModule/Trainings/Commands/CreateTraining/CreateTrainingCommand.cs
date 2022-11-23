@@ -3,9 +3,9 @@ using MediatR;
 
 namespace FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 
-public class CreateTrainingCommand : IRequest<TrainingReadDTO>
+public class CreateTrainingCommand : IRequest<TrainingReadDTO?>
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
     public int CoachId { get; set; }
-    public ICollection<int> PlayerIDs { get; set; }
+    public ICollection<int> PlayerIDs { get; set; } = default!;
 }

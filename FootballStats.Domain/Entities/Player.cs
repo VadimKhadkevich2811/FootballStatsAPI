@@ -10,11 +10,11 @@ public class Player
 
     [Required]
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     [Required]
     [MaxLength(50)]
-    public string Lastname { get; set; }
+    public string Lastname { get; set; } = default!;
 
     [Required]
     public int Age { get; set; }
@@ -22,5 +22,5 @@ public class Player
     [Required]
     public PositionGroup Position { get; set; }
 
-    public virtual ICollection<TrainingPlayer> TrainingPlayers { get; set; }
+    public virtual ICollection<TrainingPlayer>? TrainingPlayers { get; set; }
 }

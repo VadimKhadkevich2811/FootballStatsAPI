@@ -10,7 +10,7 @@ public class CreatePlayerCommandMockData
         return new CreatePlayerCommand();
     }
 
-    public static CreatePlayerCommand GetNoCreatePlayerCommandData()
+    public static CreatePlayerCommand? GetNoCreatePlayerCommandData()
     {
         return null;
     }

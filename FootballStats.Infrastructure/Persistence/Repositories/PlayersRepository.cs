@@ -28,7 +28,7 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.ToListAsync();
     }
 
-    public async Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter playersFilter = null)
+    public async Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter? playersFilter = null)
     {
         return playersFilter == null
             ? await _context.Players.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync()
@@ -43,7 +43,7 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.CountAsync();
     }
 
-    public async Task<Player> GetPlayerByIdAsync(int playerId)
+    public async Task<Player?> GetPlayerByIdAsync(int playerId)
     {
         return await _context.Players.Where(player => player.Id == playerId).FirstOrDefaultAsync();
     }

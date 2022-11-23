@@ -9,7 +9,7 @@ public class SignUpCommandMockData
         return new SignUpCommand();
     }
 
-    public static SignUpCommand GetNoSignUpCommandData()
+    public static SignUpCommand? GetNoSignUpCommandData()
     {
         return null;
     }

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace FootballStats.ApplicationModule.Common.Trainings.Handlers;
 
-public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, TrainingReadDTO>
+public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, TrainingReadDTO?>
 {
     private readonly ITrainingsRepository _trainingsRepository;
     private readonly ICoachesRepository _coachesRepository;
@@ -24,7 +24,7 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
         _mapper = mapper;
     }
 
-    public async Task<TrainingReadDTO> Handle(CreateTrainingCommand request, CancellationToken cancellationToken)
+    public async Task<TrainingReadDTO?> Handle(CreateTrainingCommand request, CancellationToken cancellationToken)
     {
         var training = _mapper.Map<Training>(request);
 

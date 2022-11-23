@@ -30,23 +30,23 @@ public class TestSignUpController
 
         ///Assert
         result.GetType().Should().Be(typeof(CreatedResult));
-        (result as CreatedResult).StatusCode.Should().Be(201);
+        (result as CreatedResult)!.StatusCode.Should().Be(201);
     }
 
     [Fact]
     public async Task SignUpAsync_ShouldReturn400Status()
     {
         ///Arrange
-        SignUpDTO returnValue = null;
+        SignUpDTO? returnValue = null;
         var inputData = SignUpCommandMockData.GetNoSignUpCommandData();
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new SignUpController(_mediatorMoq.Object);
 
         ///Act
-        var result = await sut.SignUpAsync(inputData);
+        var result = await sut.SignUpAsync(inputData!);
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 }

@@ -33,7 +33,7 @@ public class CoachesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetAllCoachesAsync([FromQuery] PaginationFilter filter)
     {
-        var route = Request.Path.Value;
+        string? route = Request.Path.Value;
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
         var query = new GetAllCoachesQuery(validFilter);
         var coaches = await _mediator.Send(query);

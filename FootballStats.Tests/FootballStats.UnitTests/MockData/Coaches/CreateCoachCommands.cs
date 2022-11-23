@@ -9,7 +9,7 @@ public class CreateCoachCommandMockData
         return new CreateCoachCommand();
     }
 
-    public static CreateCoachCommand GetNoCreateCoachCommandData()
+    public static CreateCoachCommand? GetNoCreateCoachCommandData()
     {
         return null;
     }

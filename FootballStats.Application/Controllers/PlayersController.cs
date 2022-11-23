@@ -31,7 +31,7 @@ public class PlayersController : ControllerBase
 
     //GET api/players
     [HttpGet]
-    public async Task<ActionResult> GetAllPlayersAsync([FromQuery] PaginationFilter filter, [FromQuery] PlayersFilter playersFilter)
+    public async Task<ActionResult> GetAllPlayersAsync([FromQuery] PaginationFilter filter, [FromQuery] PlayersFilter? playersFilter)
     {
         var route = Request.Path.Value;
         var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);

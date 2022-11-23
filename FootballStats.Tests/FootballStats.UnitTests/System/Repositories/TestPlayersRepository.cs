@@ -56,7 +56,7 @@ public class TestPlayersRepository : IDisposable
 
         /// Assert
 
-        result.Id.Should().Be(1);
+        result!.Id.Should().Be(1);
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class TestPlayersRepository : IDisposable
 
         /// Assert
 
-        playerToCheck.Age.Should().Be(50);
+        playerToCheck!.Age.Should().Be(50);
     }
 
     public void Dispose()

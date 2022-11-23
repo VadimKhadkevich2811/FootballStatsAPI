@@ -8,7 +8,7 @@ public interface IPlayersRepository
 {
     Task AddPlayerAsync(Player player);
     void RemovePlayer(Player player);
-    Task<Player> GetPlayerByIdAsync(int playerId);
+    Task<Player?> GetPlayerByIdAsync(int playerId);
     Task<List<Player>> GetAllPlayersAsync();
     Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter? playersFilter = null);
     Task<int> GetAllPlayersCountAsync();

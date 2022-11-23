@@ -30,23 +30,23 @@ public class TestLoginController
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));
-        (result as OkObjectResult).StatusCode.Should().Be(200);
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
     public async Task LoginAsync_ShouldReturn404Status()
     {
         ///Arrange
-        LoginDTO returnValue = null;
+        LoginDTO? returnValue = null;
         var inputData = LoginCommandMockData.GetNoLoginCommandData();
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new LoginController(_mediatorMoq.Object);
 
         ///Act
-        var result = await sut.LoginAsync(inputData);
+        var result = await sut.LoginAsync(inputData!);
 
         ///Assert
         result.GetType().Should().Be(typeof(NotFoundObjectResult));
-        (result as NotFoundObjectResult).StatusCode.Should().Be(404);
+        (result as NotFoundObjectResult)!.StatusCode.Should().Be(404);
     }
 }

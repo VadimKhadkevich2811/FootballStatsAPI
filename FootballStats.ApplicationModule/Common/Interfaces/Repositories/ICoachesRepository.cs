@@ -6,7 +6,7 @@ public interface ICoachesRepository
 {
     Task AddCoachAsync(Coach coach);
     void RemoveCoach(Coach coach);
-    Task<Coach> GetCoachByIdAsync(int coachId);
+    Task<Coach?> GetCoachByIdAsync(int coachId);
     Task<List<Coach>> GetAllCoachesAsync();
     Task<List<Coach>> GetAllCoachesAsync(int pageNumber, int pageSize);
     Task<int> GetAllCoachesCountAsync();

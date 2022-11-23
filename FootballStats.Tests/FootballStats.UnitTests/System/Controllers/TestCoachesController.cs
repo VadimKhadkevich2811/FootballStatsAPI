@@ -48,7 +48,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));
-        (result as OkObjectResult).StatusCode.Should().Be(200);
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));
-        (result as OkObjectResult).StatusCode.Should().Be(200);
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -73,9 +73,9 @@ public class TestCoachesController
     {
         ///Arrange
         int queryParam = 1;
-        CoachReadDTO returnValue = null;
+        CoachReadDTO? returnValue = null;
         var inputData = new GetCoachByIdQuery(queryParam);
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
         ///Act
@@ -83,7 +83,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(NotFoundResult));
-        (result as NotFoundResult).StatusCode.Should().Be(404);
+        (result as NotFoundResult)!.StatusCode.Should().Be(404);
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(CreatedAtRouteResult));
-        (result as CreatedAtRouteResult).StatusCode.Should().Be(201);
+        (result as CreatedAtRouteResult)!.StatusCode.Should().Be(201);
     }
 
     [Fact]
@@ -108,16 +108,16 @@ public class TestCoachesController
     {
         ///Arrange
         var inputData = CreateCoachCommandMockData.GetNoCreateCoachCommandData();
-        CoachReadDTO returnValue = null;
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        CoachReadDTO? returnValue = null;
+        _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
         ///Act
-        var result = await sut.CreateCoachAsync(inputData);
+        var result = await sut.CreateCoachAsync(inputData!);
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult).StatusCode.Should().Be(204);
+        (result as NoContentResult)!.StatusCode.Should().Be(204);
     }
 
     [Fact]
@@ -151,7 +151,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult).StatusCode.Should().Be(204);
+        (result as NoContentResult)!.StatusCode.Should().Be(204);
     }
 
     [Fact]
@@ -187,7 +187,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 
     [Fact]
@@ -205,7 +205,7 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult).StatusCode.Should().Be(204);
+        (result as NoContentResult)!.StatusCode.Should().Be(204);
     }
 
     [Fact]
@@ -223,6 +223,6 @@ public class TestCoachesController
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 }

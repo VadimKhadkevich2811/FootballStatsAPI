@@ -32,7 +32,7 @@ public class CoachesRepository : ICoachesRepository
         return await _context.Coaches.CountAsync();
     }
 
-    public async Task<Coach> GetCoachByIdAsync(int coachId)
+    public async Task<Coach?> GetCoachByIdAsync(int coachId)
     {
         return await _context.Coaches.Where(coach => coach.Id == coachId).FirstOrDefaultAsync();
     }

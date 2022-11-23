@@ -9,7 +9,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace FootballStats.ApplicationModule.Common.SignUp.Handlers;
 
-public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
+public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO?>
 {
     private readonly ISignUpRepository _repository;
     private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO>
         _logger = logger;
     }
 
-    public async Task<SignUpDTO> Handle(SignUpCommand request, CancellationToken cancellationToken)
+    public async Task<SignUpDTO?> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
         var passwordHash = BC.HashPassword(request.Password);
 

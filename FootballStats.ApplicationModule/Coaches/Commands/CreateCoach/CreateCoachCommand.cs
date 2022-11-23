@@ -6,8 +6,8 @@ namespace FootballStats.ApplicationModule.Coaches.Commands.CreateCoach;
 
 public class CreateCoachCommand : IRequest<CoachReadDTO>
 {
-    public string Name { get; set; }
-    public string Lastname { get; set; }
+    public string Name { get; set; } = default!;
+    public string Lastname { get; set; } = default!;
     public int Age { get; set; }
     public PositionGroup Position { get; set; }
 }

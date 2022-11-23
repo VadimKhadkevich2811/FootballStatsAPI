@@ -7,7 +7,7 @@ public interface ITrainingsRepository
 {
     Task AddTrainingAsync(Training player, ICollection<int> playerIDs);
     void RemoveTraining(Training player);
-    Task<Training> GetTrainingByIdAsync(int playerId);
+    Task<Training?> GetTrainingByIdAsync(int playerId);
     Task<List<Training>> GetAllTrainingsAsync();
     Task<List<Training>> GetAllTrainingsAsync(int pageNumber, int pageSize);
     Task<int> GetAllTrainingsCountAsync();

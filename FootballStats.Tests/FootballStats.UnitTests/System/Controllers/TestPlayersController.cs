@@ -49,7 +49,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));
-        (result as OkObjectResult).StatusCode.Should().Be(200);
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));
-        (result as OkObjectResult).StatusCode.Should().Be(200);
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -74,9 +74,9 @@ public class TestPlayersController
     {
         ///Arrange
         int queryParam = 1;
-        PlayerReadDTO returnValue = null;
+        PlayerReadDTO? returnValue = null;
         var inputData = new GetPlayerByIdQuery(queryParam);
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
         ///Act
@@ -84,7 +84,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(NotFoundResult));
-        (result as NotFoundResult).StatusCode.Should().Be(404);
+        (result as NotFoundResult)!.StatusCode.Should().Be(404);
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(CreatedAtRouteResult));
-        (result as CreatedAtRouteResult).StatusCode.Should().Be(201);
+        (result as CreatedAtRouteResult)!.StatusCode.Should().Be(201);
     }
 
     [Fact]
@@ -109,16 +109,16 @@ public class TestPlayersController
     {
         ///Arrange
         var inputData = CreatePlayerCommandMockData.GetNoCreatePlayerCommandData();
-        PlayerReadDTO returnValue = null;
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        PlayerReadDTO? returnValue = null;
+        _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
         ///Act
-        var result = await sut.CreatePlayerAsync(inputData);
+        var result = await sut.CreatePlayerAsync(inputData!);
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 
     [Fact]
@@ -135,7 +135,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult).StatusCode.Should().Be(204);
+        (result as NoContentResult)!.StatusCode.Should().Be(204);
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult).StatusCode.Should().Be(204);
+        (result as NoContentResult)!.StatusCode.Should().Be(204);
     }
 
     [Fact]
@@ -188,7 +188,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 
     [Fact]
@@ -206,7 +206,7 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult).StatusCode.Should().Be(204);
+        (result as NoContentResult)!.StatusCode.Should().Be(204);
     }
 
     [Fact]
@@ -224,6 +224,6 @@ public class TestPlayersController
 
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult).StatusCode.Should().Be(400);
+        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
     }
 }

@@ -10,14 +10,14 @@ public class User
 
     [Required]
     [MaxLength(50)]
-    public string Email { get; set; }
+    public string Email { get; set; } = default!;
 
     [Required]
     [MaxLength(50)]
-    public string UserName { get; set; }
+    public string UserName { get; set; } = default!;
 
     [Required]
-    public string PasswordHash { get; set; }
+    public string PasswordHash { get; set; } = default!;
 
     [Required]
     public Role UserRole { get; set; }

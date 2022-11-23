@@ -13,7 +13,7 @@ public class LoginRepository : ILoginRepository
         _context = context;
     }
 
-    public async Task<User> GetUserByEmailOrUsernameAsync(string loginId)
+    public async Task<User?> GetUserByEmailOrUsernameAsync(string loginId)
     {
         return await _context.Users
             .Where(user => user.UserName == loginId ||
@@ -25,7 +25,7 @@ public class LoginRepository : ILoginRepository
         return await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateUserTokenAsync(User user, string token)
+    public async Task UpdateUserTokenAsync(User user, string? token)
     {
         if (token != null)
         {

@@ -10,7 +10,7 @@ public class TrainingReadDTO
 
     [Required]
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     [Required]
     public int CoachId { get; set; }

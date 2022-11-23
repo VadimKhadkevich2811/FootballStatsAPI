@@ -7,7 +7,7 @@ namespace FootballStats.Infrastructure.Authentication;
 
 public class ApplicationAuthentication : IAuthentication
 {
-    public async Task<string> GetAuthenticationTokenAsync()
+    public async Task<string?> GetAuthenticationTokenAsync()
     {
         var config = new ConfigurationBuilder().AddUserSecrets<ApplicationAuthentication>().Build();
         var httpClient = new HttpClient()
@@ -30,6 +30,6 @@ public class ApplicationAuthentication : IAuthentication
         var jsonStringResponse = await response.Content.ReadAsStringAsync();
         var authenticationModel = JsonConvert.DeserializeObject<AuthenticationModel>(jsonStringResponse);
 
-        return authenticationModel.AccessToken ?? null;
+        return authenticationModel!.AccessToken ?? null;
     }
 }

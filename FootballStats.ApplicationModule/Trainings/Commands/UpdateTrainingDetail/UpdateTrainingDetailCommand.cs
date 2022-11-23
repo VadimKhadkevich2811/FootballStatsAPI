@@ -7,5 +7,5 @@ namespace FootballStats.ApplicationModule.Trainings.Commands.UpdateTrainingDetai
 public class UpdateTrainingDetailCommand : IRequest<bool>
 {
     public int TrainingId { get; set; }
-    public JsonPatchDocument<UpdateTrainingCommand> Item { get; set; }
+    public JsonPatchDocument<UpdateTrainingCommand> Item { get; set; } = default!;
 }

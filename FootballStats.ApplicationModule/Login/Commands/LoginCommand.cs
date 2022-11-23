@@ -5,7 +5,7 @@ namespace FootballStats.ApplicationModule.Login.Commands;
 
 public class LoginCommand : IRequest<LoginDTO>
 {
-    public string LoginId { get; set; }
+    public string LoginId { get; set; } = default!;
 
-    public string Password { get; set; }
+    public string Password { get; set; } = default!;
 }

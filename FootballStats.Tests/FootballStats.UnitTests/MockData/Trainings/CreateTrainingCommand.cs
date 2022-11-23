@@ -9,7 +9,7 @@ public class CreateTrainingCommandMockData
         return new CreateTrainingCommand();
     }
 
-    public static CreateTrainingCommand GetNoCreateTrainingCommandData()
+    public static CreateTrainingCommand? GetNoCreateTrainingCommandData()
     {
         return null;
     }

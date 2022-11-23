@@ -37,7 +37,7 @@ public class TrainingsRepository : ITrainingsRepository
         return await _context.Trainings.CountAsync();
     }
 
-    public async Task<Training> GetTrainingByIdAsync(int trainingId)
+    public async Task<Training?> GetTrainingByIdAsync(int trainingId)
     {
         return await _context.Trainings.Where(training => training.Id == trainingId).FirstOrDefaultAsync();
     }

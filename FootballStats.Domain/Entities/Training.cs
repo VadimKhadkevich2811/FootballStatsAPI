@@ -9,11 +9,11 @@ public class Training
 
     [Required]
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     [Required]
     public int CoachId { get; set; }
-    public Coach Coach { get; set; }
+    public Coach? Coach { get; set; }
 
-    public virtual ICollection<TrainingPlayer> TrainingPlayers { get; set; }
+    public virtual ICollection<TrainingPlayer>? TrainingPlayers { get; set; }
 }

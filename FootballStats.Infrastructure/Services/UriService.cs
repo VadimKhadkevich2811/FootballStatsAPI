@@ -13,7 +13,7 @@ public class UriService : IUriService
         _baseUri = baseUri;
     }
 
-    public Uri GetPageUri(PaginationFilter filter, string route)
+    public Uri GetPageUri(PaginationFilter filter, string? route)
     {
         var endpointUri = new Uri(string.Concat(_baseUri, route));
         var modifiedUri = QueryHelpers.AddQueryString(endpointUri.ToString(), "pageNumber", filter.PageNumber.ToString());

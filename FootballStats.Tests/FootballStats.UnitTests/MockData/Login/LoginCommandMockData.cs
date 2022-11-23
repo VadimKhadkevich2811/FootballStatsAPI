@@ -9,7 +9,7 @@ public class LoginCommandMockData
         return new LoginCommand();
     }
 
-    public static LoginCommand GetNoLoginCommandData()
+    public static LoginCommand? GetNoLoginCommandData()
     {
         return null;
     }

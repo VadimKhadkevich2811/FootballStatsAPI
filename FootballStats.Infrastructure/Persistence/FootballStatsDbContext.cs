@@ -10,15 +10,15 @@ public class FootballStatsDbContext : DbContext, IApplicationDbContext
 
     }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; } = default!;
 
-    public DbSet<Player> Players { get; set; }
+    public DbSet<Player> Players { get; set; } = default!;
 
-    public DbSet<Coach> Coaches { get; set; }
+    public DbSet<Coach> Coaches { get; set; } = default!;
 
-    public DbSet<Training> Trainings { get; set; }
+    public DbSet<Training> Trainings { get; set; } = default!;
 
-    public DbSet<TrainingPlayer> TrainingPlayers { get; set; }
+    public DbSet<TrainingPlayer> TrainingPlayers { get; set; } = default!;
 
     public async Task<bool> SaveChangesAsync()
     {
