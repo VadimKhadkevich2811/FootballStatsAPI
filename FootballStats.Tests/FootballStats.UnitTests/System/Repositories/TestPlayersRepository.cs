@@ -2,6 +2,7 @@ using FluentAssertions;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Persistence;
+using FootballStats.Infrastructure.Services;
 using FootballStats.UnitTests.MockData.Players;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +30,7 @@ public class TestPlayersRepository : IDisposable
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 
-        var sut = new PlayersRepository(_context);
+        var sut = new PlayersRepository(_context, new SortHelper<Player>());
 
         /// Act
 
@@ -48,7 +49,7 @@ public class TestPlayersRepository : IDisposable
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 
-        var sut = new PlayersRepository(_context);
+        var sut = new PlayersRepository(_context, new SortHelper<Player>());
 
         /// Act
 
@@ -68,7 +69,7 @@ public class TestPlayersRepository : IDisposable
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 
-        var sut = new PlayersRepository(_context);
+        var sut = new PlayersRepository(_context, new SortHelper<Player>());
 
         /// Act
 
@@ -90,7 +91,7 @@ public class TestPlayersRepository : IDisposable
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 
-        var sut = new PlayersRepository(_context);
+        var sut = new PlayersRepository(_context, new SortHelper<Player>());
 
         /// Act
 
@@ -112,7 +113,7 @@ public class TestPlayersRepository : IDisposable
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 
-        var sut = new PlayersRepository(_context);
+        var sut = new PlayersRepository(_context, new SortHelper<Player>());
 
         /// Act
 

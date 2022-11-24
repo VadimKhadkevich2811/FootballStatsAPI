@@ -13,11 +13,11 @@ public class UriService : IUriService
         _baseUri = baseUri;
     }
 
-    public Uri GetPageUri(PaginationFilter filter, string? route)
+    public Uri GetPageUri(int pageNumber, int pageSize, string? route)
     {
         var endpointUri = new Uri(string.Concat(_baseUri, route));
-        var modifiedUri = QueryHelpers.AddQueryString(endpointUri.ToString(), "pageNumber", filter.PageNumber.ToString());
-        modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "pageSize", filter.PageSize.ToString());
+        var modifiedUri = QueryHelpers.AddQueryString(endpointUri.ToString(), "pageNumber", pageNumber.ToString());
+        modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "pageSize", pageSize.ToString());
         
         return new Uri(modifiedUri);
     }

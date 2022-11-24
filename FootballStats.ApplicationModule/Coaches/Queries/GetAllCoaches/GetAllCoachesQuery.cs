@@ -6,9 +6,9 @@ namespace FootballStats.ApplicationModule.Trainings.Queries.GetAllCoachesQuery;
 
 public class GetAllCoachesQuery : IRequest<CoachesListWithCountDTO>
 {
-    public PaginationFilter PaginationFilter { get; set; }
-    public GetAllCoachesQuery(PaginationFilter paginationFilter)
+    public CoachesQueryStringParams CoachesQueryStringParams { get; set; }
+    public GetAllCoachesQuery(CoachesQueryStringParams coachesQueryStringParams)
     {
-        PaginationFilter = paginationFilter;
+        CoachesQueryStringParams = coachesQueryStringParams;
     }
 }

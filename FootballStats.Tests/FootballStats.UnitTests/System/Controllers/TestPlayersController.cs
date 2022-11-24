@@ -29,8 +29,8 @@ public class TestPlayersController
     {
         ///Arrange
         PlayersListWithCountDTO returnValue = new PlayersListWithCountDTO(new List<PlayerReadDTO>(), 0);
-        var paginationFilter = new PaginationFilter();
-        var inputData = new GetAllPlayersQuery(paginationFilter, null);
+        var filter = new PlayersQueryStringParams();
+        var inputData = new GetAllPlayersQuery(filter);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetAllPlayersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var httpContext = new DefaultHttpContext();
         httpContext.Request.Path = "/api/players";
@@ -45,7 +45,7 @@ public class TestPlayersController
         };
 
         ///Act
-        var result = await sut.GetAllPlayersAsync(paginationFilter, null);
+        var result = await sut.GetAllPlayersAsync(filter);
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));

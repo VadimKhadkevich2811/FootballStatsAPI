@@ -19,8 +19,8 @@ public class GetAllTrainingsHandler : IRequestHandler<GetAllTrainingsQuery, Trai
 
     public async Task<TrainingsListWithCountDTO> Handle(GetAllTrainingsQuery request, CancellationToken cancellationToken)
     {
-        var paginationFilter = request.PaginationFilter;
-        var trainings = await _repository.GetAllTrainingsAsync(paginationFilter.PageNumber, paginationFilter.PageSize);
+        var filter = request.TrainingsQueryStringParams;
+        var trainings = await _repository.GetAllTrainingsAsync(filter.PageNumber, filter.PageSize);
         var trainingsCount = await _repository.GetAllTrainingsCountAsync();
         var trainingDTOs = _mapper.Map<List<TrainingReadDTO>>(trainings);
 

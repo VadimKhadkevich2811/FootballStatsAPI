@@ -29,7 +29,7 @@ public class TestTrainingsController
     {
         ///Arrange
         TrainingsListWithCountDTO returnValue = new TrainingsListWithCountDTO(new List<TrainingReadDTO>(), 10);
-        var paginationFilter = new PaginationFilter();
+        var filter = new TrainingsQueryStringParams();
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetAllTrainingsQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
 
         var httpContext = new DefaultHttpContext();
@@ -45,7 +45,7 @@ public class TestTrainingsController
         };
 
         ///Act
-        var result = await sut.GetAllTrainingsAsync(paginationFilter);
+        var result = await sut.GetAllTrainingsAsync(filter);
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));

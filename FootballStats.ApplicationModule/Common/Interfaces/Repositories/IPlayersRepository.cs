@@ -10,7 +10,7 @@ public interface IPlayersRepository
     void RemovePlayer(Player player);
     Task<Player?> GetPlayerByIdAsync(int playerId);
     Task<List<Player>> GetAllPlayersAsync();
-    Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter? playersFilter = null);
+    Task<List<Player>> GetAllPlayersAsync(PlayersQueryStringParams playersFilter);
     Task<int> GetAllPlayersCountAsync();
     void UpdatePlayer(Player player);
     Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition, ICollection<int> playerIDs);

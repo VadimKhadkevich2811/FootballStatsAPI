@@ -1,6 +1,7 @@
 using FootballStats.ApplicationModule;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.Domain.Entities;
 using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Logging;
 using FootballStats.Infrastructure.Persistence;
@@ -35,6 +36,8 @@ builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPlayersRepository, PlayersRepository>();
 builder.Services.AddScoped<ITrainingsRepository, TrainingsRepository>();
 builder.Services.AddScoped<ICoachesRepository, CoachesRepository>();
+
+builder.Services.AddScoped<ISortHelper<Player>, SortHelper<Player>>();
 
 
 builder.Services

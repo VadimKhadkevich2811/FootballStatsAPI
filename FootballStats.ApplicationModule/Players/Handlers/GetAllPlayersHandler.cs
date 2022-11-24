@@ -19,11 +19,8 @@ public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, PlayersL
 
     public async Task<PlayersListWithCountDTO> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
     {
-        var paginationFilter = request.PaginationFilter;
-        var playersFilter = request.PlayersFilter;
-        var players = playersFilter == null
-            ? await _repository.GetAllPlayersAsync(paginationFilter.PageNumber, paginationFilter.PageSize)
-            : await _repository.GetAllPlayersAsync(paginationFilter.PageNumber, paginationFilter.PageSize, playersFilter);
+        var filter = request.PlayersQueryStringParams;
+        var players = await _repository.GetAllPlayersAsync(filter);
         var playersCount = await _repository.GetAllPlayersCountAsync();
         var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
 

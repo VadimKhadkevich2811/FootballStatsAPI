@@ -1,4 +1,5 @@
 using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
@@ -7,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 public class PlayersRepository : IPlayersRepository
 {
     private readonly IApplicationDbContext _context;
+    private ISortHelper<Player> _sortHelper;
 
-    public PlayersRepository(IApplicationDbContext context)
+    public PlayersRepository(IApplicationDbContext context, ISortHelper<Player> sortHelper)
     {
         _context = context;
+        _sortHelper = sortHelper;
     }
 
     public async Task AddPlayerAsync(Player player)
@@ -28,14 +31,16 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.ToListAsync();
     }
 
-    public async Task<List<Player>> GetAllPlayersAsync(int pageNumber, int pageSize, PlayersFilter? playersFilter = null)
+    public async Task<List<Player>> GetAllPlayersAsync(PlayersQueryStringParams playersFilter)
     {
-        return playersFilter == null
-            ? await _context.Players.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync()
-            : await _context.Players.Where(player =>
-                (player.Lastname.ToLower() == playersFilter.LastName.ToLower() || string.IsNullOrEmpty(playersFilter.LastName)) &&
-                (player.Name.ToLower() == playersFilter.Name.ToLower() || string.IsNullOrEmpty(playersFilter.Name)))
-                .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var players = playersFilter.Name == null && playersFilter.LastName == null
+            ? _context.Players.Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize)
+            : _context.Players.Where(player =>
+                (player.Lastname.ToLower() == playersFilter.LastName!.ToLower() || string.IsNullOrEmpty(playersFilter.LastName)) &&
+                (player.Name.ToLower() == playersFilter.Name!.ToLower() || string.IsNullOrEmpty(playersFilter.Name)))
+                .Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize);
+
+        return await _sortHelper.ApplySort(players, playersFilter.OrderBy!).ToListAsync();
     }
 
     public async Task<int> GetAllPlayersCountAsync()

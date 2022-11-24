@@ -31,10 +31,10 @@ public class TrainingsController : ControllerBase
 
     //GET api/trainings
     [HttpGet]
-    public async Task<ActionResult> GetAllTrainingsAsync([FromQuery] PaginationFilter filter)
+    public async Task<ActionResult> GetAllTrainingsAsync([FromQuery] TrainingsQueryStringParams filter)
     {
         var route = Request.Path.Value;
-        var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+        var validFilter = new TrainingsQueryStringParams(filter.PageNumber, filter.PageSize);
         var query = new GetAllTrainingsQuery(validFilter);
         var trainings = await _mediator.Send(query);
         var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList,

@@ -31,10 +31,10 @@ public class CoachesController : ControllerBase
 
     //GET api/coaches
     [HttpGet]
-    public async Task<ActionResult> GetAllCoachesAsync([FromQuery] PaginationFilter filter)
+    public async Task<ActionResult> GetAllCoachesAsync([FromQuery] CoachesQueryStringParams filter)
     {
         string? route = Request.Path.Value;
-        var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+        var validFilter = new CoachesQueryStringParams(filter.PageNumber, filter.PageSize);
         var query = new GetAllCoachesQuery(validFilter);
         var coaches = await _mediator.Send(query);
         var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(coaches.CoachesList,

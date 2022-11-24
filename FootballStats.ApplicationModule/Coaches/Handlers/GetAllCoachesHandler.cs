@@ -19,8 +19,8 @@ public class GetAllCoachesHandler : IRequestHandler<GetAllCoachesQuery, CoachesL
 
     public async Task<CoachesListWithCountDTO> Handle(GetAllCoachesQuery request, CancellationToken cancellationToken)
     {
-        var paginationFilter = request.PaginationFilter;
-        var coaches = await _repository.GetAllCoachesAsync(paginationFilter.PageNumber, paginationFilter.PageSize);
+        var filter = request.CoachesQueryStringParams;
+        var coaches = await _repository.GetAllCoachesAsync(filter.PageNumber, filter.PageSize);
         var coachesCount = await _repository.GetAllCoachesCountAsync();
         var coachDTOs = _mapper.Map<List<CoachReadDTO>>(coaches);
 

@@ -31,13 +31,12 @@ public class PlayersController : ControllerBase
 
     //GET api/players
     [HttpGet]
-    public async Task<ActionResult> GetAllPlayersAsync([FromQuery] PaginationFilter filter, [FromQuery] PlayersFilter? playersFilter)
+    public async Task<ActionResult> GetAllPlayersAsync([FromQuery] PlayersQueryStringParams filter)
     {
         var route = Request.Path.Value;
-        var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-        var query = new GetAllPlayersQuery(validFilter, playersFilter);
+        var query = new GetAllPlayersQuery(filter);
         var players = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players.PlayersList, validFilter, players.PlayersTotalCount, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players.PlayersList, filter, players.PlayersTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }
 

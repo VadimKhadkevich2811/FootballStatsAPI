@@ -29,7 +29,7 @@ public class TestCoachesController
     {
         ///Arrange
         CoachesListWithCountDTO returnValue = new CoachesListWithCountDTO(new List<CoachReadDTO>(), 0);
-        var paginationFilter = new PaginationFilter();
+        var filter = new CoachesQueryStringParams();
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetAllCoachesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var httpContext = new DefaultHttpContext();
         httpContext.Request.Path = "/api/coaches";
@@ -44,7 +44,7 @@ public class TestCoachesController
         };
 
         ///Act
-        var result = await sut.GetAllCoachesAsync(paginationFilter);
+        var result = await sut.GetAllCoachesAsync(filter);
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));

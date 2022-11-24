@@ -6,9 +6,9 @@ namespace FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery
 
 public class GetAllTrainingsQuery : IRequest<TrainingsListWithCountDTO>
 {
-    public PaginationFilter PaginationFilter { get; set; }
-    public GetAllTrainingsQuery(PaginationFilter paginationFilter)
+    public TrainingsQueryStringParams TrainingsQueryStringParams { get; set; }
+    public GetAllTrainingsQuery(TrainingsQueryStringParams trainingsQueryStringParams)
     {
-        PaginationFilter = paginationFilter;
+        TrainingsQueryStringParams = trainingsQueryStringParams;
     }
 }
