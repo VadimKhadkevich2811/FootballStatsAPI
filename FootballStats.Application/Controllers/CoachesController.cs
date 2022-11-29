@@ -3,7 +3,7 @@ using FootballStats.ApplicationModule.Coaches.Commands.DeleteCoach;
 using FootballStats.ApplicationModule.Coaches.Commands.UpdateCoach;
 using FootballStats.ApplicationModule.Coaches.Commands.UpdateCoachDetail;
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Helpers;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Wrappers;

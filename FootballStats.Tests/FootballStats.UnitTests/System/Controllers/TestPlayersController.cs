@@ -1,7 +1,7 @@
 using FluentAssertions;
 using FootballStats.Application.Controllers;
 using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;

@@ -1,5 +1,3 @@
-using FootballStats.ApplicationModule.Common.Filters;
-
 namespace FootballStats.ApplicationModule.Common.Interfaces;
 
 public interface IUriService

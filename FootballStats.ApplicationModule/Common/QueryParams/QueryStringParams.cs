@@ -1,4 +1,4 @@
-namespace FootballStats.ApplicationModule.Common.Filters;
+namespace FootballStats.ApplicationModule.Common.QueryParams;
 
 public abstract class QueryStringParams
 {

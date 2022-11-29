@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

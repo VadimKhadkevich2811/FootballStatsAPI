@@ -2,7 +2,7 @@ using FluentAssertions;
 using FootballStats.Application.Controllers;
 using FootballStats.ApplicationModule.Coaches.Commands.DeleteCoach;
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Trainings.Queries.GetAllCoachesQuery;
 using FootballStats.ApplicationModule.Trainings.Queries.GetCoachById;

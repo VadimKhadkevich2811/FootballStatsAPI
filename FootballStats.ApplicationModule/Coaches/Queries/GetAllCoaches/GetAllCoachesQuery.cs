@@ -1,5 +1,5 @@
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Trainings.Queries.GetAllCoachesQuery;

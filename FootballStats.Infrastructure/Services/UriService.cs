@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using Microsoft.AspNetCore.WebUtilities;
 

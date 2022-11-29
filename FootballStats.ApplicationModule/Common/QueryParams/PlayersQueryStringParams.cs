@@ -1,4 +1,4 @@
-namespace FootballStats.ApplicationModule.Common.Filters;
+namespace FootballStats.ApplicationModule.Common.QueryParams;
 
 public class PlayersQueryStringParams : QueryStringParams
 {
@@ -21,7 +21,8 @@ public class PlayersQueryStringParams : QueryStringParams
     {
     }
 
-    public PlayersQueryStringParams(int pageNumber, int pageSize, string? name, string? lastname, string? orderBy) : base(pageNumber, pageSize)
+    public PlayersQueryStringParams(int pageNumber, int pageSize, string? name, string? lastname, string? orderBy) 
+        : base(pageNumber, pageSize)
     {
         Name = name;
         LastName = lastname;

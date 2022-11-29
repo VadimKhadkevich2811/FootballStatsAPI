@@ -1,5 +1,5 @@
 using FootballStats.ApplicationModule.Common.DTOs.Trainings;
-using FootballStats.ApplicationModule.Common.Filters;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Helpers;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Wrappers;
