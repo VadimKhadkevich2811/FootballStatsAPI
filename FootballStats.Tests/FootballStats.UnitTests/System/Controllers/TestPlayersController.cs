@@ -4,13 +4,14 @@ using FootballStats.ApplicationModule.Common.DTOs.Players;
 using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
-using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
+using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using FootballStats.UnitTests.MockData.Players;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
 
 namespace FootballStats.UnitTests.System.Controllers;
 
@@ -225,5 +226,33 @@ public class TestPlayersController
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
         (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task GetFreePlayersAsync_ShouldReturn200Status()
+    {
+        ///Arrange
+        PlayersListWithCountDTO returnValue = new PlayersListWithCountDTO(new List<PlayerReadDTO>(), 0);
+        var filter = new PlayersQueryStringParams();
+        var inputData = new GetAllPlayersQuery(filter);
+        _mediatorMoq.Setup(x => x.Send(It.IsAny<GetFreePlayersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/freeplayers";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        ///Act
+        var result = await sut.GetFreePlayersAsync(filter);
+
+        ///Assert
+        result.GetType().Should().Be(typeof(OkObjectResult));
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 }

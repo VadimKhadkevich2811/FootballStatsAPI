@@ -1,7 +1,7 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs.Trainings;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery;
+using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainings;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Trainings.Handlers;

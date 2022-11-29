@@ -7,7 +7,7 @@ using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.UpdateTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.UpdateTrainingDetail;
-using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery;
+using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainings;
 using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

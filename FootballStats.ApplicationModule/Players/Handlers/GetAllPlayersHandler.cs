@@ -1,7 +1,7 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs.Players;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
+using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;

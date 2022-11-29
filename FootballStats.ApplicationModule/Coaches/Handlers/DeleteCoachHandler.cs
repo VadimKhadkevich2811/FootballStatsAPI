@@ -3,7 +3,7 @@ using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using MediatR;
 using FootballStats.ApplicationModule.Coaches.Commands.DeleteCoach;
 
-namespace FootballStats.ApplicationModule.Coachs.Handlers;
+namespace FootballStats.ApplicationModule.Coaches.Handlers;
 
 public class DeleteCoachHandler : IRequestHandler<DeleteCoachCommand, bool>
 {

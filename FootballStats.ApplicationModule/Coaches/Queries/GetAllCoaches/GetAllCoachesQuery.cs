@@ -2,7 +2,7 @@ using FootballStats.ApplicationModule.Common.DTOs.Coaches;
 using FootballStats.ApplicationModule.Common.QueryParams;
 using MediatR;
 
-namespace FootballStats.ApplicationModule.Trainings.Queries.GetAllCoachesQuery;
+namespace FootballStats.ApplicationModule.Coaches.Queries.GetAllCoaches;
 
 public class GetAllCoachesQuery : IRequest<CoachesListWithCountDTO>
 {

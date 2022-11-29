@@ -4,7 +4,7 @@ using FootballStats.ApplicationModule.Common.DTOs.Trainings;
 using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
-using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainingsQuery;
+using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainings;
 using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
 using FootballStats.UnitTests.MockData.Trainings;
 using MediatR;

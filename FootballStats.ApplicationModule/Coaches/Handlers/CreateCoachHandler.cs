@@ -5,7 +5,7 @@ using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using MediatR;
 
-namespace FootballStats.ApplicationModule.Common.Coachs.Handlers;
+namespace FootballStats.ApplicationModule.Common.Coaches.Handlers;
 
 public class CreateCoachHandler : IRequestHandler<CreateCoachCommand, CoachReadDTO>
 {

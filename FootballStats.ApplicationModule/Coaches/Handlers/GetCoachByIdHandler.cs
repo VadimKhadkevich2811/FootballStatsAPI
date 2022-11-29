@@ -1,10 +1,10 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.DTOs.Coaches;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Trainings.Queries.GetCoachById;
+using FootballStats.ApplicationModule.Coaches.Queries.GetCoachById;
 using MediatR;
 
-namespace FootballStats.ApplicationModule.Trainings.Handlers;
+namespace FootballStats.ApplicationModule.Coaches.Handlers;
 
 public class GetCoachByIdHandler : IRequestHandler<GetCoachByIdQuery, CoachReadDTO>
 {

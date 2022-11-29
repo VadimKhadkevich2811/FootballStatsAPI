@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace FootballStats.ApplicationModule.Trainings.Queries.GetCoachById;
+namespace FootballStats.ApplicationModule.Coaches.Queries.GetCoachById;
 
 public class GetCoachByIdQueryValidator : AbstractValidator<GetCoachByIdQuery>
 {

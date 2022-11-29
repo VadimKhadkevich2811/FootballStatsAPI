@@ -7,11 +7,12 @@ using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayerDetail;
-using FootballStats.ApplicationModule.Players.Queries.GetAllPlayersQuery;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
+using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
 
 namespace FootballStats.Application.Controllers;
 
@@ -89,5 +90,16 @@ public class PlayersController : ControllerBase
         var result = await _mediator.Send(command);
 
         return result ? NoContent() : BadRequest("Errors during updating a player.");
+    }
+
+    //GET api/freeplayers
+    [HttpGet]
+    public async Task<ActionResult> GetFreePlayersAsync([FromQuery] PlayersQueryStringParams filter)
+    {
+        var route = Request.Path.Value;
+        var query = new GetFreePlayersQuery(filter);
+        var freePlayers = await _mediator.Send(query);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(freePlayers.PlayersList, filter, freePlayers.PlayersTotalCount, _uriService, route);
+        return Ok(pagedReponse);
     }
 }

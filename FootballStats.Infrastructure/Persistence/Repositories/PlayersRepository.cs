@@ -48,6 +48,27 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.CountAsync();
     }
 
+    public async Task<List<Player>> GetFreePlayersAsync(PlayersQueryStringParams playersFilter)
+    {
+        var players = playersFilter.Name == null && playersFilter.LastName == null
+            ? _context.Players
+                .Where(pl => !_context.TrainingPlayers.Any(tp => tp.PlayerId == pl.Id))
+                .Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize)
+            : _context.Players
+                .Where(player =>
+                    (player.Lastname.ToLower() == playersFilter.LastName!.ToLower() || string.IsNullOrEmpty(playersFilter.LastName)) &&
+                    (player.Name.ToLower() == playersFilter.Name!.ToLower() || string.IsNullOrEmpty(playersFilter.Name)) && 
+                    !_context.TrainingPlayers.Any(tp => tp.PlayerId == player.Id))
+                .Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize);
+
+        return await _sortHelper.ApplySort(players, playersFilter.OrderBy!).ToListAsync();
+    }
+
+    public async Task<int> GetFreePlayersCountAsync()
+    {
+        return await _context.Players.CountAsync(player => !_context.TrainingPlayers.Any(tp => tp.PlayerId == player.Id));
+    }
+
     public async Task<Player?> GetPlayerByIdAsync(int playerId)
     {
         return await _context.Players.Where(player => player.Id == playerId).FirstOrDefaultAsync();
