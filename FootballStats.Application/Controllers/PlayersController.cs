@@ -92,8 +92,9 @@ public class PlayersController : ControllerBase
         return result ? NoContent() : BadRequest("Errors during updating a player.");
     }
 
-    //GET api/freeplayers
+    //GET api/players/freeplayers
     [HttpGet]
+    [Route("freeplayers")]
     public async Task<ActionResult> GetFreePlayersAsync([FromQuery] PlayersQueryStringParams filter)
     {
         var route = Request.Path.Value;
