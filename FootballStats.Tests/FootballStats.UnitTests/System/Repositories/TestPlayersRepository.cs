@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Persistence;
@@ -125,6 +126,25 @@ public class TestPlayersRepository : IDisposable
         /// Assert
 
         playerToCheck!.Age.Should().Be(50);
+    }
+
+    [Fact]
+    public async Task GetFreePlayers_ReturnCollection()
+    {
+        /// Arrange
+        var testPlayers = GetPlayersMockData.GetAllPlayers();
+        _context.Players.AddRange(testPlayers);
+        _context.SaveChanges();
+
+        var sut = new PlayersRepository(_context, new SortHelper<Player>());
+
+        /// Act
+
+        var result = await sut.GetFreePlayersAsync(new PlayersQueryStringParams());
+
+        /// Assert
+
+        result.Should().HaveCount(testPlayers.Count());
     }
 
     public void Dispose()

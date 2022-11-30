@@ -34,11 +34,10 @@ public class TrainingsController : ControllerBase
     public async Task<ActionResult> GetAllTrainingsAsync([FromQuery] TrainingsQueryStringParams filter)
     {
         var route = Request.Path.Value;
-        var validFilter = new TrainingsQueryStringParams(filter.PageNumber, filter.PageSize);
-        var query = new GetAllTrainingsQuery(validFilter);
+        var query = new GetAllTrainingsQuery(filter);
         var trainings = await _mediator.Send(query);
         var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList,
-            validFilter, trainings.TrainingsTotalCount, _uriService, route);
+            filter, trainings.TrainingsTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }
 

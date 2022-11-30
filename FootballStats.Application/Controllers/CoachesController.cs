@@ -34,11 +34,10 @@ public class CoachesController : ControllerBase
     public async Task<ActionResult> GetAllCoachesAsync([FromQuery] CoachesQueryStringParams filter)
     {
         string? route = Request.Path.Value;
-        var validFilter = new CoachesQueryStringParams(filter.PageNumber, filter.PageSize);
-        var query = new GetAllCoachesQuery(validFilter);
+        var query = new GetAllCoachesQuery(filter);
         var coaches = await _mediator.Send(query);
         var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(coaches.CoachesList,
-            validFilter, coaches.CoachesTotalCount, _uriService, route);
+            filter, coaches.CoachesTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }
 

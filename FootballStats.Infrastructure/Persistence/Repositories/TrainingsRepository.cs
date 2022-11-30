@@ -1,4 +1,6 @@
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -6,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 public class TrainingsRepository : ITrainingsRepository
 {
     private readonly IApplicationDbContext _context;
+    private readonly ISortHelper<Training> _sortHelper;
 
-    public TrainingsRepository(IApplicationDbContext context)
+    public TrainingsRepository(IApplicationDbContext context, ISortHelper<Training> sortHelper)
     {
         _context = context;
+        _sortHelper = sortHelper;
     }
 
     public async Task AddTrainingAsync(Training training, ICollection<int> playerIDs)
@@ -27,9 +31,15 @@ public class TrainingsRepository : ITrainingsRepository
         return await _context.Trainings.ToListAsync();
     }
 
-    public async Task<List<Training>> GetAllTrainingsAsync(int pageNumber, int pageSize)
+    public async Task<List<Training>> GetAllTrainingsAsync(TrainingsQueryStringParams trainingsFilter)
     {
-        return await _context.Trainings.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+         var trainings = trainingsFilter.Name == null
+            ? _context.Trainings.Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize)
+            : _context.Trainings.Where(training =>
+                (training.Name.ToLower() == trainingsFilter.Name!.ToLower() || string.IsNullOrEmpty(trainingsFilter.Name)))
+                .Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize);
+
+        return await _sortHelper.ApplySort(trainings, trainingsFilter.OrderBy!).ToListAsync();
     }
 
     public async Task<int> GetAllTrainingsCountAsync()

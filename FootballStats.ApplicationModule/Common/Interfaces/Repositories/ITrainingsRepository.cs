@@ -1,3 +1,4 @@
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 
@@ -9,7 +10,7 @@ public interface ITrainingsRepository
     void RemoveTraining(Training player);
     Task<Training?> GetTrainingByIdAsync(int playerId);
     Task<List<Training>> GetAllTrainingsAsync();
-    Task<List<Training>> GetAllTrainingsAsync(int pageNumber, int pageSize);
+    Task<List<Training>> GetAllTrainingsAsync(TrainingsQueryStringParams filter);
     Task<int> GetAllTrainingsCountAsync();
     Task UpdateTrainingAsync(Training player, ICollection<int> playerIDs);
     Task<List<Training>> GetTrainingsByPositionAsync(PositionGroup position);
