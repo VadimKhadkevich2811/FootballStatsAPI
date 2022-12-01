@@ -9,12 +9,12 @@ using Moq;
 
 namespace FootballStats.UnitTests.System.Handlers.Players;
 
-public class TestCreatePlayerHandler
+public class TestUpdatePlayerDetailHandler
 {
     private readonly Mock<IPlayersRepository> _playersRepository;
     private readonly IMapper _mapper;
 
-    public TestCreatePlayerHandler()
+    public TestUpdatePlayerDetailHandler()
     {
         _playersRepository = IPlayersRepositoryMock.GetMock();
 
@@ -27,23 +27,19 @@ public class TestCreatePlayerHandler
     }
 
     [Fact]
-    public async Task Handle_PlayerShouldBeCreated()
+    public async Task Handle_PlayerDetailShouldBeUpdated()
     {
         ///Arrange
 
-        var sut = new CreatePlayerHandler(_playersRepository.Object, _mapper);
-        var testPlayer = CreatePlayerCommandMockData.GetTestPlayerCommandData();
-        
+        var sut = new UpdatePlayerDetailHandler(_playersRepository.Object, _mapper);
+        var testPlayer = UpdatePlayerDetailCommandMockData.GetTestUpdatePlayerDetailCommandData();
+
         /// Act
 
-        var newPlayer = await sut.Handle(testPlayer, new CancellationToken());
+        var isPlayerUpdated = await sut.Handle(testPlayer, new CancellationToken());
 
         /// Assert
 
-        newPlayer.Should().NotBeNull();
-        newPlayer.Name.Should().BeEquivalentTo(testPlayer.Name);
-        newPlayer.Lastname.Should().BeEquivalentTo(testPlayer.Lastname);
-        newPlayer.Age.Should().Be(testPlayer.Age);
-        newPlayer.Position.Should().Be(testPlayer.Position);
+        isPlayerUpdated.Should().Be(true);
     }
 }
