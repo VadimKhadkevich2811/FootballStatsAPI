@@ -47,6 +47,22 @@ public class CoachesRepository : ICoachesRepository
         return await _context.Coaches.Where(coach => coach.Id == coachId).FirstOrDefaultAsync();
     }
 
+    public async Task<List<Coach>> GetFreeCoachesByDateAsync(DateTime date)
+    {
+        var coachesTrainedInDateIds = _context.Trainings
+            .Where(tr => tr.TrainingDate == date)
+            .Select(tr => tr.CoachId);
+        return await _context.Coaches.Where(coach => !coachesTrainedInDateIds.Contains(coach.Id)).ToListAsync();
+    }
+
+    public async Task<int> GetFreeCoachesByDateCountAsync(DateTime date)
+    {
+        var coachesTrainedInDateIds = _context.Trainings
+            .Where(tr => tr.TrainingDate == date)
+            .Select(tr => tr.CoachId);
+        return await _context.Coaches.CountAsync(coach => !coachesTrainedInDateIds.Contains(coach.Id));
+    }
+
     public void RemoveCoach(Coach coach)
     {
         _context.Coaches.Remove(coach);

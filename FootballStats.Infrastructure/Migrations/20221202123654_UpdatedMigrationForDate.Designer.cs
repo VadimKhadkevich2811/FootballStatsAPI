@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootballStats.Infrastructure.Migrations
 {
     [DbContext(typeof(FootballStatsDbContext))]
-    [Migration("20221116123629_UpdatedMigration")]
-    partial class UpdatedMigration
+    [Migration("20221202123654_UpdatedMigrationForDate")]
+    partial class UpdatedMigrationForDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,6 +97,9 @@ namespace FootballStats.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("TrainingDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -189,8 +192,7 @@ namespace FootballStats.Infrastructure.Migrations
 
             modelBuilder.Entity("FootballStats.Domain.Entities.Coach", b =>
                 {
-                    b.Navigation("Training")
-                        .IsRequired();
+                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("FootballStats.Domain.Entities.Player", b =>

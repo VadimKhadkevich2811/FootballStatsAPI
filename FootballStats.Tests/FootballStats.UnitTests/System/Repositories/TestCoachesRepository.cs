@@ -127,6 +127,25 @@ public class TestCoachRepository : IDisposable
         coachToCheck!.Age.Should().Be(50);
     }
 
+    [Fact]
+    public async Task GetFreeCoachesByDate_ReturnCollection()
+    {
+        /// Arrange
+        var testCoaches = GetCoachesMockData.GetAllCoaches();
+        _context.Coaches.AddRange(testCoaches);
+        _context.SaveChanges();
+
+        var sut = new CoachesRepository(_context, new SortHelper<Coach>());
+
+        /// Act
+
+        var result = await sut.GetFreeCoachesByDateAsync(DateTime.Now);
+
+        /// Assert
+
+        result.Should().HaveCount(3);
+    }
+
     public void Dispose()
     {
         _context.Database.EnsureDeleted();

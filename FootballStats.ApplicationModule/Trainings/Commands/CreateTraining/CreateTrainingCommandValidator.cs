@@ -12,5 +12,7 @@ public class CreateTrainingCommandValidator : AbstractValidator<CreateTrainingCo
             .GreaterThan(0).WithMessage("CoachId is required");
         RuleFor(field => field.PlayerIDs)
             .Must(x => x.Any()).WithMessage("PlayerIDs should be set");
+        RuleFor(field => field.TrainingDate)
+            .NotEmpty().WithMessage("Training Date is required");
     }
 }

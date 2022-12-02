@@ -129,7 +129,7 @@ public class TestPlayersRepository : IDisposable
     }
 
     [Fact]
-    public async Task GetFreePlayers_ReturnCollection()
+    public async Task GetFreePlayersByDate_ReturnCollection()
     {
         /// Arrange
         var testPlayers = GetPlayersMockData.GetAllPlayers();
@@ -140,11 +140,11 @@ public class TestPlayersRepository : IDisposable
 
         /// Act
 
-        var result = await sut.GetFreePlayersAsync(new PlayersQueryStringParams());
+        var result = await sut.GetFreePlayersByDateAsync(DateTime.Now);
 
         /// Assert
 
-        result.Should().HaveCount(testPlayers.Count());
+        result.Should().HaveCount(3);
     }
 
     public void Dispose()

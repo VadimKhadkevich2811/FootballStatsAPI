@@ -38,6 +38,8 @@ builder.Services.AddScoped<ITrainingsRepository, TrainingsRepository>();
 builder.Services.AddScoped<ICoachesRepository, CoachesRepository>();
 
 builder.Services.AddScoped<ISortHelper<Player>, SortHelper<Player>>();
+builder.Services.AddScoped<ISortHelper<Training>, SortHelper<Training>>();
+builder.Services.AddScoped<ISortHelper<Coach>, SortHelper<Coach>>();
 
 
 builder.Services

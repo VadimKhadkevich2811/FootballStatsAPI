@@ -15,7 +15,7 @@ public interface IPlayersRepository
     void UpdatePlayer(Player player);
     Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition, ICollection<int> playerIDs);
     Task<List<Player>> GetPlayersByPositionAsync(PositionGroup position);
-    Task<List<Player>> GetFreePlayersAsync(PlayersQueryStringParams playersFilter);
-    Task<int> GetFreePlayersCountAsync();
+    Task<List<Player>> GetFreePlayersByDateAsync(DateTime date);
+    Task<int> GetFreePlayersByDateCountAsync(DateTime date);
     Task<bool> SaveChangesAsync();
 }

@@ -96,6 +96,9 @@ namespace FootballStats.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("TrainingDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CoachId")
@@ -187,8 +190,7 @@ namespace FootballStats.Infrastructure.Migrations
 
             modelBuilder.Entity("FootballStats.Domain.Entities.Coach", b =>
                 {
-                    b.Navigation("Training")
-                        .IsRequired();
+                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("FootballStats.Domain.Entities.Player", b =>

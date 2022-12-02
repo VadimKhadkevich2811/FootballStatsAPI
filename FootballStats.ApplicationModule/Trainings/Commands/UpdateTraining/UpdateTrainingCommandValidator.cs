@@ -17,5 +17,8 @@ public class UpdateTrainingCommandValidator : AbstractValidator<UpdateTrainingCo
 
         RuleFor(field => field.PlayerIds)
             .Must(x => x.Any()).WithMessage("PlayerIDs should be set");
+
+        RuleFor(field => field.TrainingDate)
+            .NotEmpty().WithMessage("Training Date is required");
     }
 }

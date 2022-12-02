@@ -229,15 +229,15 @@ public class TestPlayersController
     }
 
     [Fact]
-    public async Task GetFreePlayersAsync_ShouldReturn200Status()
+    public async Task GetFreePlayersByDateAsync_ShouldReturn200Status()
     {
         ///Arrange
         PlayersListWithCountDTO returnValue = new PlayersListWithCountDTO(new List<PlayerReadDTO>(), 0);
-        var filter = new PlayersQueryStringParams();
-        var inputData = new GetAllPlayersQuery(filter);
+        var testDate = DateTime.Now;
+        var inputData = new GetFreePlayersQuery(testDate);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetFreePlayersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var httpContext = new DefaultHttpContext();
-        httpContext.Request.Path = "/api/freeplayers";
+        httpContext.Request.Path = "/api/free";
         var controllerContext = new ControllerContext()
         {
             HttpContext = httpContext
@@ -249,7 +249,7 @@ public class TestPlayersController
         };
 
         ///Act
-        var result = await sut.GetFreePlayersAsync(filter);
+        var result = await sut.GetFreePlayersByDateAsync(testDate);
 
         ///Assert
         result.GetType().Should().Be(typeof(OkObjectResult));

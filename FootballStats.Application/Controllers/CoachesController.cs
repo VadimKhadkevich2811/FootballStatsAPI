@@ -12,6 +12,7 @@ using FootballStats.ApplicationModule.Coaches.Queries.GetCoachById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FootballStats.ApplicationModule.Coaches.Queries.GetFreeCoaches;
 
 namespace FootballStats.Application.Controllers;
 
@@ -90,5 +91,16 @@ public class CoachesController : ControllerBase
         var result = await _mediator.Send(command);
 
         return result ? NoContent() : BadRequest("Errors during updating a coach.");
+    }
+
+    [HttpGet]
+    [Route("free")]
+    public async Task<ActionResult> GetFreeCoachesByDateAsync([FromQuery] DateTime date)
+    {
+        var route = Request.Path.Value;
+        var query = new GetFreeCoachesQuery(date);
+        var freeCoaches = await _mediator.Send(query);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(freeCoaches.CoachesList, new CoachesQueryStringParams(), freeCoaches.CoachesTotalCount, _uriService, route);
+        return Ok(pagedReponse);
     }
 }

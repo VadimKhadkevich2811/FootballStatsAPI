@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using FootballStats.Domain.Enums;
 
 namespace FootballStats.ApplicationModule.Common.DTOs.Trainings;
 
@@ -14,4 +13,7 @@ public class TrainingReadDTO
 
     [Required]
     public int CoachId { get; set; }
+
+    [Required]
+    public DateTime TrainingDate { get; set; }
 }

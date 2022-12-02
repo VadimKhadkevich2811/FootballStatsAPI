@@ -92,15 +92,15 @@ public class PlayersController : ControllerBase
         return result ? NoContent() : BadRequest("Errors during updating a player.");
     }
 
-    //GET api/players/freeplayers
+    //GET api/players/free
     [HttpGet]
-    [Route("freeplayers")]
-    public async Task<ActionResult> GetFreePlayersAsync([FromQuery] PlayersQueryStringParams filter)
+    [Route("free")]
+    public async Task<ActionResult> GetFreePlayersByDateAsync([FromQuery] DateTime date)
     {
         var route = Request.Path.Value;
-        var query = new GetFreePlayersQuery(filter);
+        var query = new GetFreePlayersQuery(date);
         var freePlayers = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(freePlayers.PlayersList, filter, freePlayers.PlayersTotalCount, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(freePlayers.PlayersList, new PlayersQueryStringParams(), freePlayers.PlayersTotalCount, _uriService, route);
         return Ok(pagedReponse);
     }
 }

@@ -13,6 +13,10 @@ public class Training
 
     [Required]
     public int CoachId { get; set; }
+
+    [Required]
+    public DateTime TrainingDate { get; set; }
+    
     public Coach? Coach { get; set; }
 
     public virtual ICollection<TrainingPlayer>? TrainingPlayers { get; set; }

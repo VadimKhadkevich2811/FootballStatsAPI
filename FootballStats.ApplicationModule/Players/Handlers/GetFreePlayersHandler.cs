@@ -19,9 +19,9 @@ public class GetFreePlayersHandler : IRequestHandler<GetFreePlayersQuery, Player
 
     public async Task<PlayersListWithCountDTO> Handle(GetFreePlayersQuery request, CancellationToken cancellationToken)
     {
-        var filter = request.PlayersQueryStringParams;
-        var freePlayers = await _repository.GetFreePlayersAsync(filter);
-        var freePlayersCount = await _repository.GetFreePlayersCountAsync();
+        var date = request.Date;
+        var freePlayers = await _repository.GetFreePlayersByDateAsync(date);
+        var freePlayersCount = await _repository.GetFreePlayersByDateCountAsync(date);
         var freePlayerDTOs = _mapper.Map<List<PlayerReadDTO>>(freePlayers);
 
         return new PlayersListWithCountDTO(freePlayerDTOs, freePlayersCount);

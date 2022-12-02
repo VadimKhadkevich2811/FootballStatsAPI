@@ -12,5 +12,7 @@ public interface ICoachesRepository
     Task<List<Coach>> GetAllCoachesAsync(CoachesQueryStringParams coachesFilter);
     Task<int> GetAllCoachesCountAsync();
     void UpdateCoach(Coach coach);
+    Task<List<Coach>> GetFreeCoachesByDateAsync(DateTime date);
+    Task<int> GetFreeCoachesByDateCountAsync(DateTime date);
     Task<bool> SaveChangesAsync();
 }

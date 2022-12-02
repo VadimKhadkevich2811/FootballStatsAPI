@@ -48,25 +48,26 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.CountAsync();
     }
 
-    public async Task<List<Player>> GetFreePlayersAsync(PlayersQueryStringParams playersFilter)
+    public async Task<List<Player>> GetFreePlayersByDateAsync(DateTime date)
     {
-        var players = playersFilter.Name == null && playersFilter.LastName == null
-            ? _context.Players
-                .Where(pl => !_context.TrainingPlayers.Any(tp => tp.PlayerId == pl.Id))
-                .Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize)
-            : _context.Players
-                .Where(player =>
-                    (player.Lastname.ToLower() == playersFilter.LastName!.ToLower() || string.IsNullOrEmpty(playersFilter.LastName)) &&
-                    (player.Name.ToLower() == playersFilter.Name!.ToLower() || string.IsNullOrEmpty(playersFilter.Name)) && 
-                    !_context.TrainingPlayers.Any(tp => tp.PlayerId == player.Id))
-                .Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize);
-
-        return await _sortHelper.ApplySort(players, playersFilter.OrderBy!).ToListAsync();
+        var trainingsInDateIds = _context.Trainings
+            .Where(tr => tr.TrainingDate.Date == date.Date)
+            .Select(tr => tr.Id);
+        var playersTrainedInDateIds = _context.TrainingPlayers
+            .Where(tp => trainingsInDateIds.Contains(tp.TrainingId))
+            .Select(tp => tp.PlayerId);
+        return await _context.Players.Where(player => !playersTrainedInDateIds.Contains(player.Id)).ToListAsync();
     }
 
-    public async Task<int> GetFreePlayersCountAsync()
+    public async Task<int> GetFreePlayersByDateCountAsync(DateTime date)
     {
-        return await _context.Players.CountAsync(player => !_context.TrainingPlayers.Any(tp => tp.PlayerId == player.Id));
+        var trainingsInDateIds = _context.Trainings
+            .Where(tr => tr.TrainingDate == date)
+            .Select(tr => tr.Id);
+        var playersTrainedInDateIds = _context.TrainingPlayers
+            .Where(tp => trainingsInDateIds.Contains(tp.TrainingId))
+            .Select(tp => tp.PlayerId);
+        return await _context.Players.CountAsync(player => !playersTrainedInDateIds.Contains(player.Id));
     }
 
     public async Task<Player?> GetPlayerByIdAsync(int playerId)

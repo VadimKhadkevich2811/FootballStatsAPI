@@ -7,5 +7,6 @@ public class CreateTrainingCommand : IRequest<TrainingReadDTO?>
 {
     public string Name { get; set; } = default!;
     public int CoachId { get; set; }
+    public DateTime TrainingDate { get; set; }
     public ICollection<int> PlayerIDs { get; set; } = default!;
 }

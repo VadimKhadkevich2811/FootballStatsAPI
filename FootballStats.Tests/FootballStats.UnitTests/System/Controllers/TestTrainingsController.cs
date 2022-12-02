@@ -11,6 +11,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using FootballStats.ApplicationModule.Common.DTOs.Coaches;
+using FootballStats.ApplicationModule.Coaches.Queries.GetFreeCoaches;
 
 namespace FootballStats.UnitTests.System.Controllers;
 
@@ -225,5 +227,33 @@ public class TestTrainingsController
         ///Assert
         result.GetType().Should().Be(typeof(BadRequestObjectResult));
         (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task GetFreeCoachesByDateAsync_ShouldReturn200Status()
+    {
+        ///Arrange
+        CoachesListWithCountDTO returnValue = new CoachesListWithCountDTO(new List<CoachReadDTO>(), 0);
+        var testDate = DateTime.Now;
+        var inputData = new GetFreeCoachesQuery(testDate);
+        _mediatorMoq.Setup(x => x.Send(It.IsAny<GetFreeCoachesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/free";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
+
+        ///Act
+        var result = await sut.GetFreeCoachesByDateAsync(testDate);
+
+        ///Assert
+        result.GetType().Should().Be(typeof(OkObjectResult));
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 }
