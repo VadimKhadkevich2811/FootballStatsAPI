@@ -28,16 +28,18 @@ public class TrainingsRepository : ITrainingsRepository
 
     public async Task<List<Training>> GetAllTrainingsAsync()
     {
-        return await _context.Trainings.ToListAsync();
+        var trainings = await _context.Trainings.ToListAsync();
+
+        return trainings;
     }
 
     public async Task<List<Training>> GetAllTrainingsAsync(TrainingsQueryStringParams trainingsFilter)
     {
-         var trainings = trainingsFilter.Name == null
-            ? _context.Trainings.Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize)
-            : _context.Trainings.Where(training =>
-                (training.Name.ToLower() == trainingsFilter.Name!.ToLower() || string.IsNullOrEmpty(trainingsFilter.Name)))
-                .Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize);
+        var trainings = trainingsFilter.Name == null
+           ? _context.Trainings.Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize)
+           : _context.Trainings.Where(training =>
+               (training.Name.ToLower() == trainingsFilter.Name!.ToLower() || string.IsNullOrEmpty(trainingsFilter.Name)))
+               .Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize);
 
         return await _sortHelper.ApplySort(trainings, trainingsFilter.OrderBy!).ToListAsync();
     }
@@ -49,21 +51,26 @@ public class TrainingsRepository : ITrainingsRepository
 
     public async Task<Training?> GetTrainingByIdAsync(int trainingId)
     {
-        return await _context.Trainings.Where(training => training.Id == trainingId).FirstOrDefaultAsync();
+        var training = await _context.Trainings.Where(training => training.Id == trainingId).FirstOrDefaultAsync();
+
+        return training;
     }
 
     public async Task<List<Training>> GetTrainingsByCoachAsync(int coachId)
     {
-        return await _context.Trainings.Where(training => training.CoachId == coachId).ToListAsync();
+        var trainings = await _context.Trainings.Where(training => training.CoachId == coachId).ToListAsync();
+
+        return trainings;
     }
 
     public async Task<List<Training>> GetTrainingsByPositionAsync(PositionGroup position)
     {
-        return await (from training in _context.Trainings
+        var trainings = await (from training in _context.Trainings
                       join coach in _context.Coaches on training.CoachId equals coach.Id
                       where coach.Position == position
                       select training).ToListAsync();
-
+        
+        return trainings;
     }
 
     public void RemoveTraining(Training training)

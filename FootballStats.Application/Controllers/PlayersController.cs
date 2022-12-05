@@ -37,7 +37,9 @@ public class PlayersController : ControllerBase
         var route = Request.Path.Value;
         var query = new GetAllPlayersQuery(filter);
         var players = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players.PlayersList, filter, players.PlayersTotalCount, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players.PlayersList, filter,
+            players.PlayersTotalCount, _uriService, route);
+
         return Ok(pagedReponse);
     }
 
@@ -48,17 +50,21 @@ public class PlayersController : ControllerBase
         var query = new GetPlayerByIdQuery(playerId);
         var player = await _mediator.Send(query);
 
-        return player != null ? Ok(new Response<PlayerReadDTO>(player, true)) : NotFound();
+        return player != null
+            ? Ok(new Response<PlayerReadDTO>(player, true))
+            : NotFound(new Response<PlayerReadDTO>(null, true, null, $"No Player Found By Id = {playerId}"));
     }
 
     //POST api/players
     [HttpPost]
     public async Task<ActionResult> CreatePlayerAsync(CreatePlayerCommand command)
     {
-        var result = await _mediator.Send(command);
+        var player = await _mediator.Send(command);
 
-        return result == null ? BadRequest("Errors during new player creation.")
-            : CreatedAtRoute(nameof(GetPlayerByIdAsync), new { PlayerId = result.Id }, result);
+        return player == null
+            ? BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during new player creation." }))
+            : CreatedAtRoute(nameof(GetPlayerByIdAsync), new { PlayerId = player.Id },
+                new Response<PlayerReadDTO>(player, true, null, "Player is successfully created"));
     }
 
     //DELETE api/players/{playerId}
@@ -67,7 +73,9 @@ public class PlayersController : ControllerBase
     {
         var result = await _mediator.Send(new DeletePlayerCommand(playerId));
 
-        return result ? NoContent() : BadRequest("Errors during removing a player.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during removing a player." }));
     }
 
     //PUT api/players/{playerId}
@@ -78,7 +86,9 @@ public class PlayersController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a player.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during updating a player." }));
     }
 
     //PATCH api/players/{playerId}
@@ -89,7 +99,9 @@ public class PlayersController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a player.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during updating a player." }));
     }
 
     //GET api/players/free
@@ -100,7 +112,9 @@ public class PlayersController : ControllerBase
         var route = Request.Path.Value;
         var query = new GetFreePlayersQuery(date);
         var freePlayers = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(freePlayers.PlayersList, new PlayersQueryStringParams(), freePlayers.PlayersTotalCount, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(freePlayers.PlayersList,
+            new PlayersQueryStringParams(), freePlayers.PlayersTotalCount, _uriService, route);
+
         return Ok(pagedReponse);
     }
 }

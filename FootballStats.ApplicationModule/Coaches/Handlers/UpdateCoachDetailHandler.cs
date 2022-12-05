@@ -31,6 +31,7 @@ public class UpdateCoachDetailHandler : IRequestHandler<UpdateCoachDetailCommand
         _mapper.Map(coachToPatch, coach);
 
         _repository.UpdateCoach(coach);
+        
         return await _repository.SaveChangesAsync();
     }
 }

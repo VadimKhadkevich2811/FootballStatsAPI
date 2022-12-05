@@ -17,5 +17,6 @@ public interface IPlayersRepository
     Task<List<Player>> GetPlayersByPositionAsync(PositionGroup position);
     Task<List<Player>> GetFreePlayersByDateAsync(DateTime date);
     Task<int> GetFreePlayersByDateCountAsync(DateTime date);
+    Task<List<Player>> GetPlayersByTrainingId(int trainingId);
     Task<bool> SaveChangesAsync();
 }

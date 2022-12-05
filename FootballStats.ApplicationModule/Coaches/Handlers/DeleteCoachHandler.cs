@@ -26,6 +26,7 @@ public class DeleteCoachHandler : IRequestHandler<DeleteCoachCommand, bool>
         }
 
         _repository.RemoveCoach(coach);
+        
         return await _repository.SaveChangesAsync();
     }
 }

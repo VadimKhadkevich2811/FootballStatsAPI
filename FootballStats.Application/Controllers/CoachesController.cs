@@ -39,6 +39,7 @@ public class CoachesController : ControllerBase
         var coaches = await _mediator.Send(query);
         var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(coaches.CoachesList,
             filter, coaches.CoachesTotalCount, _uriService, route);
+
         return Ok(pagedReponse);
     }
 
@@ -49,17 +50,21 @@ public class CoachesController : ControllerBase
         var query = new GetCoachByIdQuery(coachId);
         var coach = await _mediator.Send(query);
 
-        return coach != null ? Ok(new Response<CoachReadDTO>(coach, true)) : NotFound();
+        return coach != null
+            ? Ok(new Response<CoachReadDTO>(coach, true))
+            : NotFound(new Response<CoachReadDTO>(null, true, null, $"No Coach Found By Id = {coachId}"));
     }
 
     //POST api/coaches
     [HttpPost]
     public async Task<ActionResult> CreateCoachAsync(CreateCoachCommand command)
     {
-        var result = await _mediator.Send(command);
+        var coach = await _mediator.Send(command);
 
-        return result == null ? BadRequest("Errors during new coach creation.")
-            : CreatedAtRoute(nameof(GetCoachByIdAsync), new { CoachId = result.Id }, result);
+        return coach == null
+            ? BadRequest("Errors during new coach creation.")
+            : CreatedAtRoute(nameof(GetCoachByIdAsync), new { CoachId = coach.Id },
+                new Response<CoachReadDTO>(coach, true, null, "Coach is successfully created"));
     }
 
     //DELETE api/coaches/{coachId}
@@ -68,7 +73,9 @@ public class CoachesController : ControllerBase
     {
         var result = await _mediator.Send(new DeleteCoachCommand(coachId));
 
-        return result ? NoContent() : BadRequest("Errors during removing a coach.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<CoachReadDTO>(null, false, new[] { "Errors during removing a coach." }));
     }
 
     //PUT api/coaches/{coachId}
@@ -79,7 +86,9 @@ public class CoachesController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a coach.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<CoachReadDTO>(null, false, new[] { "Errors during updating a coach." }));
     }
 
     //PATCH api/coaches/{coachId}
@@ -90,7 +99,9 @@ public class CoachesController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a coach.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<CoachReadDTO>(null, false, new[] { "Errors during updating a coach." }));
     }
 
     [HttpGet]
@@ -100,7 +111,9 @@ public class CoachesController : ControllerBase
         var route = Request.Path.Value;
         var query = new GetFreeCoachesQuery(date);
         var freeCoaches = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(freeCoaches.CoachesList, new CoachesQueryStringParams(), freeCoaches.CoachesTotalCount, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(freeCoaches.CoachesList,
+            new CoachesQueryStringParams(), freeCoaches.CoachesTotalCount, _uriService, route);
+
         return Ok(pagedReponse);
     }
 }

@@ -26,6 +26,7 @@ public class DeleteTrainingHandler : IRequestHandler<DeleteTrainingCommand, bool
         }
 
         _repository.RemoveTraining(training);
+        
         return await _repository.SaveChangesAsync();
     }
 }

@@ -27,6 +27,7 @@ public class UpdateCoachHandler : IRequestHandler<UpdateCoachCommand, bool>
         _mapper.Map(request, coach);
 
         _repository.UpdateCoach(coach);
+        
         return await _repository.SaveChangesAsync();
     }
 }

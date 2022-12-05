@@ -1,3 +1,5 @@
+using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +24,9 @@ public class SignUpController : ControllerBase
 
         if (result == null)
         {
-            return BadRequest("Error during new user creation.");
+            return BadRequest(new Response<SignUpDTO>(null, false, new[] { "Error during new user creation." }));
         }
 
-        return Created("", result);
+        return Created("", new Response<SignUpDTO>(result, true));
     }
 }

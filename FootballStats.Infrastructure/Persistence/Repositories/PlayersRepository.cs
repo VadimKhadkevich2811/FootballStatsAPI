@@ -80,6 +80,13 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.Where(player => player.Position == position).ToListAsync();
     }
 
+    public async Task<List<Player>> GetPlayersByTrainingId(int trainingId)
+    {
+        var trainingPlayersIDs = await _context.TrainingPlayers.Where(tp => tp.TrainingId == trainingId).Select(tp => tp.PlayerId).ToListAsync();
+
+        return await _context.Players.Where(pl => trainingPlayersIDs.Contains(pl.Id)).ToListAsync();
+    }
+
     public void RemovePlayer(Player player)
     {
         _context.Players.Remove(player);

@@ -36,8 +36,9 @@ public class TrainingsController : ControllerBase
         var route = Request.Path.Value;
         var query = new GetAllTrainingsQuery(filter);
         var trainings = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList,
-            filter, trainings.TrainingsTotalCount, _uriService, route);
+        var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList, filter,
+            trainings.TrainingsTotalCount, _uriService, route);
+
         return Ok(pagedReponse);
     }
 
@@ -48,17 +49,21 @@ public class TrainingsController : ControllerBase
         var query = new GetTrainingByIdQuery(trainingId);
         var training = await _mediator.Send(query);
 
-        return training != null ? Ok(new Response<TrainingReadDTO>(training, true)) : NotFound();
+        return training != null
+            ? Ok(new Response<TrainingReadDTO>(training, true))
+            : NotFound(new Response<TrainingReadDTO>(null, true, null, $"No Training Found By Id = {trainingId}"));
     }
 
     //POST api/trainings
     [HttpPost]
     public async Task<ActionResult> CreateTrainingAsync(CreateTrainingCommand command)
     {
-        var result = await _mediator.Send(command);
+        var training = await _mediator.Send(command);
 
-        return result == null ? BadRequest("Errors during new training creation.")
-            : CreatedAtRoute(nameof(GetTrainingByIdAsync), new { TrainingId = result.Id }, result);
+        return training == null
+            ? BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during new training creation." }))
+            : CreatedAtRoute(nameof(GetTrainingByIdAsync), new { TrainingId = training.Id },
+                new Response<TrainingReadDTO>(training, true, null, "Training is successfully created"));
     }
 
     //DELETE api/trainings/{trainingId}
@@ -67,7 +72,9 @@ public class TrainingsController : ControllerBase
     {
         var result = await _mediator.Send(new DeleteTrainingCommand(trainingId));
 
-        return result ? NoContent() : BadRequest("Errors during removing a training.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during removing a training." }));
     }
 
     //PUT api/trainings/{trainingId}
@@ -78,7 +85,9 @@ public class TrainingsController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a training.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during updating a training." }));
     }
 
     //PATCH api/trainings/{trainingId}
@@ -89,6 +98,8 @@ public class TrainingsController : ControllerBase
 
         var result = await _mediator.Send(command);
 
-        return result ? NoContent() : BadRequest("Errors during updating a training.");
+        return result
+            ? NoContent()
+            : BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during updating a training." }));
     }
 }

@@ -27,6 +27,7 @@ public class UpdatePlayerHandler : IRequestHandler<UpdatePlayerCommand, bool>
         _mapper.Map(request, player);
 
         _repository.UpdatePlayer(player);
+        
         return await _repository.SaveChangesAsync();
     }
 }

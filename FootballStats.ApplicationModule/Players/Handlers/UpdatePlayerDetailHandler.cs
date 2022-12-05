@@ -31,6 +31,7 @@ public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailComma
         _mapper.Map(playerToPatch, player);
 
         _repository.UpdatePlayer(player);
+        
         return await _repository.SaveChangesAsync();
     }
 }

@@ -85,8 +85,8 @@ public class TestTrainingsController
         var result = await sut.GetTrainingByIdAsync(queryParam);
 
         ///Assert
-        result.GetType().Should().Be(typeof(NotFoundResult));
-        (result as NotFoundResult)!.StatusCode.Should().Be(404);
+        result.GetType().Should().Be(typeof(NotFoundObjectResult));
+        (result as NotFoundObjectResult)!.StatusCode.Should().Be(404);
     }
 
     [Fact]

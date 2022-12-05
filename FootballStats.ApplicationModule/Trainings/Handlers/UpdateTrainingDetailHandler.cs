@@ -30,6 +30,7 @@ public class UpdateTrainingDetailHandler : IRequestHandler<UpdateTrainingDetailC
         _mapper.Map(trainingToPatch, training);
 
         await _repository.UpdateTrainingAsync(training, trainingToPatch.PlayerIds);
+        
         return await _repository.SaveChangesAsync();
     }
 }

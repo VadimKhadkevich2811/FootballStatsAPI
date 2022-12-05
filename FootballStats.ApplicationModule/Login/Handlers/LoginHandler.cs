@@ -40,6 +40,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginDTO>
         }
 
         var userResponse = _mapper.Map<LoginDTO>(user);
+        
         return userResponse;
     }
 }

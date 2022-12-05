@@ -44,6 +44,7 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO?>
         await _repository.SaveChangesAsync();
 
         var newUser = _mapper.Map<SignUpDTO>(user);
+        
         return newUser;
     }
 }

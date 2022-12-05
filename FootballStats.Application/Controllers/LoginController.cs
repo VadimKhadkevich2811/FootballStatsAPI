@@ -1,3 +1,5 @@
+using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Login.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +23,8 @@ public class LoginController : ControllerBase
         var result = await _mediator.Send(command);
         if (result == null)
         {
-            return NotFound("Incorrect username or password");
+            return NotFound(new Response<LoginDTO>(null, false, new[] { "Incorrect username or password" }));
         }
-        return Ok(result);
+        return Ok(new Response<LoginDTO>(result, true));
     }
 }
