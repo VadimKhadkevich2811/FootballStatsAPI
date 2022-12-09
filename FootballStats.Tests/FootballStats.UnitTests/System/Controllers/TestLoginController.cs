@@ -1,6 +1,7 @@
 using FluentAssertions;
 using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Dtos;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.UnitTests.MockData.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ public class TestLoginController
     public async Task LoginAsync_ShouldReturn200Status()
     {
         ///Arrange
-        LoginDTO returnValue = new LoginDTO();
+        Response<LoginDto> returnValue = new Response<LoginDto>(new LoginDto(), true);
         var inputData = LoginCommandMockData.GetEmptyLoginCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new LoginController(_mediatorMoq.Object);
@@ -37,7 +38,7 @@ public class TestLoginController
     public async Task LoginAsync_ShouldReturn404Status()
     {
         ///Arrange
-        LoginDTO? returnValue = null;
+        Response<LoginDto> returnValue = new Response<LoginDto>(null, false);
         var inputData = LoginCommandMockData.GetNoLoginCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new LoginController(_mediatorMoq.Object);

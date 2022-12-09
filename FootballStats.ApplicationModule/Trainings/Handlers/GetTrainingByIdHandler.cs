@@ -1,13 +1,14 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.ApplicationModule.Common.DTOs.Trainings;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
+using FootballStats.ApplicationModule.Common.Dtos.Trainings;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Trainings.Handlers;
 
-public class GetTrainingByIdHandler : IRequestHandler<GetTrainingByIdQuery, TrainingReadDTO>
+public class GetTrainingByIdHandler : IRequestHandler<GetTrainingByIdQuery, Response<TrainingReadDto>>
 {
     private readonly ITrainingsRepository _repository;
     private readonly IPlayersRepository _playersRepository;
@@ -20,12 +21,14 @@ public class GetTrainingByIdHandler : IRequestHandler<GetTrainingByIdQuery, Trai
         _mapper = mapper;
     }
 
-    public async Task<TrainingReadDTO> Handle(GetTrainingByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Response<TrainingReadDto>> Handle(GetTrainingByIdQuery request, CancellationToken cancellationToken)
     {
         var training = await _repository.GetTrainingByIdAsync(request.TrainingId);
-        var trainingDTO = _mapper.Map<TrainingReadDTO>(training);
-        trainingDTO.TrainedPlayers = _mapper.Map<List<PlayerReadDTO>>(await _playersRepository.GetPlayersByTrainingId(trainingDTO.Id));
+        var trainingDto = _mapper.Map<TrainingReadDto>(training);
+        trainingDto!.TrainedPlayers = _mapper.Map<List<PlayerReadDto>>(await _playersRepository.GetPlayersByTrainingId(trainingDto.Id));
 
-        return trainingDTO;
+        return new Response<TrainingReadDto>(trainingDto, true, null, trainingDto == null
+            ? $"No Training Found By Id = {request.TrainingId}"
+            : null);
     }
 }

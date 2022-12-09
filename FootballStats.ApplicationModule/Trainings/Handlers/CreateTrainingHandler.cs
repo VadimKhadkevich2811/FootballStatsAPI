@@ -1,13 +1,14 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Trainings;
+using FootballStats.ApplicationModule.Common.Dtos.Trainings;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 using FootballStats.Domain.Entities;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Common.Trainings.Handlers;
 
-public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, TrainingReadDTO?>
+public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Response<TrainingReadDto>>
 {
     private readonly ITrainingsRepository _trainingsRepository;
     private readonly ICoachesRepository _coachesRepository;
@@ -24,7 +25,7 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
         _mapper = mapper;
     }
 
-    public async Task<TrainingReadDTO?> Handle(CreateTrainingCommand request, CancellationToken cancellationToken)
+    public async Task<Response<TrainingReadDto>> Handle(CreateTrainingCommand request, CancellationToken cancellationToken)
     {
         var training = _mapper.Map<Training>(request);
 
@@ -32,22 +33,25 @@ public class CreateTrainingHandler : IRequestHandler<CreateTrainingCommand, Trai
 
         if (coach == null)
         {
-            return null;
+            return new Response<TrainingReadDto>(null, false, null, $"No coaches found with ID = {training.CoachId}");
         }
 
         bool arePlayersValid = await _playersRepository.ArePlayersOfValidPositionAsync(coach.Position, request.PlayerIDs);
 
         if (!arePlayersValid)
         {
-            return null;
+            return new Response<TrainingReadDto>(null, false, null,
+                $"Players are not valid for a training with specified coach (coachID = {training.CoachId})");
         }
 
         await _trainingsRepository.AddTrainingAsync(training, request.PlayerIDs);
 
         await _trainingsRepository.SaveChangesAsync();
 
-        var newTraining = _mapper.Map<TrainingReadDTO>(training);
+        var newTraining = _mapper.Map<TrainingReadDto>(training);
 
-        return newTraining;
+        var newTrainingResponse = new Response<TrainingReadDto>(newTraining, true);
+
+        return newTrainingResponse;
     }
 }

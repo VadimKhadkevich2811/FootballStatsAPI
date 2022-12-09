@@ -3,6 +3,7 @@ using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Persistence;
+using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.Infrastructure.Services;
 using FootballStats.UnitTests.MockData.Players;
 using Microsoft.EntityFrameworkCore;
@@ -88,7 +89,7 @@ public class TestPlayersRepository : IDisposable
     {
         /// Arrange
         var testPlayers = GetPlayersMockData.GetAllPlayers();
-        var removedPlayer = testPlayers[0];
+        var removedPlayer = testPlayers.First();
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 
@@ -110,7 +111,7 @@ public class TestPlayersRepository : IDisposable
     {
         /// Arrange
         var testPlayers = GetPlayersMockData.GetAllPlayers();
-        var updatedPlayer = testPlayers[0];
+        var updatedPlayer = testPlayers.First();
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 

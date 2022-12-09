@@ -40,6 +40,6 @@ public class TestUpdatePlayerDetailHandler
 
         /// Assert
 
-        isPlayerUpdated.Should().Be(true);
+        isPlayerUpdated!.Data.Should().Be(true);
     }
 }

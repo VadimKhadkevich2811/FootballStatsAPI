@@ -3,7 +3,7 @@ namespace FootballStats.ApplicationModule.Common.QueryParams;
 public class TrainingsQueryStringParams : QueryStringParams
 {
     public string? Name { get; set; }
-    
+
     public TrainingsQueryStringParams() : base()
     {
     }
@@ -18,7 +18,7 @@ public class TrainingsQueryStringParams : QueryStringParams
     {
         Name = name;
     }
-    public TrainingsQueryStringParams(int pageNumber, int pageSize, string? name, string? orderBy) 
+    public TrainingsQueryStringParams(int pageNumber, int pageSize, string? name, string? orderBy)
         : base(pageNumber, pageSize)
     {
         Name = name;

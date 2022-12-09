@@ -28,7 +28,7 @@ public class ILoginRepositoryMock
                 user.Email == loginId).FirstOrDefault());
         mock.Setup(m => m.UpdateUserTokenAsync(It.IsAny<User>(), It.IsAny<string>()))
             .Callback(() => { return; });
-        
+
         return mock;
     }
 }

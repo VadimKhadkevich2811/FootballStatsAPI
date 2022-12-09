@@ -5,7 +5,7 @@ public class PlayersQueryStringParams : QueryStringParams
     public string? Name { get; set; }
     public string? LastName { get; set; }
 
-    public PlayersQueryStringParams(): base()
+    public PlayersQueryStringParams() : base()
     {
     }
     public PlayersQueryStringParams(string? name, string? lastname) : base()
@@ -21,7 +21,7 @@ public class PlayersQueryStringParams : QueryStringParams
     {
     }
 
-    public PlayersQueryStringParams(int pageNumber, int pageSize, string? name, string? lastname, string? orderBy) 
+    public PlayersQueryStringParams(int pageNumber, int pageSize, string? name, string? lastname, string? orderBy)
         : base(pageNumber, pageSize)
     {
         Name = name;

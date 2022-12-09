@@ -1,7 +1,8 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Dtos;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using FootballStats.Domain.Entities;
 using MediatR;
@@ -9,7 +10,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace FootballStats.ApplicationModule.Common.SignUp.Handlers;
 
-public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO?>
+public class SignUpHandler : IRequestHandler<SignUpCommand, Response<SignUpDto?>>
 {
     private readonly ISignUpRepository _repository;
     private readonly IMapper _mapper;
@@ -21,7 +22,7 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO?>
         _logger = logger;
     }
 
-    public async Task<SignUpDTO?> Handle(SignUpCommand request, CancellationToken cancellationToken)
+    public async Task<Response<SignUpDto?>> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
         var passwordHash = BC.HashPassword(request.Password);
 
@@ -29,8 +30,9 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO?>
 
         if (userExist)
         {
-            _logger.LogWarn("User already exists.");
-            return null;
+            string message = $"User with username ({request.Username}) or email ({request.Email}) already exists.";
+            _logger.LogWarn(message);
+            return new Response<SignUpDto?>(null, true, null, message);
         }
 
         var user = new User()
@@ -43,8 +45,9 @@ public class SignUpHandler : IRequestHandler<SignUpCommand, SignUpDTO?>
         await _repository.AddUserAsync(user);
         await _repository.SaveChangesAsync();
 
-        var newUser = _mapper.Map<SignUpDTO>(user);
-        
-        return newUser;
+        var newUser = _mapper.Map<SignUpDto>(user);
+        var newUserResponse = new Response<SignUpDto?>(newUser, true);
+
+        return newUserResponse;
     }
 }

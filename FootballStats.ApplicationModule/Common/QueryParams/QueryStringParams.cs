@@ -20,11 +20,11 @@ public abstract class QueryStringParams
 
     public string? OrderBy { get; set; }
 
-    public QueryStringParams()
+    protected QueryStringParams()
     {
     }
 
-    public QueryStringParams(int pageNumber, int pageSize)
+    protected QueryStringParams(int pageNumber, int pageSize)
     {
         PageNumber = pageNumber;
         PageSize = pageSize;

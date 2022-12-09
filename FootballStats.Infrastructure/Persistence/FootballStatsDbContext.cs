@@ -1,3 +1,4 @@
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

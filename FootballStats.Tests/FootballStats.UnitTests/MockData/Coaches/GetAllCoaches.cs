@@ -5,7 +5,7 @@ namespace FootballStats.UnitTests.MockData.Coaches;
 
 public class GetCoachesMockData
 {
-    public static List<Coach> GetAllCoaches()
+    public static IEnumerable<Coach> GetAllCoaches()
     {
         return new List<Coach>()
         {

@@ -5,7 +5,7 @@ namespace FootballStats.UnitTests.MockData.Players;
 
 public class GetPlayersMockData
 {
-    public static List<Player> GetAllPlayers()
+    public static IEnumerable<Player> GetAllPlayers()
     {
         return new List<Player>()
         {

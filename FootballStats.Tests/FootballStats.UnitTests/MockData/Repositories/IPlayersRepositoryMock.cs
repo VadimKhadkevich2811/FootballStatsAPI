@@ -38,8 +38,8 @@ public class IPlayersRepositoryMock
             .Callback(() => { return; });
         mock.Setup(m => m.GetAllPlayersCountAsync())
             .ReturnsAsync(() => players.Count);
-        mock.Setup(m => m.ArePlayersOfValidPositionAsync(It.IsAny<PositionGroup>(), It.IsAny<ICollection<int>>()))
-            .ReturnsAsync((PositionGroup pg, ICollection<int> pids) => players.All(pl => pl.Position == pg && pids.Contains(pl.Id)));
+        mock.Setup(m => m.ArePlayersOfValidPositionAsync(It.IsAny<PositionGroup>(), It.IsAny<IEnumerable<int>>()))
+            .ReturnsAsync((PositionGroup pg, IEnumerable<int> pids) => players.All(pl => pl.Position == pg && pids.Contains(pl.Id)));
         mock.Setup(m => m.RemovePlayer(It.IsAny<Player>()))
             .Callback(() => { return; });
         mock.Setup(m => m.GetAllPlayersAsync(It.IsAny<PlayersQueryStringParams>()))
@@ -49,9 +49,9 @@ public class IPlayersRepositoryMock
                     ? players.Skip((parameters.PageNumber - 1) * parameters.PageSize)
                         .Take(parameters.PageSize)
                     : players.Where(player =>
-                        (player.Lastname.ToLower() == parameters.LastName!.ToLower() || 
+                        (player.Lastname.ToLower() == parameters.LastName!.ToLower() ||
                             string.IsNullOrEmpty(parameters.LastName)) &&
-                        (player.Name.ToLower() == parameters.Name!.ToLower() || 
+                        (player.Name.ToLower() == parameters.Name!.ToLower() ||
                             string.IsNullOrEmpty(parameters.Name)))
                         .Skip((parameters.PageNumber - 1) * parameters.PageSize).Take(parameters.PageSize);
 

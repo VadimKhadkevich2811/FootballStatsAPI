@@ -1,9 +1,10 @@
-using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 
-public class GetPlayerByIdQuery : IRequest<PlayerReadDTO>
+public class GetPlayerByIdQuery : IRequest<Response<PlayerReadDto>>
 {
     public int PlayerId { get; }
 

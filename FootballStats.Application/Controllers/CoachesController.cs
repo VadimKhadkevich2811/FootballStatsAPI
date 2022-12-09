@@ -2,22 +2,21 @@ using FootballStats.ApplicationModule.Coaches.Commands.CreateCoach;
 using FootballStats.ApplicationModule.Coaches.Commands.DeleteCoach;
 using FootballStats.ApplicationModule.Coaches.Commands.UpdateCoach;
 using FootballStats.ApplicationModule.Coaches.Commands.UpdateCoachDetail;
-using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.QueryParams;
-using FootballStats.ApplicationModule.Common.Helpers;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Coaches.Queries.GetAllCoaches;
 using FootballStats.ApplicationModule.Coaches.Queries.GetCoachById;
+using FootballStats.ApplicationModule.Coaches.Queries.GetFreeCoaches;
+using FootballStats.ApplicationModule.Common.Dtos.Coaches;
+using FootballStats.ApplicationModule.Common.Helpers;
+using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FootballStats.ApplicationModule.Coaches.Queries.GetFreeCoaches;
 
 namespace FootballStats.Application.Controllers;
 
 [ApiController]
-//[Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(AuthenticationSchemes = "Bearer")]
 [Route("api/coaches")]
 public class CoachesController : ControllerBase
 {
@@ -36,9 +35,15 @@ public class CoachesController : ControllerBase
     {
         string? route = Request.Path.Value;
         var query = new GetAllCoachesQuery(filter);
-        var coaches = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(coaches.CoachesList,
-            filter, coaches.CoachesTotalCount, _uriService, route);
+        var coachesResponse = await _mediator.Send(query);
+
+        if (!coachesResponse.Succeeded)
+        {
+            return BadRequest(coachesResponse);
+        }
+
+        var pagedReponse = PaginationHelper.CreatePagedReponse(coachesResponse.Data!.CoachesList,
+            filter, coachesResponse.Data!.CoachesTotalCount, _uriService, route);
 
         return Ok(pagedReponse);
     }
@@ -48,34 +53,44 @@ public class CoachesController : ControllerBase
     public async Task<ActionResult> GetCoachByIdAsync(int coachId)
     {
         var query = new GetCoachByIdQuery(coachId);
-        var coach = await _mediator.Send(query);
+        var coachResponse = await _mediator.Send(query);
 
-        return coach != null
-            ? Ok(new Response<CoachReadDTO>(coach, true))
-            : NotFound(new Response<CoachReadDTO>(null, true, null, $"No Coach Found By Id = {coachId}"));
+        if (!coachResponse.Succeeded)
+        {
+            return BadRequest(coachResponse);
+        }
+
+        return coachResponse.Data != null
+            ? Ok(coachResponse)
+            : NotFound(coachResponse);
     }
 
     //POST api/coaches
     [HttpPost]
     public async Task<ActionResult> CreateCoachAsync(CreateCoachCommand command)
     {
-        var coach = await _mediator.Send(command);
+        var coachResponse = await _mediator.Send(command);
 
-        return coach == null
-            ? BadRequest("Errors during new coach creation.")
-            : CreatedAtRoute(nameof(GetCoachByIdAsync), new { CoachId = coach.Id },
-                new Response<CoachReadDTO>(coach, true, null, "Coach is successfully created"));
+        if (!coachResponse.Succeeded)
+        {
+            return BadRequest(coachResponse);
+        }
+
+        return CreatedAtRoute(nameof(GetCoachByIdAsync), new { CoachId = coachResponse.Data!.Id }, coachResponse);
     }
 
     //DELETE api/coaches/{coachId}
     [HttpDelete("{coachId}")]
     public async Task<ActionResult> DeleteCoachAsync(int coachId)
     {
-        var result = await _mediator.Send(new DeleteCoachCommand(coachId));
+        var resultResponse = await _mediator.Send(new DeleteCoachCommand(coachId));
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<CoachReadDTO>(null, false, new[] { "Errors during removing a coach." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //PUT api/coaches/{coachId}
@@ -84,11 +99,14 @@ public class CoachesController : ControllerBase
     {
         command.CoachId = coachId;
 
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<CoachReadDTO>(null, false, new[] { "Errors during updating a coach." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //PATCH api/coaches/{coachId}
@@ -97,11 +115,14 @@ public class CoachesController : ControllerBase
     {
         command.CoachId = coachId;
 
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<CoachReadDTO>(null, false, new[] { "Errors during updating a coach." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     [HttpGet]
@@ -110,9 +131,15 @@ public class CoachesController : ControllerBase
     {
         var route = Request.Path.Value;
         var query = new GetFreeCoachesQuery(date);
-        var freeCoaches = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDTO>(freeCoaches.CoachesList,
-            new CoachesQueryStringParams(), freeCoaches.CoachesTotalCount, _uriService, route);
+        var freeCoachesResponse = await _mediator.Send(query);
+
+        if (!freeCoachesResponse.Succeeded)
+        {
+            return BadRequest(freeCoachesResponse);
+        }
+
+        var pagedReponse = PaginationHelper.CreatePagedReponse<CoachReadDto>(freeCoachesResponse.Data!.CoachesList,
+            new CoachesQueryStringParams(), freeCoachesResponse.Data!.CoachesTotalCount, _uriService, route);
 
         return Ok(pagedReponse);
     }

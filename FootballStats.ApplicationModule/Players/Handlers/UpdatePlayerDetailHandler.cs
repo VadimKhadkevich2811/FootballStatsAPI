@@ -1,12 +1,13 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayerDetail;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Common.Players.Handlers;
 
-public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailCommand, bool>
+public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailCommand, Response<bool>>
 {
     private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
@@ -16,13 +17,13 @@ public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailComma
         _mapper = mapper;
     }
 
-    public async Task<bool> Handle(UpdatePlayerDetailCommand request, CancellationToken cancellationToken)
+    public async Task<Response<bool>> Handle(UpdatePlayerDetailCommand request, CancellationToken cancellationToken)
     {
         var player = await _repository.GetPlayerByIdAsync(request.PlayerId);
 
         if (player == null)
         {
-            return false;
+            return new Response<bool>(false, false, null, $"No players found with ID = {request.PlayerId}");
         }
 
         var playerToPatch = _mapper.Map<UpdatePlayerCommand>(player);
@@ -31,7 +32,7 @@ public class UpdatePlayerDetailHandler : IRequestHandler<UpdatePlayerDetailComma
         _mapper.Map(playerToPatch, player);
 
         _repository.UpdatePlayer(player);
-        
-        return await _repository.SaveChangesAsync();
+
+        return new Response<bool>(await _repository.SaveChangesAsync(), true);
     }
 }

@@ -1,10 +1,11 @@
-using FootballStats.ApplicationModule.Common.DTOs.Coaches;
+using FootballStats.ApplicationModule.Common.Dtos.Coaches;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.Domain.Enums;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Coaches.Commands.CreateCoach;
 
-public class CreateCoachCommand : IRequest<CoachReadDTO>
+public class CreateCoachCommand : IRequest<Response<CoachReadDto>>
 {
     public string Name { get; set; } = default!;
     public string Lastname { get; set; } = default!;

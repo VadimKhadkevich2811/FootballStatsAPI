@@ -1,13 +1,15 @@
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using FootballStats.ApplicationModule.Common.Interfaces;
+
+namespace FootballStats.Infrastructure.Persistence.Repositories;
 
 public class CoachesRepository : ICoachesRepository
 {
     private readonly IApplicationDbContext _context;
-    private ISortHelper<Coach> _sortHelper;
+    private readonly ISortHelper<Coach> _sortHelper;
 
     public CoachesRepository(IApplicationDbContext context, ISortHelper<Coach> sortHelper)
     {
@@ -20,12 +22,12 @@ public class CoachesRepository : ICoachesRepository
         await _context.Coaches.AddAsync(coach);
     }
 
-    public async Task<List<Coach>> GetAllCoachesAsync()
+    public async Task<IEnumerable<Coach>> GetAllCoachesAsync()
     {
         return await _context.Coaches.ToListAsync();
     }
 
-    public async Task<List<Coach>> GetAllCoachesAsync(CoachesQueryStringParams coachesFilter)
+    public async Task<IEnumerable<Coach>> GetAllCoachesAsync(CoachesQueryStringParams coachesFilter)
     {
         var coaches = coachesFilter.Name == null && coachesFilter.LastName == null
             ? _context.Coaches.Skip((coachesFilter.PageNumber - 1) * coachesFilter.PageSize).Take(coachesFilter.PageSize)
@@ -47,7 +49,7 @@ public class CoachesRepository : ICoachesRepository
         return await _context.Coaches.Where(coach => coach.Id == coachId).FirstOrDefaultAsync();
     }
 
-    public async Task<List<Coach>> GetFreeCoachesByDateAsync(DateTime date)
+    public async Task<IEnumerable<Coach>> GetFreeCoachesByDateAsync(DateTime date)
     {
         var coachesTrainedInDateIds = _context.Trainings
             .Where(tr => tr.TrainingDate == date)

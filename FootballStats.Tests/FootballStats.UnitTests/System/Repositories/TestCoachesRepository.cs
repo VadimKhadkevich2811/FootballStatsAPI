@@ -2,6 +2,7 @@ using FluentAssertions;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Persistence;
+using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.Infrastructure.Services;
 using FootballStats.UnitTests.MockData.Coaches;
 using Microsoft.EntityFrameworkCore;
@@ -87,7 +88,7 @@ public class TestCoachRepository : IDisposable
     {
         /// Arrange
         var testCoaches = GetCoachesMockData.GetAllCoaches();
-        var removedCoach = testCoaches[0];
+        var removedCoach = testCoaches.First();
         _context.Coaches.AddRange(testCoaches);
         _context.SaveChanges();
 
@@ -109,7 +110,7 @@ public class TestCoachRepository : IDisposable
     {
         /// Arrange
         var testCoaches = GetCoachesMockData.GetAllCoaches();
-        var updatedCoach = testCoaches[0];
+        var updatedCoach = testCoaches.First();
         _context.Coaches.AddRange(testCoaches);
         _context.SaveChanges();
 

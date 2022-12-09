@@ -1,8 +1,9 @@
+using FootballStats.ApplicationModule.Common.Wrappers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 
-public class DeletePlayerCommand : IRequest<bool>
+public class DeletePlayerCommand : IRequest<Response<bool>>
 {
     public int PlayerId { get; }
 

@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Dtos;
 using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.SignUp.Commands;
 using MediatR;
@@ -20,13 +20,13 @@ public class SignUpController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> SignUpAsync(SignUpCommand command)
     {
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        if (result == null)
+        if (!resultResponse.Succeeded)
         {
-            return BadRequest(new Response<SignUpDTO>(null, false, new[] { "Error during new user creation." }));
+            return Conflict(resultResponse);
         }
 
-        return Created("", new Response<SignUpDTO>(result, true));
+        return Created("", resultResponse);
     }
 }

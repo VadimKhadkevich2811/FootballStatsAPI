@@ -27,9 +27,9 @@ public class ITrainingsRepositoryMock
             .ReturnsAsync(true);
         mock.Setup(m => m.GetTrainingByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((int id) => trainings.FirstOrDefault(p => p.Id == id));
-        mock.Setup(m => m.AddTrainingAsync(It.IsAny<Training>(), It.IsAny<ICollection<int>>()))
+        mock.Setup(m => m.AddTrainingAsync(It.IsAny<Training>(), It.IsAny<IEnumerable<int>>()))
             .Callback(() => { return; });
-        mock.Setup(m => m.UpdateTrainingAsync(It.IsAny<Training>(), It.IsAny<ICollection<int>>()))
+        mock.Setup(m => m.UpdateTrainingAsync(It.IsAny<Training>(), It.IsAny<IEnumerable<int>>()))
             .Callback(() => { return; });
         mock.Setup(m => m.GetAllTrainingsCountAsync())
             .ReturnsAsync(() => trainings.Count);
@@ -42,7 +42,7 @@ public class ITrainingsRepositoryMock
                     ? trainings.Skip((parameters.PageNumber - 1) * parameters.PageSize)
                         .Take(parameters.PageSize)
                     : trainings.Where(training =>
-                        (training.Name.ToLower() == parameters.Name!.ToLower() || 
+                        (training.Name.ToLower() == parameters.Name!.ToLower() ||
                             string.IsNullOrEmpty(parameters.Name)))
                         .Skip((parameters.PageNumber - 1) * parameters.PageSize).Take(parameters.PageSize);
 

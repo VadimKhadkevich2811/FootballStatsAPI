@@ -1,7 +1,7 @@
-using FootballStats.ApplicationModule.Common.DTOs.Trainings;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.ApplicationModule.Common.Dtos.Trainings;
 using FootballStats.ApplicationModule.Common.Helpers;
 using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FootballStats.Application.Controllers;
 
 [ApiController]
-//[Authorize(AuthenticationSchemes = "Bearer")]
+[Authorize(AuthenticationSchemes = "Bearer")]
 [Route("api/trainings")]
 public class TrainingsController : ControllerBase
 {
@@ -35,9 +35,15 @@ public class TrainingsController : ControllerBase
     {
         var route = Request.Path.Value;
         var query = new GetAllTrainingsQuery(filter);
-        var trainings = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<TrainingReadDTO>(trainings.TrainingsList, filter,
-            trainings.TrainingsTotalCount, _uriService, route);
+        var trainingsResponse = await _mediator.Send(query);
+
+        if (!trainingsResponse.Succeeded)
+        {
+            return BadRequest(trainingsResponse);
+        }
+
+        var pagedReponse = PaginationHelper.CreatePagedReponse(trainingsResponse.Data!.TrainingsList,
+            filter, trainingsResponse.Data!.TrainingsTotalCount, _uriService, route);
 
         return Ok(pagedReponse);
     }
@@ -47,34 +53,44 @@ public class TrainingsController : ControllerBase
     public async Task<ActionResult> GetTrainingByIdAsync(int trainingId)
     {
         var query = new GetTrainingByIdQuery(trainingId);
-        var training = await _mediator.Send(query);
+        var trainingResponse = await _mediator.Send(query);
 
-        return training != null
-            ? Ok(new Response<TrainingReadDTO>(training, true))
-            : NotFound(new Response<TrainingReadDTO>(null, true, null, $"No Training Found By Id = {trainingId}"));
+        if (!trainingResponse.Succeeded)
+        {
+            return BadRequest(trainingResponse);
+        }
+
+        return trainingResponse.Data != null
+            ? Ok(trainingResponse)
+            : NotFound(trainingResponse);
     }
 
     //POST api/trainings
     [HttpPost]
     public async Task<ActionResult> CreateTrainingAsync(CreateTrainingCommand command)
     {
-        var training = await _mediator.Send(command);
+        var trainingResponse = await _mediator.Send(command);
 
-        return training == null
-            ? BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during new training creation." }))
-            : CreatedAtRoute(nameof(GetTrainingByIdAsync), new { TrainingId = training.Id },
-                new Response<TrainingReadDTO>(training, true, null, "Training is successfully created"));
+        if (!trainingResponse.Succeeded)
+        {
+            return BadRequest(trainingResponse);
+        }
+
+        return CreatedAtRoute(nameof(GetTrainingByIdAsync), new { CoachId = trainingResponse.Data!.Id }, trainingResponse);
     }
 
     //DELETE api/trainings/{trainingId}
     [HttpDelete("{trainingId}")]
     public async Task<ActionResult> DeleteTrainingAsync(int trainingId)
     {
-        var result = await _mediator.Send(new DeleteTrainingCommand(trainingId));
+        var resultResponse = await _mediator.Send(new DeleteTrainingCommand(trainingId));
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during removing a training." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //PUT api/trainings/{trainingId}
@@ -83,11 +99,14 @@ public class TrainingsController : ControllerBase
     {
         command.TrainingId = trainingId;
 
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during updating a training." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //PATCH api/trainings/{trainingId}
@@ -96,10 +115,13 @@ public class TrainingsController : ControllerBase
     {
         command.TrainingId = trainingId;
 
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<TrainingReadDTO>(null, false, new[] { "Errors during updating a training." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 }

@@ -1,12 +1,13 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Coaches.Queries.GetCoachById;
+using FootballStats.ApplicationModule.Common.Dtos.Coaches;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Coaches.Handlers;
 
-public class GetCoachByIdHandler : IRequestHandler<GetCoachByIdQuery, CoachReadDTO>
+public class GetCoachByIdHandler : IRequestHandler<GetCoachByIdQuery, Response<CoachReadDto>>
 {
     private readonly ICoachesRepository _repository;
     private readonly IMapper _mapper;
@@ -17,11 +18,13 @@ public class GetCoachByIdHandler : IRequestHandler<GetCoachByIdQuery, CoachReadD
         _mapper = mapper;
     }
 
-    public async Task<CoachReadDTO> Handle(GetCoachByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Response<CoachReadDto>> Handle(GetCoachByIdQuery request, CancellationToken cancellationToken)
     {
         var coach = await _repository.GetCoachByIdAsync(request.CoachId);
-        var coachDTO = _mapper.Map<CoachReadDTO>(coach);
+        var coachDto = _mapper.Map<CoachReadDto>(coach);
 
-        return coachDTO;
+        return new Response<CoachReadDto>(coachDto, true, null, coachDto == null
+            ? $"No Coach Found By Id = {request.CoachId}"
+            : null);
     }
 }

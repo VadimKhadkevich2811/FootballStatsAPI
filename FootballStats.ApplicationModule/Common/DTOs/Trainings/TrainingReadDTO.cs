@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.Domain.Entities;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
 
-namespace FootballStats.ApplicationModule.Common.DTOs.Trainings;
+namespace FootballStats.ApplicationModule.Common.Dtos.Trainings;
 
-public class TrainingReadDTO
+public class TrainingReadDto
 {
     [Key]
     public int Id { get; set; }
@@ -20,5 +19,5 @@ public class TrainingReadDTO
     public DateTime TrainingDate { get; set; }
 
     [Required]
-    public ICollection<PlayerReadDTO> TrainedPlayers { get; set; } = default!;
+    public ICollection<PlayerReadDto> TrainedPlayers { get; set; } = default!;
 }

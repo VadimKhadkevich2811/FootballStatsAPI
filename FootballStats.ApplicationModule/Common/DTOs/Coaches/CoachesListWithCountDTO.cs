@@ -1,11 +1,11 @@
-namespace FootballStats.ApplicationModule.Common.DTOs.Coaches;
+namespace FootballStats.ApplicationModule.Common.Dtos.Coaches;
 
-public class CoachesListWithCountDTO
+public class CoachesListWithCountDto
 {
-    public List<CoachReadDTO> CoachesList { get; set; }
+    public List<CoachReadDto> CoachesList { get; set; }
     public int CoachesTotalCount { get; set; }
 
-    public CoachesListWithCountDTO(List<CoachReadDTO> coachesList, int coachesTotalCount)
+    public CoachesListWithCountDto(List<CoachReadDto> coachesList, int coachesTotalCount)
     {
         CoachesList = coachesList;
         CoachesTotalCount = coachesTotalCount;

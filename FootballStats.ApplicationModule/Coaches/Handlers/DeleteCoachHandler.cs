@@ -1,32 +1,31 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using MediatR;
 using FootballStats.ApplicationModule.Coaches.Commands.DeleteCoach;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
+using MediatR;
 
 namespace FootballStats.ApplicationModule.Coaches.Handlers;
 
-public class DeleteCoachHandler : IRequestHandler<DeleteCoachCommand, bool>
+public class DeleteCoachHandler : IRequestHandler<DeleteCoachCommand, Response<bool>>
 {
     private readonly ICoachesRepository _repository;
-    private readonly IMapper _mapper;
 
-    public DeleteCoachHandler(ICoachesRepository repository, IMapper mapper)
+    public DeleteCoachHandler(ICoachesRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
-    public async Task<bool> Handle(DeleteCoachCommand request, CancellationToken cancellationToken)
+    public async Task<Response<bool>> Handle(DeleteCoachCommand request, CancellationToken cancellationToken)
     {
         var coach = await _repository.GetCoachByIdAsync(request.CoachId);
 
         if (coach == null)
         {
-            return false;
+            return new Response<bool>(false, false, null, $"No coaches found with ID = {request.CoachId}");
         }
 
         _repository.RemoveCoach(coach);
-        
-        return await _repository.SaveChangesAsync();
+
+        return new Response<bool>(await _repository.SaveChangesAsync(), true);
     }
 }

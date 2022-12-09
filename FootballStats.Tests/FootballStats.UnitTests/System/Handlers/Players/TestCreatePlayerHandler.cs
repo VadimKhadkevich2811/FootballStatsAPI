@@ -33,17 +33,17 @@ public class TestCreatePlayerHandler
 
         var sut = new CreatePlayerHandler(_playersRepository.Object, _mapper);
         var testPlayer = CreatePlayerCommandMockData.GetTestPlayerCommandData();
-        
+
         /// Act
 
         var newPlayer = await sut.Handle(testPlayer, new CancellationToken());
 
         /// Assert
 
-        newPlayer.Should().NotBeNull();
-        newPlayer.Name.Should().BeEquivalentTo(testPlayer.Name);
-        newPlayer.Lastname.Should().BeEquivalentTo(testPlayer.Lastname);
-        newPlayer.Age.Should().Be(testPlayer.Age);
-        newPlayer.Position.Should().Be(testPlayer.Position);
+        newPlayer.Data!.Should().NotBeNull();
+        newPlayer.Data!.Name.Should().BeEquivalentTo(testPlayer.Name);
+        newPlayer.Data!.Lastname.Should().BeEquivalentTo(testPlayer.Lastname);
+        newPlayer.Data!.Age.Should().Be(testPlayer.Age);
+        newPlayer.Data!.Position.Should().Be(testPlayer.Position);
     }
 }

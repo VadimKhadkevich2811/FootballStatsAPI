@@ -19,7 +19,7 @@ public class CoachesQueryStringParams : QueryStringParams
         Name = name;
         LastName = lastname;
     }
-    public CoachesQueryStringParams(int pageNumber, int pageSize, string? name, string? lastname, string? orderBy) 
+    public CoachesQueryStringParams(int pageNumber, int pageSize, string? name, string? lastname, string? orderBy)
         : base(pageNumber, pageSize)
     {
         Name = name;

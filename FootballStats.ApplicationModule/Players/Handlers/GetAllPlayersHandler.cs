@@ -1,12 +1,13 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 
-public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, PlayersListWithCountDTO>
+public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, Response<PlayersListWithCountDto>>
 {
     private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
@@ -17,13 +18,15 @@ public class GetAllPlayersHandler : IRequestHandler<GetAllPlayersQuery, PlayersL
         _mapper = mapper;
     }
 
-    public async Task<PlayersListWithCountDTO> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
+    public async Task<Response<PlayersListWithCountDto>> Handle(GetAllPlayersQuery request, CancellationToken cancellationToken)
     {
         var filter = request.PlayersQueryStringParams;
         var players = await _repository.GetAllPlayersAsync(filter);
         var playersCount = await _repository.GetAllPlayersCountAsync();
-        var playerDTOs = _mapper.Map<List<PlayerReadDTO>>(players);
+        var playerDtos = _mapper.Map<List<PlayerReadDto>>(players);
+        var playersResult = new PlayersListWithCountDto(playerDtos, playersCount);
+        var playersResponse = new Response<PlayersListWithCountDto>(playersResult, true);
 
-        return new PlayersListWithCountDTO(playerDTOs, playersCount);
+        return playersResponse;
     }
 }

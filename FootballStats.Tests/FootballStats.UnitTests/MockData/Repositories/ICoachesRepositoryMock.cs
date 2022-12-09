@@ -45,9 +45,9 @@ public class ICoachesRepositoryMock
                     ? coaches.Skip((parameters.PageNumber - 1) * parameters.PageSize)
                         .Take(parameters.PageSize)
                     : coaches.Where(coach =>
-                        (coach.Lastname.ToLower() == parameters.LastName!.ToLower() || 
+                        (coach.Lastname.ToLower() == parameters.LastName!.ToLower() ||
                             string.IsNullOrEmpty(parameters.LastName)) &&
-                        (coach.Name.ToLower() == parameters.Name!.ToLower() || 
+                        (coach.Name.ToLower() == parameters.Name!.ToLower() ||
                             string.IsNullOrEmpty(parameters.Name)))
                         .Skip((parameters.PageNumber - 1) * parameters.PageSize).Take(parameters.PageSize);
 

@@ -28,7 +28,7 @@ public class ISignUpRepositoryMock
             || user.UserName == username));
         mock.Setup(m => m.AddUserAsync(It.IsAny<User>()))
             .Callback(() => { return; });
-        
+
         return mock;
     }
 }

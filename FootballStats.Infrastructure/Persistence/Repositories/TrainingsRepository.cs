@@ -5,6 +5,8 @@ using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
+namespace FootballStats.Infrastructure.Persistence.Repositories;
+
 public class TrainingsRepository : ITrainingsRepository
 {
     private readonly IApplicationDbContext _context;
@@ -16,7 +18,7 @@ public class TrainingsRepository : ITrainingsRepository
         _sortHelper = sortHelper;
     }
 
-    public async Task AddTrainingAsync(Training training, ICollection<int> playerIDs)
+    public async Task AddTrainingAsync(Training training, IEnumerable<int> playerIDs)
     {
         await _context.Trainings.AddAsync(training);
         await SaveChangesAsync();
@@ -26,14 +28,14 @@ public class TrainingsRepository : ITrainingsRepository
         }
     }
 
-    public async Task<List<Training>> GetAllTrainingsAsync()
+    public async Task<IEnumerable<Training>> GetAllTrainingsAsync()
     {
         var trainings = await _context.Trainings.ToListAsync();
 
         return trainings;
     }
 
-    public async Task<List<Training>> GetAllTrainingsAsync(TrainingsQueryStringParams trainingsFilter)
+    public async Task<IEnumerable<Training>> GetAllTrainingsAsync(TrainingsQueryStringParams trainingsFilter)
     {
         var trainings = trainingsFilter.Name == null
            ? _context.Trainings.Skip((trainingsFilter.PageNumber - 1) * trainingsFilter.PageSize).Take(trainingsFilter.PageSize)
@@ -56,20 +58,20 @@ public class TrainingsRepository : ITrainingsRepository
         return training;
     }
 
-    public async Task<List<Training>> GetTrainingsByCoachAsync(int coachId)
+    public async Task<IEnumerable<Training>> GetTrainingsByCoachAsync(int coachId)
     {
         var trainings = await _context.Trainings.Where(training => training.CoachId == coachId).ToListAsync();
 
         return trainings;
     }
 
-    public async Task<List<Training>> GetTrainingsByPositionAsync(PositionGroup position)
+    public async Task<IEnumerable<Training>> GetTrainingsByPositionAsync(PositionGroup position)
     {
         var trainings = await (from training in _context.Trainings
-                      join coach in _context.Coaches on training.CoachId equals coach.Id
-                      where coach.Position == position
-                      select training).ToListAsync();
-        
+                               join coach in _context.Coaches on training.CoachId equals coach.Id
+                               where coach.Position == position
+                               select training).ToListAsync();
+
         return trainings;
     }
 
@@ -90,7 +92,7 @@ public class TrainingsRepository : ITrainingsRepository
         return await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateTrainingAsync(Training training, ICollection<int> playerIDs)
+    public async Task UpdateTrainingAsync(Training training, IEnumerable<int> playerIDs)
     {
         _context.Trainings.Update(training);
 

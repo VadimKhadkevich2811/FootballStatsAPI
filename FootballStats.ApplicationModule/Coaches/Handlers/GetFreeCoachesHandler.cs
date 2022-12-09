@@ -1,14 +1,13 @@
 using AutoMapper;
 using FootballStats.ApplicationModule.Coaches.Queries.GetFreeCoaches;
-using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Dtos.Coaches;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 
-public class GetFreeCoachesHandler : IRequestHandler<GetFreeCoachesQuery, CoachesListWithCountDTO>
+public class GetFreeCoachesHandler : IRequestHandler<GetFreeCoachesQuery, Response<CoachesListWithCountDto>>
 {
     private readonly ICoachesRepository _repository;
     private readonly IMapper _mapper;
@@ -19,13 +18,16 @@ public class GetFreeCoachesHandler : IRequestHandler<GetFreeCoachesQuery, Coache
         _mapper = mapper;
     }
 
-    public async Task<CoachesListWithCountDTO> Handle(GetFreeCoachesQuery request, CancellationToken cancellationToken)
+    public async Task<Response<CoachesListWithCountDto>> Handle(GetFreeCoachesQuery request, CancellationToken cancellationToken)
     {
         var date = request.Date;
         var freeCoaches = await _repository.GetFreeCoachesByDateAsync(date);
         var freeCoachesCount = await _repository.GetFreeCoachesByDateCountAsync(date);
-        var freeCoachDTOs = _mapper.Map<List<CoachReadDTO>>(freeCoaches);
+        var freeCoachDtos = _mapper.Map<List<CoachReadDto>>(freeCoaches);
 
-        return new CoachesListWithCountDTO(freeCoachDTOs, freeCoachesCount);
+        var freeCoachesResult = new CoachesListWithCountDto(freeCoachDtos, freeCoachesCount);
+        var freeCoachesResponse = new Response<CoachesListWithCountDto>(freeCoachesResult, true);
+
+        return freeCoachesResponse;
     }
 }

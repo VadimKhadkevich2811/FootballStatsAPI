@@ -1,15 +1,15 @@
-using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Wrappers;
 
 namespace FootballStats.ApplicationModule.Common.Helpers;
 
-public class PaginationHelper
+public static class PaginationHelper
 {
-    public static PagedResponse<List<T>> CreatePagedReponse<T>(List<T> pagedData, QueryStringParams validFilter,
+    public static PagedResponse<IEnumerable<T>> CreatePagedReponse<T>(IEnumerable<T> pagedData, QueryStringParams validFilter,
         int totalRecords, IUriService uriService, string? route)
     {
-        var response = new PagedResponse<List<T>>(pagedData, validFilter.PageNumber, validFilter.PageSize);
+        var response = new PagedResponse<IEnumerable<T>>(pagedData, validFilter.PageNumber, validFilter.PageSize);
         var totalPages = ((double)totalRecords / (double)validFilter.PageSize);
         int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
 

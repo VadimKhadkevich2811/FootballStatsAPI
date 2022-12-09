@@ -1,12 +1,13 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Coaches;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.ApplicationModule.Coaches.Queries.GetAllCoaches;
+using FootballStats.ApplicationModule.Common.Dtos.Coaches;
+using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Coaches.Handlers;
 
-public class GetAllCoachesHandler : IRequestHandler<GetAllCoachesQuery, CoachesListWithCountDTO>
+public class GetAllCoachesHandler : IRequestHandler<GetAllCoachesQuery, Response<CoachesListWithCountDto>>
 {
     private readonly ICoachesRepository _repository;
     private readonly IMapper _mapper;
@@ -17,13 +18,15 @@ public class GetAllCoachesHandler : IRequestHandler<GetAllCoachesQuery, CoachesL
         _mapper = mapper;
     }
 
-    public async Task<CoachesListWithCountDTO> Handle(GetAllCoachesQuery request, CancellationToken cancellationToken)
+    public async Task<Response<CoachesListWithCountDto>> Handle(GetAllCoachesQuery request, CancellationToken cancellationToken)
     {
         var filter = request.CoachesQueryStringParams;
         var coaches = await _repository.GetAllCoachesAsync(filter);
         var coachesCount = await _repository.GetAllCoachesCountAsync();
-        var coachDTOs = _mapper.Map<List<CoachReadDTO>>(coaches);
+        var coachDtos = _mapper.Map<List<CoachReadDto>>(coaches);
+        var coachesResult = new CoachesListWithCountDto(coachDtos, coachesCount);
+        var coachesResponse = new Response<CoachesListWithCountDto>(coachesResult, true);
 
-        return new CoachesListWithCountDTO(coachDTOs, coachesCount);
+        return coachesResponse;
     }
 }

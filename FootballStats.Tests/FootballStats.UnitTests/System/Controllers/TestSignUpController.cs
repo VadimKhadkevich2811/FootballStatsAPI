@@ -1,6 +1,7 @@
 using FluentAssertions;
 using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.DTOs;
+using FootballStats.ApplicationModule.Common.Dtos;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.UnitTests.MockData.SignUp;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ public class TestSignUpController
     public async Task SignUpAsync_ShouldReturn201Status()
     {
         ///Arrange
-        SignUpDTO returnValue = new SignUpDTO();
+        Response<SignUpDto?> returnValue = new Response<SignUpDto?>(new SignUpDto(), true);
         var inputData = SignUpCommandMockData.GetEmptySignUpCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new SignUpController(_mediatorMoq.Object);
@@ -34,10 +35,10 @@ public class TestSignUpController
     }
 
     [Fact]
-    public async Task SignUpAsync_ShouldReturn400Status()
+    public async Task SignUpAsync_ShouldReturn409Status()
     {
         ///Arrange
-        SignUpDTO? returnValue = null;
+        Response<SignUpDto?> returnValue = new Response<SignUpDto?>(null, false);
         var inputData = SignUpCommandMockData.GetNoSignUpCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new SignUpController(_mediatorMoq.Object);
@@ -46,7 +47,7 @@ public class TestSignUpController
         var result = await sut.SignUpAsync(inputData!);
 
         ///Assert
-        result.GetType().Should().Be(typeof(BadRequestObjectResult));
-        (result as BadRequestObjectResult)!.StatusCode.Should().Be(400);
+        result.GetType().Should().Be(typeof(ConflictObjectResult));
+        (result as ConflictObjectResult)!.StatusCode.Should().Be(409);
     }
 }

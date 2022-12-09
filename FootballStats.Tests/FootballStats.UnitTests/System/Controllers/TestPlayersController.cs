@@ -1,17 +1,18 @@
 using FluentAssertions;
 using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
 using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
+using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using FootballStats.UnitTests.MockData.Players;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
 
 namespace FootballStats.UnitTests.System.Controllers;
 
@@ -29,7 +30,7 @@ public class TestPlayersController
     public async Task GetAllPlayersAsync_ShouldReturn200Status()
     {
         ///Arrange
-        PlayersListWithCountDTO returnValue = new PlayersListWithCountDTO(new List<PlayerReadDTO>(), 0);
+        Response<PlayersListWithCountDto> returnValue = new Response<PlayersListWithCountDto>(new PlayersListWithCountDto(new List<PlayerReadDto>(), 0));
         var filter = new PlayersQueryStringParams();
         var inputData = new GetAllPlayersQuery(filter);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetAllPlayersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
@@ -58,7 +59,7 @@ public class TestPlayersController
     {
         ///Arrange
         int queryParam = 1;
-        PlayerReadDTO returnValue = new PlayerReadDTO();
+        Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(new PlayerReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetPlayerByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
@@ -75,9 +76,9 @@ public class TestPlayersController
     {
         ///Arrange
         int queryParam = 1;
-        PlayerReadDTO? returnValue = null;
-        var inputData = new GetPlayerByIdQuery(queryParam);
-        _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
+        Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(null, true);
+        _mediatorMoq.Setup(x => x.Send(It.IsAny<GetPlayerByIdQuery>(), It.IsAny<CancellationToken>()))!
+            .ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
         ///Act
@@ -93,7 +94,7 @@ public class TestPlayersController
     {
         ///Arrange
         var inputData = CreatePlayerCommandMockData.GetEmptyCreatePlayerCommandData();
-        PlayerReadDTO returnValue = new PlayerReadDTO();
+        Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(new PlayerReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
@@ -110,7 +111,7 @@ public class TestPlayersController
     {
         ///Arrange
         var inputData = CreatePlayerCommandMockData.GetNoCreatePlayerCommandData();
-        PlayerReadDTO? returnValue = null;
+        Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(null, false);
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
@@ -123,11 +124,11 @@ public class TestPlayersController
     }
 
     [Fact]
-    public async Task DeletePlayerAsync_ShouldReturn204Status()
+    public async Task DeletePlayerAsync_ShouldReturn200Status()
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = true;
+        Response<bool> returnValue = new Response<bool>(true, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
@@ -135,8 +136,8 @@ public class TestPlayersController
         var result = await sut.DeletePlayerAsync(queryParam);
 
         ///Assert
-        result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult)!.StatusCode.Should().Be(204);
+        result.GetType().Should().Be(typeof(OkObjectResult));
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -144,7 +145,7 @@ public class TestPlayersController
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = false;
+        Response<bool> returnValue = new Response<bool>(false, false);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
 
@@ -157,11 +158,11 @@ public class TestPlayersController
     }
 
     [Fact]
-    public async Task UpdatePlayerAsync_ShouldReturn204Status()
+    public async Task UpdatePlayerAsync_ShouldReturn200Status()
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = true;
+        Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdatePlayerCommandMockData.GetEmptyUpdatePlayerCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
@@ -170,8 +171,8 @@ public class TestPlayersController
         var result = await sut.UpdatePlayerAsync(queryParam, inputData);
 
         ///Assert
-        result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult)!.StatusCode.Should().Be(204);
+        result.GetType().Should().Be(typeof(OkObjectResult));
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -179,7 +180,7 @@ public class TestPlayersController
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = false;
+        Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdatePlayerCommandMockData.GetEmptyUpdatePlayerCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
@@ -193,11 +194,11 @@ public class TestPlayersController
     }
 
     [Fact]
-    public async Task UpdatePlayerDetailAsync_ShouldReturn204Status()
+    public async Task UpdatePlayerDetailAsync_ShouldReturn200Status()
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = true;
+        Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdatePlayerDetailCommandMockData.GetEmptyUpdatePlayerDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
@@ -206,8 +207,8 @@ public class TestPlayersController
         var result = await sut.UpdatePlayerDetailAsync(queryParam, inputData);
 
         ///Assert
-        result.GetType().Should().Be(typeof(NoContentResult));
-        (result as NoContentResult)!.StatusCode.Should().Be(204);
+        result.GetType().Should().Be(typeof(OkObjectResult));
+        (result as OkObjectResult)!.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -215,7 +216,7 @@ public class TestPlayersController
     {
         ///Arrange
         int queryParam = 1;
-        bool returnValue = false;
+        Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdatePlayerDetailCommandMockData.GetEmptyUpdatePlayerDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
@@ -232,7 +233,7 @@ public class TestPlayersController
     public async Task GetFreePlayersByDateAsync_ShouldReturn200Status()
     {
         ///Arrange
-        PlayersListWithCountDTO returnValue = new PlayersListWithCountDTO(new List<PlayerReadDTO>(), 0);
+        Response<PlayersListWithCountDto> returnValue = new Response<PlayersListWithCountDto>(new PlayersListWithCountDto(new List<PlayerReadDto>(), 0));
         var testDate = DateTime.Now;
         var inputData = new GetFreePlayersQuery(testDate);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetFreePlayersQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);

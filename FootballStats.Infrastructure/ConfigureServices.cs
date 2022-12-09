@@ -1,6 +1,3 @@
-using System.Reflection;
-using FluentValidation;
-using FootballStats.ApplicationModule.Common.Behaviours;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
@@ -9,7 +6,6 @@ using FootballStats.Infrastructure.Logging;
 using FootballStats.Infrastructure.Persistence;
 using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.Infrastructure.Services;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +37,6 @@ public static class ConfigureServices
                     + $"{configuration["FootballStatsAuthentication:Audience"]}/";
             });
 
-        string str = configuration.GetConnectionString("FootballStatsDBConnection") +
-                $"{configuration["FootballStatsDBConnection:Password"]};";
         services.AddDbContext<FootballStatsDbContext>(opt => opt.UseSqlServer(
             configuration.GetConnectionString("FootballStatsDBConnection") +
                 $"{configuration["FootballStatsDBConnection:Password"]};",

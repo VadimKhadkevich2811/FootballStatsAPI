@@ -1,18 +1,18 @@
-using FootballStats.ApplicationModule.Common.DTOs.Players;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
 using FootballStats.ApplicationModule.Common.Helpers;
 using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
 using FootballStats.ApplicationModule.Players.Commands.UpdatePlayerDetail;
+using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
+using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
-using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
 
 namespace FootballStats.Application.Controllers;
 
@@ -36,9 +36,15 @@ public class PlayersController : ControllerBase
     {
         var route = Request.Path.Value;
         var query = new GetAllPlayersQuery(filter);
-        var players = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(players.PlayersList, filter,
-            players.PlayersTotalCount, _uriService, route);
+        var playersResponse = await _mediator.Send(query);
+
+        if (!playersResponse.Succeeded)
+        {
+            return BadRequest(playersResponse);
+        }
+
+        var pagedReponse = PaginationHelper.CreatePagedReponse(playersResponse.Data!.PlayersList,
+            filter, playersResponse.Data!.PlayersTotalCount, _uriService, route);
 
         return Ok(pagedReponse);
     }
@@ -48,34 +54,44 @@ public class PlayersController : ControllerBase
     public async Task<ActionResult> GetPlayerByIdAsync(int playerId)
     {
         var query = new GetPlayerByIdQuery(playerId);
-        var player = await _mediator.Send(query);
+        var playerResponse = await _mediator.Send(query);
 
-        return player != null
-            ? Ok(new Response<PlayerReadDTO>(player, true))
-            : NotFound(new Response<PlayerReadDTO>(null, true, null, $"No Player Found By Id = {playerId}"));
+        if (!playerResponse.Succeeded)
+        {
+            return BadRequest(playerResponse);
+        }
+
+        return playerResponse.Data != null
+            ? Ok(playerResponse)
+            : NotFound(playerResponse);
     }
 
     //POST api/players
     [HttpPost]
     public async Task<ActionResult> CreatePlayerAsync(CreatePlayerCommand command)
     {
-        var player = await _mediator.Send(command);
+        var playerResponse = await _mediator.Send(command);
 
-        return player == null
-            ? BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during new player creation." }))
-            : CreatedAtRoute(nameof(GetPlayerByIdAsync), new { PlayerId = player.Id },
-                new Response<PlayerReadDTO>(player, true, null, "Player is successfully created"));
+        if (!playerResponse.Succeeded)
+        {
+            return BadRequest(playerResponse);
+        }
+
+        return CreatedAtRoute(nameof(GetPlayerByIdAsync), new { CoachId = playerResponse.Data!.Id }, playerResponse);
     }
 
     //DELETE api/players/{playerId}
     [HttpDelete("{playerId}")]
     public async Task<ActionResult> DeletePlayerAsync(int playerId)
     {
-        var result = await _mediator.Send(new DeletePlayerCommand(playerId));
+        var resultResponse = await _mediator.Send(new DeletePlayerCommand(playerId));
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during removing a player." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //PUT api/players/{playerId}
@@ -84,11 +100,14 @@ public class PlayersController : ControllerBase
     {
         command.PlayerId = playerId;
 
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during updating a player." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //PATCH api/players/{playerId}
@@ -97,11 +116,14 @@ public class PlayersController : ControllerBase
     {
         command.PlayerId = playerId;
 
-        var result = await _mediator.Send(command);
+        var resultResponse = await _mediator.Send(command);
 
-        return result
-            ? NoContent()
-            : BadRequest(new Response<PlayerReadDTO>(null, false, new[] { "Errors during updating a player." }));
+        if (!resultResponse.Succeeded)
+        {
+            return BadRequest(resultResponse);
+        }
+
+        return Ok(resultResponse);
     }
 
     //GET api/players/free
@@ -111,9 +133,15 @@ public class PlayersController : ControllerBase
     {
         var route = Request.Path.Value;
         var query = new GetFreePlayersQuery(date);
-        var freePlayers = await _mediator.Send(query);
-        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDTO>(freePlayers.PlayersList,
-            new PlayersQueryStringParams(), freePlayers.PlayersTotalCount, _uriService, route);
+        var freePlayersResponse = await _mediator.Send(query);
+
+        if (!freePlayersResponse.Succeeded)
+        {
+            return BadRequest(freePlayersResponse);
+        }
+
+        var pagedReponse = PaginationHelper.CreatePagedReponse<PlayerReadDto>(freePlayersResponse.Data!.PlayersList,
+            new CoachesQueryStringParams(), freePlayersResponse.Data!.PlayersTotalCount, _uriService, route);
 
         return Ok(pagedReponse);
     }

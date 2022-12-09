@@ -1,12 +1,13 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Players.Handlers;
 
-public class GetPlayerByIdHandler : IRequestHandler<GetPlayerByIdQuery, PlayerReadDTO>
+public class GetPlayerByIdHandler : IRequestHandler<GetPlayerByIdQuery, Response<PlayerReadDto>>
 {
     private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
@@ -17,11 +18,13 @@ public class GetPlayerByIdHandler : IRequestHandler<GetPlayerByIdQuery, PlayerRe
         _mapper = mapper;
     }
 
-    public async Task<PlayerReadDTO> Handle(GetPlayerByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Response<PlayerReadDto>> Handle(GetPlayerByIdQuery request, CancellationToken cancellationToken)
     {
         var player = await _repository.GetPlayerByIdAsync(request.PlayerId);
-        var playerDTO = _mapper.Map<PlayerReadDTO>(player);
+        var playerDto = _mapper.Map<PlayerReadDto>(player);
 
-        return playerDTO;
+        return new Response<PlayerReadDto>(playerDto, true, null, playerDto == null
+            ? $"No Player Found By Id = {request.PlayerId}"
+            : null);
     }
 }

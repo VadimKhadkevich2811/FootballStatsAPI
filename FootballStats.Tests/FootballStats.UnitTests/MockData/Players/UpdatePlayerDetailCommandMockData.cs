@@ -15,7 +15,7 @@ public class UpdatePlayerDetailCommandMockData
     {
         return new UpdatePlayerDetailCommand()
         {
-            Item =  new JsonPatchDocument<UpdatePlayerCommand>(),
+            Item = new JsonPatchDocument<UpdatePlayerCommand>(),
             PlayerId = 1
         };
     }

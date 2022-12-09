@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FootballStats.ApplicationModule.Common.DTOs;
+namespace FootballStats.ApplicationModule.Common.Dtos;
 
-public class SignUpDTO
+public class SignUpDto
 {
     [Required]
     [MaxLength(50)]

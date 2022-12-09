@@ -1,8 +1,7 @@
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text;
 using FootballStats.ApplicationModule.Common.Interfaces;
-using System.Linq.Dynamic.Core;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballStats.Infrastructure.Services;
 
@@ -32,7 +31,7 @@ public class SortHelper<T> : ISortHelper<T>
 
             if (objectProperty == null)
                 continue;
-                
+
             var sortingOrder = param.EndsWith(" desc") ? "descending" : "ascending";
             orderQueryBuilder.Append($"{objectProperty.Name.ToString()} {sortingOrder}, ");
         }

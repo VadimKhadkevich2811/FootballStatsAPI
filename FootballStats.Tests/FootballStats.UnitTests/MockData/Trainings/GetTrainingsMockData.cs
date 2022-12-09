@@ -4,7 +4,7 @@ namespace FootballStats.UnitTests.MockData.Trainings;
 
 public class GetTrainingsMockData
 {
-    public static List<Training> GetAllTrainings()
+    public static IEnumerable<Training> GetAllTrainings()
     {
         return new List<Training>()
         {

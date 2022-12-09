@@ -1,11 +1,11 @@
-namespace FootballStats.ApplicationModule.Common.DTOs.Trainings;
+namespace FootballStats.ApplicationModule.Common.Dtos.Trainings;
 
-public class TrainingsListWithCountDTO
+public class TrainingsListWithCountDto
 {
-    public List<TrainingReadDTO> TrainingsList { get; set; }
+    public List<TrainingReadDto> TrainingsList { get; set; }
     public int TrainingsTotalCount { get; set; }
 
-    public TrainingsListWithCountDTO(List<TrainingReadDTO> trainingsList, int trainingsTotalCount)
+    public TrainingsListWithCountDto(List<TrainingReadDto> trainingsList, int trainingsTotalCount)
     {
         TrainingsList = trainingsList;
         TrainingsTotalCount = trainingsTotalCount;

@@ -1,9 +1,10 @@
-using FootballStats.ApplicationModule.Common.DTOs.Trainings;
+using FootballStats.ApplicationModule.Common.Dtos.Trainings;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Trainings.Commands.CreateTraining;
 
-public class CreateTrainingCommand : IRequest<TrainingReadDTO?>
+public class CreateTrainingCommand : IRequest<Response<TrainingReadDto>>
 {
     public string Name { get; set; } = default!;
     public int CoachId { get; set; }

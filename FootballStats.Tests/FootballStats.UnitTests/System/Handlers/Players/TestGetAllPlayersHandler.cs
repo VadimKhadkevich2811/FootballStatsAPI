@@ -40,6 +40,6 @@ public class TestGetAllPlayersHandler
 
         /// Assert
 
-        players.PlayersTotalCount.Should().Be(await _playersRepository.Object.GetAllPlayersCountAsync());
+        players.Data!.PlayersTotalCount.Should().Be(await _playersRepository.Object.GetAllPlayersCountAsync());
     }
 }

@@ -1,15 +1,6 @@
 using FootballStats.ApplicationModule;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.Domain.Entities;
 using FootballStats.Infrastructure;
-using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Logging;
-using FootballStats.Infrastructure.Persistence;
-using FootballStats.Infrastructure.Persistence.Repositories;
-using FootballStats.Infrastructure.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using NLog.Web;
 

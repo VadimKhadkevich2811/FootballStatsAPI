@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using FootballStats.Domain.Enums;
 
-namespace FootballStats.ApplicationModule.Common.DTOs.Players;
+namespace FootballStats.ApplicationModule.Common.Dtos.Players;
 
-public class PlayerReadDTO
+public class PlayerReadDto
 {
     [Key]
     public int Id { get; set; }

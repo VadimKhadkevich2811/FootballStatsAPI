@@ -12,18 +12,10 @@ namespace FootballStats.UnitTests.System.Handlers.Players;
 public class TestDeletePlayerHandler
 {
     private readonly Mock<IPlayersRepository> _playersRepository;
-    private readonly IMapper _mapper;
 
     public TestDeletePlayerHandler()
     {
         _playersRepository = IPlayersRepositoryMock.GetMock();
-
-        var mockMapper = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile(new MappingProfile());
-        });
-
-        _mapper = mockMapper.CreateMapper();
     }
 
     [Fact]
@@ -31,7 +23,7 @@ public class TestDeletePlayerHandler
     {
         ///Arrange
 
-        var sut = new DeletePlayerHandler(_playersRepository.Object, _mapper);
+        var sut = new DeletePlayerHandler(_playersRepository.Object);
         var testPlayer = DeletePlayerCommandMockData.GetTestPlayerCommandData();
 
         /// Act
@@ -40,6 +32,6 @@ public class TestDeletePlayerHandler
 
         /// Assert
 
-        isPlayerDeleted.Should().Be(true);
+        isPlayerDeleted!.Data.Should().Be(true);
     }
 }

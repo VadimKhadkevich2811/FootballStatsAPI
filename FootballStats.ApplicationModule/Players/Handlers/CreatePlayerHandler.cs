@@ -1,13 +1,14 @@
 using AutoMapper;
-using FootballStats.ApplicationModule.Common.DTOs.Players;
+using FootballStats.ApplicationModule.Common.Dtos.Players;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.Wrappers;
 using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
 using FootballStats.Domain.Entities;
 using MediatR;
 
 namespace FootballStats.ApplicationModule.Common.Players.Handlers;
 
-public class CreatePlayerHandler : IRequestHandler<CreatePlayerCommand, PlayerReadDTO>
+public class CreatePlayerHandler : IRequestHandler<CreatePlayerCommand, Response<PlayerReadDto>>
 {
     private readonly IPlayersRepository _repository;
     private readonly IMapper _mapper;
@@ -17,14 +18,16 @@ public class CreatePlayerHandler : IRequestHandler<CreatePlayerCommand, PlayerRe
         _mapper = mapper;
     }
 
-    public async Task<PlayerReadDTO> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
+    public async Task<Response<PlayerReadDto>> Handle(CreatePlayerCommand request, CancellationToken cancellationToken)
     {
         var player = _mapper.Map<Player>(request);
         await _repository.AddPlayerAsync(player);
         await _repository.SaveChangesAsync();
 
-        var newPlayer = _mapper.Map<PlayerReadDTO>(player);
+        var newPlayer = _mapper.Map<PlayerReadDto>(player);
 
-        return newPlayer;
+        var newPlayerResponse = new Response<PlayerReadDto>(newPlayer, true);
+
+        return newPlayerResponse;
     }
 }

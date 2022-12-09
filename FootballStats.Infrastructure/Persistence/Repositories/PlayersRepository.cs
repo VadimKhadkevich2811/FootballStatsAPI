@@ -1,14 +1,16 @@
-using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
+namespace FootballStats.Infrastructure.Persistence.Repositories;
+
 public class PlayersRepository : IPlayersRepository
 {
     private readonly IApplicationDbContext _context;
-    private ISortHelper<Player> _sortHelper;
+    private readonly ISortHelper<Player> _sortHelper;
 
     public PlayersRepository(IApplicationDbContext context, ISortHelper<Player> sortHelper)
     {
@@ -21,17 +23,17 @@ public class PlayersRepository : IPlayersRepository
         await _context.Players.AddAsync(player);
     }
 
-    public async Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition, ICollection<int> playerIDs)
+    public async Task<bool> ArePlayersOfValidPositionAsync(PositionGroup coachPosition, IEnumerable<int> playerIDs)
     {
         return await _context.Players.Where(player => playerIDs.Contains(player.Id)).AllAsync(player => player.Position == coachPosition);
     }
 
-    public async Task<List<Player>> GetAllPlayersAsync()
+    public async Task<IEnumerable<Player>> GetAllPlayersAsync()
     {
         return await _context.Players.ToListAsync();
     }
 
-    public async Task<List<Player>> GetAllPlayersAsync(PlayersQueryStringParams playersFilter)
+    public async Task<IEnumerable<Player>> GetAllPlayersAsync(PlayersQueryStringParams playersFilter)
     {
         var players = playersFilter.Name == null && playersFilter.LastName == null
             ? _context.Players.Skip((playersFilter.PageNumber - 1) * playersFilter.PageSize).Take(playersFilter.PageSize)
@@ -48,7 +50,7 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.CountAsync();
     }
 
-    public async Task<List<Player>> GetFreePlayersByDateAsync(DateTime date)
+    public async Task<IEnumerable<Player>> GetFreePlayersByDateAsync(DateTime date)
     {
         var trainingsInDateIds = _context.Trainings
             .Where(tr => tr.TrainingDate.Date == date.Date)
@@ -75,12 +77,12 @@ public class PlayersRepository : IPlayersRepository
         return await _context.Players.Where(player => player.Id == playerId).FirstOrDefaultAsync();
     }
 
-    public async Task<List<Player>> GetPlayersByPositionAsync(PositionGroup position)
+    public async Task<IEnumerable<Player>> GetPlayersByPositionAsync(PositionGroup position)
     {
         return await _context.Players.Where(player => player.Position == position).ToListAsync();
     }
 
-    public async Task<List<Player>> GetPlayersByTrainingId(int trainingId)
+    public async Task<IEnumerable<Player>> GetPlayersByTrainingId(int trainingId)
     {
         var trainingPlayersIDs = await _context.TrainingPlayers.Where(tp => tp.TrainingId == trainingId).Select(tp => tp.PlayerId).ToListAsync();
 

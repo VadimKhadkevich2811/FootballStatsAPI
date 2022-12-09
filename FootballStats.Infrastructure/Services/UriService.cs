@@ -1,4 +1,3 @@
-using FootballStats.ApplicationModule.Common.QueryParams;
 using FootballStats.ApplicationModule.Common.Interfaces;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -18,7 +17,7 @@ public class UriService : IUriService
         var endpointUri = new Uri(string.Concat(_baseUri, route));
         var modifiedUri = QueryHelpers.AddQueryString(endpointUri.ToString(), "pageNumber", pageNumber.ToString());
         modifiedUri = QueryHelpers.AddQueryString(modifiedUri, "pageSize", pageSize.ToString());
-        
+
         return new Uri(modifiedUri);
     }
 }
