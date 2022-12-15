@@ -1,9 +1,8 @@
 using AutoMapper;
 using FluentAssertions;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Common.Mappings;
-using FootballStats.ApplicationModule.Common.Players.Handlers;
-using FootballStats.ApplicationModule.Players.Handlers;
+using FootballStats.Application.Common.Interfaces.Repositories;
+using FootballStats.Application.Players;
+using FootballStats.Application.Players.Handlers;
 using FootballStats.UnitTests.MockData.Players;
 using FootballStats.UnitTests.MockData.Repositories;
 using Moq;
@@ -21,7 +20,7 @@ public class TestUpdatePlayerHandler
 
         var mockMapper = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new MappingProfile());
+            cfg.AddProfile(new PlayerMappingProfile());
         });
 
         _mapper = mockMapper.CreateMapper();

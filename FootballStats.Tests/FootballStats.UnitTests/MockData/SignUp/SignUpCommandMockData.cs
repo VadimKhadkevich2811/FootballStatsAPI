@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.SignUp.Commands;
+using FootballStats.Application.SignUp.Commands;
 
 namespace FootballStats.UnitTests.MockData.SignUp;
 

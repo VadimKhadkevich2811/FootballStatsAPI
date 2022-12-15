@@ -1,5 +1,5 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using FootballStats.Infrastructure.Authentication;
 using FootballStats.Infrastructure.Logging;
@@ -54,6 +54,8 @@ public static class ConfigureServices
         services.AddScoped<ISortHelper<Player>, SortHelper<Player>>();
         services.AddScoped<ISortHelper<Training>, SortHelper<Training>>();
         services.AddScoped<ISortHelper<Coach>, SortHelper<Coach>>();
+
+        services.AddTransient<IValidationOptionsService, ValidationOptionsService>();
 
         return services;
     }

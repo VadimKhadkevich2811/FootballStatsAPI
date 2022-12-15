@@ -1,17 +1,18 @@
 using FluentAssertions;
-using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Coaches.Commands.DeleteCoach;
-using FootballStats.ApplicationModule.Coaches.Queries.GetAllCoaches;
-using FootballStats.ApplicationModule.Coaches.Queries.GetCoachById;
-using FootballStats.ApplicationModule.Coaches.Queries.GetFreeCoaches;
-using FootballStats.ApplicationModule.Common.Dtos.Coaches;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.QueryParams;
-using FootballStats.ApplicationModule.Common.Wrappers;
+using FootballStats.API.Controllers;
+using FootballStats.Application.Coaches.Commands.DeleteCoach;
+using FootballStats.Application.Coaches.Dtos;
+using FootballStats.Application.Coaches.Queries.GetAllCoaches;
+using FootballStats.Application.Coaches.Queries.GetCoachById;
+using FootballStats.Application.Coaches.Queries.GetFreeCoaches;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.QueryParams;
+using FootballStats.Application.Common.Wrappers;
 using FootballStats.UnitTests.MockData.Coaches;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Moq;
 
 namespace FootballStats.UnitTests.System.Controllers;
@@ -20,10 +21,12 @@ public class TestCoachesController
 {
     private readonly Mock<IMediator> _mediatorMoq;
     private readonly Mock<IUriService> _uriServiceMoq;
+    private readonly Mock<LinkGenerator> _linkGenerator;
     public TestCoachesController()
     {
         _mediatorMoq = new Mock<IMediator>();
         _uriServiceMoq = new Mock<IUriService>();
+        _linkGenerator = new Mock<LinkGenerator>();
     }
 
     [Fact]
@@ -40,7 +43,7 @@ public class TestCoachesController
             HttpContext = httpContext
         };
 
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
         {
             ControllerContext = controllerContext
         };
@@ -60,7 +63,17 @@ public class TestCoachesController
         int queryParam = 1;
         Response<CoachReadDto> returnValue = new Response<CoachReadDto>(new CoachReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetCoachByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/coaches";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.GetCoachByIdAsync(queryParam);
@@ -77,7 +90,17 @@ public class TestCoachesController
         int queryParam = 1;
         Response<CoachReadDto> returnValue = new Response<CoachReadDto>(null, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetCoachByIdQuery>(), It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/coaches";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.GetCoachByIdAsync(queryParam);
@@ -94,7 +117,7 @@ public class TestCoachesController
         var inputData = CreateCoachCommandMockData.GetEmptyCreateCoachCommandData();
         Response<CoachReadDto> returnValue = new Response<CoachReadDto>(new CoachReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object);
 
         ///Act
         var result = await sut.CreateCoachAsync(inputData!);
@@ -111,7 +134,17 @@ public class TestCoachesController
         var inputData = CreateCoachCommandMockData.GetNoCreateCoachCommandData();
         Response<CoachReadDto> returnValue = new Response<CoachReadDto>(null, false);
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/coaches";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.CreateCoachAsync(inputData!);
@@ -128,7 +161,7 @@ public class TestCoachesController
         int queryParam = 1;
         Response<bool> returnValue = new Response<bool>(true, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeleteCoachCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object);
 
         ///Act
         var result = await sut.DeleteCoachAsync(queryParam);
@@ -145,7 +178,17 @@ public class TestCoachesController
         int queryParam = 1;
         Response<bool> returnValue = new Response<bool>(false, false);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeleteCoachCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/coaches";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.DeleteCoachAsync(queryParam);
@@ -163,7 +206,7 @@ public class TestCoachesController
         Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdateCoachCommandMockData.GetEmptyUpdateCoachCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object);
 
         ///Act
         var result = await sut.UpdateCoachAsync(queryParam, inputData);
@@ -181,7 +224,17 @@ public class TestCoachesController
         Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdateCoachCommandMockData.GetEmptyUpdateCoachCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/coaches";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.UpdateCoachAsync(queryParam, inputData);
@@ -199,7 +252,7 @@ public class TestCoachesController
         Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdateCoachDetailCommandMockData.GetEmptyUpdateCoachDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object);
 
         ///Act
         var result = await sut.UpdateCoachDetailAsync(queryParam, inputData);
@@ -217,7 +270,17 @@ public class TestCoachesController
         Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdateCoachDetailCommandMockData.GetEmptyUpdateCoachDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/coaches";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.UpdateCoachDetailAsync(queryParam, inputData);
@@ -236,13 +299,13 @@ public class TestCoachesController
         var inputData = new GetFreeCoachesQuery(testDate);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetFreeCoachesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
         var httpContext = new DefaultHttpContext();
-        httpContext.Request.Path = "/api/free";
+        httpContext.Request.Path = "/api/coaches/free";
         var controllerContext = new ControllerContext()
         {
             HttpContext = httpContext
         };
 
-        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        var sut = new CoachesController(_mediatorMoq.Object, _uriServiceMoq.Object, _linkGenerator.Object)
         {
             ControllerContext = controllerContext
         };

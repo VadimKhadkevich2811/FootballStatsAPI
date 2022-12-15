@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\FootballStats.ApplicationModule\FootballStats.ApplicationModule.csproj" />
+    <ProjectReference Include="..\FootballStats.Application\FootballStats.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

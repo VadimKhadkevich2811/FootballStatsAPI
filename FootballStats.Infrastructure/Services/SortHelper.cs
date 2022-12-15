@@ -1,7 +1,7 @@
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces;
 
 namespace FootballStats.Infrastructure.Services;
 

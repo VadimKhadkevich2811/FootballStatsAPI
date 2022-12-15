@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="Moq" Version="4.18.2" />
@@ -26,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\FootballStats.API\FootballStats.API.csproj" />
     <ProjectReference Include="..\..\FootballStats.Application\FootballStats.Application.csproj" />
-    <ProjectReference Include="..\..\FootballStats.ApplicationModule\FootballStats.ApplicationModule.csproj" />
   </ItemGroup>
 
 </Project>
