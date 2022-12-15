@@ -1,17 +1,18 @@
 using FluentAssertions;
-using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.Dtos.Coaches;
-using FootballStats.ApplicationModule.Common.Dtos.Trainings;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.QueryParams;
-using FootballStats.ApplicationModule.Common.Wrappers;
-using FootballStats.ApplicationModule.Trainings.Commands.DeleteTraining;
-using FootballStats.ApplicationModule.Trainings.Queries.GetAllTrainings;
-using FootballStats.ApplicationModule.Trainings.Queries.GetTrainingById;
+using FootballStats.API.Controllers;
+using FootballStats.Application.Coaches.Dtos;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.QueryParams;
+using FootballStats.Application.Common.Wrappers;
+using FootballStats.Application.Trainings.Commands.DeleteTraining;
+using FootballStats.Application.Trainings.Dtos;
+using FootballStats.Application.Trainings.Queries.GetAllTrainings;
+using FootballStats.Application.Trainings.Queries.GetTrainingById;
 using FootballStats.UnitTests.MockData.Trainings;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Moq;
 
 namespace FootballStats.UnitTests.System.Controllers;
@@ -20,10 +21,12 @@ public class TestTrainingsController
 {
     private readonly Mock<IMediator> _mediatorMoq;
     private readonly Mock<IUriService> _uriServiceMoq;
+    private readonly Mock<IResponseWrapper<TrainingReadDto, TrainingsListWithCountDto>> _responseWrapperMoq;
     public TestTrainingsController()
     {
         _mediatorMoq = new Mock<IMediator>();
         _uriServiceMoq = new Mock<IUriService>();
+        _responseWrapperMoq = new Mock<IResponseWrapper<TrainingReadDto, TrainingsListWithCountDto>>();
     }
 
     [Fact]
@@ -41,7 +44,7 @@ public class TestTrainingsController
             HttpContext = httpContext
         };
 
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
         {
             ControllerContext = controllerContext
         };
@@ -61,7 +64,17 @@ public class TestTrainingsController
         int queryParam = 1;
         Response<TrainingReadDto> returnValue = new Response<TrainingReadDto>(new TrainingReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetTrainingByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/trainings";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.GetTrainingByIdAsync(queryParam);
@@ -79,7 +92,17 @@ public class TestTrainingsController
         Response<TrainingReadDto> returnValue = new Response<TrainingReadDto>(null, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetTrainingByIdQuery>(), It.IsAny<CancellationToken>()))!
             .ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/trainings";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.GetTrainingByIdAsync(queryParam);
@@ -96,7 +119,7 @@ public class TestTrainingsController
         var inputData = CreateTrainingCommandMockData.GetEmptyCreateTrainingCommandData();
         Response<TrainingReadDto> returnValue = new Response<TrainingReadDto>(new TrainingReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.CreateTrainingAsync(inputData);
@@ -113,7 +136,17 @@ public class TestTrainingsController
         var inputData = CreateTrainingCommandMockData.GetNoCreateTrainingCommandData();
         Response<TrainingReadDto> returnValue = new Response<TrainingReadDto>(null, false);
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/trainings";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.CreateTrainingAsync(inputData!);
@@ -130,7 +163,7 @@ public class TestTrainingsController
         int queryParam = 1;
         Response<bool> returnValue = new Response<bool>(true, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeleteTrainingCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.DeleteTrainingAsync(queryParam);
@@ -147,7 +180,17 @@ public class TestTrainingsController
         int queryParam = 1;
         Response<bool> returnValue = new Response<bool>(false, false);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeleteTrainingCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/trainings";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.DeleteTrainingAsync(queryParam);
@@ -165,7 +208,7 @@ public class TestTrainingsController
         Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdateTrainingCommandMockData.GetEmptyUpdateTrainingCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.UpdateTrainingAsync(queryParam, inputData);
@@ -183,7 +226,17 @@ public class TestTrainingsController
         Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdateTrainingCommandMockData.GetEmptyUpdateTrainingCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/trainings";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.UpdateTrainingAsync(queryParam, inputData);
@@ -201,7 +254,7 @@ public class TestTrainingsController
         Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdateTrainingDetailCommandMockData.GetEmptyUpdateTrainingDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.UpdateTrainingDetailAsync(queryParam, inputData);
@@ -219,7 +272,17 @@ public class TestTrainingsController
         Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdateTrainingDetailCommandMockData.GetEmptyUpdateTrainingDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/trainings";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new TrainingsController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.UpdateTrainingDetailAsync(queryParam, inputData);

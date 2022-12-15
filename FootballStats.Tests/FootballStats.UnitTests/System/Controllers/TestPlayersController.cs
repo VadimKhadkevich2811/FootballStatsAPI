@@ -1,17 +1,18 @@
 using FluentAssertions;
-using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.Dtos.Players;
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.QueryParams;
-using FootballStats.ApplicationModule.Common.Wrappers;
-using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
-using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
-using FootballStats.ApplicationModule.Players.Queries.GetFreePlayers;
-using FootballStats.ApplicationModule.Players.Queries.GetPlayerById;
+using FootballStats.API.Controllers;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.QueryParams;
+using FootballStats.Application.Common.Wrappers;
+using FootballStats.Application.Players.Commands.DeletePlayer;
+using FootballStats.Application.Players.Dtos;
+using FootballStats.Application.Players.Queries.GetAllPlayers;
+using FootballStats.Application.Players.Queries.GetFreePlayers;
+using FootballStats.Application.Players.Queries.GetPlayerById;
 using FootballStats.UnitTests.MockData.Players;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Moq;
 
 namespace FootballStats.UnitTests.System.Controllers;
@@ -20,10 +21,12 @@ public class TestPlayersController
 {
     private readonly Mock<IMediator> _mediatorMoq;
     private readonly Mock<IUriService> _uriServiceMoq;
+    private readonly Mock<IResponseWrapper<PlayerReadDto, PlayersListWithCountDto>> _responseWrapperMoq;
     public TestPlayersController()
     {
         _mediatorMoq = new Mock<IMediator>();
         _uriServiceMoq = new Mock<IUriService>();
+        _responseWrapperMoq = new Mock<IResponseWrapper<PlayerReadDto, PlayersListWithCountDto>>();
     }
 
     [Fact]
@@ -41,7 +44,7 @@ public class TestPlayersController
             HttpContext = httpContext
         };
 
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
         {
             ControllerContext = controllerContext
         };
@@ -61,7 +64,17 @@ public class TestPlayersController
         int queryParam = 1;
         Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(new PlayerReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetPlayerByIdQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.GetPlayerByIdAsync(queryParam);
@@ -79,7 +92,17 @@ public class TestPlayersController
         Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(null, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<GetPlayerByIdQuery>(), It.IsAny<CancellationToken>()))!
             .ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.GetPlayerByIdAsync(queryParam);
@@ -96,7 +119,7 @@ public class TestPlayersController
         var inputData = CreatePlayerCommandMockData.GetEmptyCreatePlayerCommandData();
         Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(new PlayerReadDto(), true);
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.CreatePlayerAsync(inputData);
@@ -113,7 +136,17 @@ public class TestPlayersController
         var inputData = CreatePlayerCommandMockData.GetNoCreatePlayerCommandData();
         Response<PlayerReadDto> returnValue = new Response<PlayerReadDto>(null, false);
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.CreatePlayerAsync(inputData!);
@@ -130,7 +163,7 @@ public class TestPlayersController
         int queryParam = 1;
         Response<bool> returnValue = new Response<bool>(true, true);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.DeletePlayerAsync(queryParam);
@@ -147,7 +180,17 @@ public class TestPlayersController
         int queryParam = 1;
         Response<bool> returnValue = new Response<bool>(false, false);
         _mediatorMoq.Setup(x => x.Send(It.IsAny<DeletePlayerCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.DeletePlayerAsync(queryParam);
@@ -165,7 +208,7 @@ public class TestPlayersController
         Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdatePlayerCommandMockData.GetEmptyUpdatePlayerCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.UpdatePlayerAsync(queryParam, inputData);
@@ -183,7 +226,17 @@ public class TestPlayersController
         Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdatePlayerCommandMockData.GetEmptyUpdatePlayerCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.UpdatePlayerAsync(queryParam, inputData);
@@ -201,7 +254,7 @@ public class TestPlayersController
         Response<bool> returnValue = new Response<bool>(true, true);
         var inputData = UpdatePlayerDetailCommandMockData.GetEmptyUpdatePlayerDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object);
 
         ///Act
         var result = await sut.UpdatePlayerDetailAsync(queryParam, inputData);
@@ -219,7 +272,17 @@ public class TestPlayersController
         Response<bool> returnValue = new Response<bool>(false, false);
         var inputData = UpdatePlayerDetailCommandMockData.GetEmptyUpdatePlayerDetailCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData, It.IsAny<CancellationToken>())).ReturnsAsync(returnValue);
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/players";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.UpdatePlayerDetailAsync(queryParam, inputData);
@@ -244,7 +307,7 @@ public class TestPlayersController
             HttpContext = httpContext
         };
 
-        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object)
+        var sut = new PlayersController(_mediatorMoq.Object, _uriServiceMoq.Object, _responseWrapperMoq.Object)
         {
             ControllerContext = controllerContext
         };

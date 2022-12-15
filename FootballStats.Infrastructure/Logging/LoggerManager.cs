@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces;
 using NLog;
 
 namespace FootballStats.Infrastructure.Logging;

@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using FootballStats.Domain.Common;
 using FootballStats.Domain.Enums;
 
 namespace FootballStats.Domain.Entities;
 
-public class Coach
+public class Coach : BaseEntity
 {
     [Key]
     public int Id { get; set; }
@@ -20,6 +21,10 @@ public class Coach
     public int Age { get; set; }
 
     [Required]
+    public string Nationality { get; set; } = default!;
+
+    [Required]
     public PositionGroup Position { get; set; }
-    public Training? Training { get; set; }
+
+    public virtual ICollection<Training>? Trainings { get; set; }
 }

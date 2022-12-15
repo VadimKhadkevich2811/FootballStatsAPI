@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/FootballStats.Application/FootballStats.Application.csproj",
+                "${workspaceFolder}/FootballStats.API/FootballStats.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/FootballStats.Application/FootballStats.Application.csproj",
+                "${workspaceFolder}/FootballStats.API/FootballStats.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/FootballStats.Application/FootballStats.Application.csproj"
+                "${workspaceFolder}/FootballStats.API/FootballStats.API.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -1,5 +1,5 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,13 +26,12 @@ public class LoginRepository : ILoginRepository
         return await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateUserTokenAsync(User user, string? token)
+    public void UpdateUserTokenAsync(User user, string? token)
     {
         if (token != null)
         {
             user.Token = token;
             user.TokenEnd = DateTime.Now.AddSeconds(86400);
-            await SaveChangesAsync();
         }
     }
 }

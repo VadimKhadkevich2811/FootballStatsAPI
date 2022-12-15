@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Players.Commands.CreatePlayer;
+using FootballStats.Application.Players.Commands.CreatePlayer;
 using FootballStats.Domain.Enums;
 
 namespace FootballStats.UnitTests.MockData.Players;
@@ -22,6 +22,7 @@ public class CreatePlayerCommandMockData
             Name = "Phil",
             Lastname = "Test",
             Age = 30,
+            Nationality = "Germany",
             Position = PositionGroup.Forward
         };
     }

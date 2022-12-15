@@ -4,7 +4,9 @@ using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Persistence;
 using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.UnitTests.MockData.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace FootballStats.UnitTests.System.Repositories;
 
@@ -14,10 +16,12 @@ public class TestSignUpRepository : IDisposable
 
     public TestSignUpRepository()
     {
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
         var options = new DbContextOptionsBuilder<FootballStatsDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
 
-        _context = new FootballStatsDbContext(options);
+        _context = new FootballStatsDbContext(options, mockHttpContextAccessor.Object);
 
         _context.Database.EnsureCreated();
     }

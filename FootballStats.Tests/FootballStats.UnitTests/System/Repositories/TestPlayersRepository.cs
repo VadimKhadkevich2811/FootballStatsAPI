@@ -1,12 +1,14 @@
 using FluentAssertions;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.Application.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Persistence;
 using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.Infrastructure.Services;
 using FootballStats.UnitTests.MockData.Players;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace FootballStats.UnitTests.System.Repositories;
 
@@ -16,10 +18,12 @@ public class TestPlayersRepository : IDisposable
 
     public TestPlayersRepository()
     {
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
         var options = new DbContextOptionsBuilder<FootballStatsDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
 
-        _context = new FootballStatsDbContext(options);
+        _context = new FootballStatsDbContext(options, mockHttpContextAccessor.Object);
 
         _context.Database.EnsureCreated();
     }
@@ -67,7 +71,15 @@ public class TestPlayersRepository : IDisposable
     {
         /// Arrange
         var testPlayers = GetPlayersMockData.GetAllPlayers();
-        var newPlayer = new Player() { Id = 4, Name = "Bill", Lastname = "Test4", Age = 25, Position = PositionGroup.Deffender };
+        var newPlayer = new Player()
+        {
+            Id = 4,
+            Name = "Bill",
+            Lastname = "Test4",
+            Age = 25,
+            Nationality = "Finland",
+            Position = PositionGroup.Deffender
+        };
         _context.Players.AddRange(testPlayers);
         _context.SaveChanges();
 

@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace FootballStats.Infrastructure.Services;

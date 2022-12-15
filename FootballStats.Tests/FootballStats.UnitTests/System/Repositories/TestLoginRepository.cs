@@ -2,7 +2,9 @@ using FluentAssertions;
 using FootballStats.Infrastructure.Persistence;
 using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.UnitTests.MockData.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace FootballStats.UnitTests.System.Repositories;
 
@@ -12,10 +14,12 @@ public class TestLoginRepository : IDisposable
 
     public TestLoginRepository()
     {
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
         var options = new DbContextOptionsBuilder<FootballStatsDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
 
-        _context = new FootballStatsDbContext(options);
+        _context = new FootballStatsDbContext(options, mockHttpContextAccessor.Object);
 
         _context.Database.EnsureCreated();
     }
@@ -53,7 +57,8 @@ public class TestLoginRepository : IDisposable
 
         /// Act
 
-        await sut.UpdateUserTokenAsync(testedUser, "tokenUpdated");
+        sut.UpdateUserTokenAsync(testedUser, "tokenUpdated");
+        await sut.SaveChangesAsync();
 
         /// Assert
 

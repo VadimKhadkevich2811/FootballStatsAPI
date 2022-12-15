@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using FootballStats.Domain.Common;
 using FootballStats.Domain.Enums;
 
 namespace FootballStats.Domain.Entities;
 
-public class User
+public class User : BaseEntity
 {
     [Key]
     public int Id { get; set; }

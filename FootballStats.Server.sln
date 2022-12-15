@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FootballStats.Tests", "Foot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballStats.UnitTests", "FootballStats.Tests\FootballStats.UnitTests\FootballStats.UnitTests.csproj", "{30D04BA4-3F65-4183-B996-B6D3E2735B3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballStats.API", "FootballStats.API\FootballStats.API.csproj", "{B45212B2-CDA3-4649-BDC1-634F21581E8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{30D04BA4-3F65-4183-B996-B6D3E2735B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30D04BA4-3F65-4183-B996-B6D3E2735B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30D04BA4-3F65-4183-B996-B6D3E2735B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B45212B2-CDA3-4649-BDC1-634F21581E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B45212B2-CDA3-4649-BDC1-634F21581E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B45212B2-CDA3-4649-BDC1-634F21581E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B45212B2-CDA3-4649-BDC1-634F21581E8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{30D04BA4-3F65-4183-B996-B6D3E2735B3D} = {B55EBD20-10F2-4E9F-9154-FA27E9D7501E}

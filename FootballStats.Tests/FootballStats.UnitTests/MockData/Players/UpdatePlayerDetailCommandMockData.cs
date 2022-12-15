@@ -1,5 +1,5 @@
-using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
-using FootballStats.ApplicationModule.Players.Commands.UpdatePlayerDetail;
+using FootballStats.Application.Players.Commands.UpdatePlayer;
+using FootballStats.Application.Players.Commands.UpdatePlayerDetail;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace FootballStats.UnitTests.MockData.Players;

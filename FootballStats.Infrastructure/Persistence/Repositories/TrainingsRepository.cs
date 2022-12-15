@@ -1,6 +1,6 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces.Repositories;
+using FootballStats.Application.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +22,10 @@ public class TrainingsRepository : ITrainingsRepository
     {
         await _context.Trainings.AddAsync(training);
         await SaveChangesAsync();
+
         foreach (var pId in playerIDs)
         {
-            _context.TrainingPlayers.Add(new() { PlayerId = pId, TrainingId = training.Id });
+            await _context.TrainingPlayers.AddAsync(new() { PlayerId = pId, TrainingId = training.Id });
         }
     }
 

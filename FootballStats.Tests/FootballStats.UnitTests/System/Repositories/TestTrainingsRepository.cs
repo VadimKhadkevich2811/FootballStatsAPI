@@ -4,7 +4,9 @@ using FootballStats.Infrastructure.Persistence;
 using FootballStats.Infrastructure.Persistence.Repositories;
 using FootballStats.Infrastructure.Services;
 using FootballStats.UnitTests.MockData.Trainings;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace FootballStats.UnitTests.System.Repositories;
 
@@ -14,10 +16,12 @@ public class TestTrainingsRepository : IDisposable
 
     public TestTrainingsRepository()
     {
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
         var options = new DbContextOptionsBuilder<FootballStatsDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()).Options;
 
-        _context = new FootballStatsDbContext(options);
+        _context = new FootballStatsDbContext(options, mockHttpContextAccessor.Object);
 
         _context.Database.EnsureCreated();
     }
@@ -65,7 +69,7 @@ public class TestTrainingsRepository : IDisposable
     {
         /// Arrange
         var testTrainings = GetTrainingsMockData.GetAllTrainings();
-        var newTraining = new Training() { Id = 4, Name = "Bill", CoachId = 4 };
+        var newTraining = new Training() { Id = 4, Name = "Bill", CoachId = 4, TrainingDate = DateTime.Now };
         _context.Trainings.AddRange(testTrainings);
         _context.SaveChanges();
 

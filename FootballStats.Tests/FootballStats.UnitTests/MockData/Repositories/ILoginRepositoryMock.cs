@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
+using FootballStats.Application.Common.Interfaces.Repositories;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using Moq;
