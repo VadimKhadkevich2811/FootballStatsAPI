@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/FootballStats.Application/bin/Debug/net6.0/FootballStats.Application.dll",
+            "program": "${workspaceFolder}/FootballStats.API/bin/Debug/net6.0/FootballStats.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/FootballStats.Application",
+            "cwd": "${workspaceFolder}/FootballStats.API",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

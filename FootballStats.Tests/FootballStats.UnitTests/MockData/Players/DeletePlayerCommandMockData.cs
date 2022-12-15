@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Players.Commands.DeletePlayer;
+using FootballStats.Application.Players.Commands.DeletePlayer;
 
 namespace FootballStats.UnitTests.MockData.Players;
 

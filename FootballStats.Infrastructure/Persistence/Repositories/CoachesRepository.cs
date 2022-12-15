@@ -1,6 +1,6 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.Application.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces.Repositories;
+using FootballStats.Application.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,5 +1,5 @@
-using FootballStats.ApplicationModule.Common.QueryParams;
-using FootballStats.ApplicationModule.Players.Queries.GetAllPlayers;
+using FootballStats.Application.Common.QueryParams;
+using FootballStats.Application.Players.Queries.GetAllPlayers;
 
 namespace FootballStats.UnitTests.MockData.Players;
 

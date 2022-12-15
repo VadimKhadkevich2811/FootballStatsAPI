@@ -1,5 +1,5 @@
 using System.Text;
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 

@@ -1,5 +1,5 @@
-using FootballStats.ApplicationModule.Common.Interfaces.Repositories;
-using FootballStats.ApplicationModule.Common.QueryParams;
+using FootballStats.Application.Common.Interfaces.Repositories;
+using FootballStats.Application.Common.QueryParams;
 using FootballStats.Domain.Entities;
 using FootballStats.Domain.Enums;
 using FootballStats.Infrastructure.Services;

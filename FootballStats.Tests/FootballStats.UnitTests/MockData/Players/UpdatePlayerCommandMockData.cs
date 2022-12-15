@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Players.Commands.UpdatePlayer;
+using FootballStats.Application.Players.Commands.UpdatePlayer;
 using FootballStats.Domain.Enums;
 
 namespace FootballStats.UnitTests.MockData.Players;
