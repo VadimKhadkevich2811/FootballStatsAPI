@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Common.Interfaces;
+using FootballStats.Application.Common.Interfaces;
 using FootballStats.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +23,7 @@ public class FootballStatsDbContext : DbContext, IApplicationDbContext
 
     public async Task<bool> SaveChangesAsync()
     {
-        return (await base.SaveChangesAsync() > 0);
+        return await base.SaveChangesAsync() > 0;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

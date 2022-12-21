@@ -1,4 +1,4 @@
-using FootballStats.ApplicationModule.Trainings.Commands.UpdateTraining;
+using FootballStats.Application.Trainings.Commands.UpdateTraining;
 
 namespace FootballStats.UnitTests.MockData.Trainings;
 

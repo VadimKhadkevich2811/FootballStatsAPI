@@ -1,9 +1,10 @@
 using FluentAssertions;
-using FootballStats.Application.Controllers;
-using FootballStats.ApplicationModule.Common.Dtos;
-using FootballStats.ApplicationModule.Common.Wrappers;
+using FootballStats.API.Controllers;
+using FootballStats.Application.Common.Wrappers;
+using FootballStats.Application.Login.Dtos;
 using FootballStats.UnitTests.MockData.Login;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -41,7 +42,17 @@ public class TestLoginController
         Response<LoginDto> returnValue = new Response<LoginDto>(null, false);
         var inputData = LoginCommandMockData.GetNoLoginCommandData();
         _mediatorMoq.Setup(x => x.Send(inputData!, It.IsAny<CancellationToken>()))!.ReturnsAsync(returnValue);
-        var sut = new LoginController(_mediatorMoq.Object);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Path = "/api/login";
+        var controllerContext = new ControllerContext()
+        {
+            HttpContext = httpContext
+        };
+
+        var sut = new LoginController(_mediatorMoq.Object)
+        {
+            ControllerContext = controllerContext
+        };
 
         ///Act
         var result = await sut.LoginAsync(inputData!);
